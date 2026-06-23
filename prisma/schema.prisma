@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// 用户表 - 存储用户基本信息和登录凭据
+model User {
+  id            String        @id @default(cuid())
+  name          String
+  email         String        @unique
+  phone         String?
+  passwordHash  String
+  avatar        String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  activityLogs  ActivityLog[]
+  activityTags  ActivityTag[]
+  userSettings  UserSettings?
+}
+
+/// 活动记录表 - 用户每天的生活记录
+/// 本期只有"已记录"一种状态，不引入计划型状态
+model ActivityLog {
+  id          String    @id @default(cuid())
+  userId      String
+  tagId       String?
+  title       String
+  note        String?
+  date        String    // YYYY-MM-DD 格式
+  timeType    String    @default("ALL_DAY") // ALL_DAY | SCHEDULED
+  startTime   String?   // HH:mm 格式，仅 scheduled 类型使用
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tag         ActivityTag? @relation(fields: [tagId], references: [id], onDelete: SetNull)
+
+  @@index([userId, date])
+}
+
+/// 活动标签表 - 用户自定义的记录标签
+model ActivityTag {
+  id          String        @id @default(cuid())
+  userId      String
+  name        String        // 标签名称，2-4字为宜
+  color       String        // 标签颜色，hex 值如 #22C3A6
+  icon        String?       // 图标标识
+  category    String?       // 分类：work/health/social/leisure/rest/other
+  sortOrder   Int           @default(0)
+  enabled     Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activityLogs ActivityLog[]
+
+  @@index([userId, sortOrder])
+}
+
+/// 用户设置表 - 用户偏好和显示设置
+model UserSettings {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  weekStartsOn Int     @default(0)  // 0=周日, 1=周一
+  showLunar    Boolean @default(true)
+  defaultView  String  @default("month") // month/week 视图偏好
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+
