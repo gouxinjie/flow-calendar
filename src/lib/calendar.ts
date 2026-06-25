@@ -73,6 +73,9 @@ export function buildMonthCells(
   today: string,
 ): CalendarCell[] {
   const monthStart = dayjs(`${month}-01`);
+  const monthEnd = monthStart.endOf("month");
+  const totalSlots = monthStart.day() + monthEnd.date();
+  const gridCellCount = Math.ceil(totalSlots / 7) * 7;
   // 从该月第一天所在周的周日开始
   const gridStart = monthStart.subtract(monthStart.day(), "day");
 
@@ -87,7 +90,7 @@ export function buildMonthCells(
     groupedRecords.set(r.date, list);
   }
 
-  return Array.from({ length: 42 }, (_, index) => {
+  return Array.from({ length: gridCellCount }, (_, index) => {
     const currentDay = gridStart.add(index, "day");
     const dateKey = currentDay.format("YYYY-MM-DD");
     const dateRecords = (groupedRecords.get(dateKey) ?? []).sort((left, right) => {
