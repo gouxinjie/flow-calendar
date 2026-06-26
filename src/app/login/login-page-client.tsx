@@ -15,8 +15,8 @@ import { requestApi } from "@/services/api-client";
 export function LoginPageClient() {
   const [mode, setMode] = useState<"login" | "register">("login");
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("2562755718@qq.com");
+  const [password, setPassword] = useState("xinjie123");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [notice, setNotice] = useState<{ tone: "error" | "success"; message: string } | null>(null);

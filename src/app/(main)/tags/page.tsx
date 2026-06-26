@@ -8,6 +8,7 @@
  * @updated 2026-06-22
  */
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { DotsSixVertical, PencilSimple, Plus } from "@phosphor-icons/react";
 
@@ -16,6 +17,11 @@ import { StateBanner } from "@/components/commons/state-banner";
 import { ScreenHeader, SectionCard } from "@/components/business/shared/mobile-shell";
 import { requestApi } from "@/services/api-client";
 import type { ActivityTag } from "@/types/models";
+
+const ToggleSwitch = dynamic(
+  () => import("@/components/commons/toggle-switch").then((module) => module.ToggleSwitch),
+  { ssr: false },
+);
 
 export default function TagsPage() {
   const [tags, setTags] = useState<ActivityTag[]>([]);
@@ -132,19 +138,11 @@ export default function TagsPage() {
                     </p>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => void handleToggle(tag)}
-                    className={`relative h-7 w-12 rounded-full transition-colors ${
-                      tag.enabled ? "bg-[#22C3A6]" : "bg-[#DCE7E4]"
-                    }`}
-                  >
-                    <span
-                      className={`absolute top-0.5 h-6 w-6 rounded-full bg-white shadow-sm transition-transform ${
-                        tag.enabled ? "translate-x-[22px]" : "translate-x-[1px]"
-                      }`}
-                    />
-                  </button>
+                  <ToggleSwitch
+                    checked={tag.enabled}
+                    ariaLabel={`${tag.enabled ? "停用" : "启用"}${tag.name}`}
+                    onCheckedChange={() => void handleToggle(tag)}
+                  />
 
                   <Link
                     href={`/tags/${tag.id}`}

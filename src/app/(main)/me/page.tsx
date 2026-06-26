@@ -163,7 +163,7 @@ export default function MePage() {
         <button
           type="button"
           onClick={handleLogout}
-          className="mt-6 w-full rounded-[16px] border border-[#E7D3D3] bg-white py-3 text-[14px] font-medium text-[#D85A5A] active:bg-[#FFF5F5]"
+          className="mt-6 w-full rounded-[8px] border border-[#E7D3D3] bg-white py-3 text-[14px] font-medium text-[#D85A5A] active:bg-[#FFF5F5]"
         >
           退出登录
         </button>

@@ -82,7 +82,7 @@ export function SectionCard({
   children?: ReactNode;
   className?: string;
 }) {
-  return <section className={cn("surface-card p-4", className)}>{children}</section>;
+  return <section className={cn("surface-card !rounded-[8px] p-4", className)}>{children}</section>;
 }
 
 /**

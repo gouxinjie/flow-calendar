@@ -48,15 +48,18 @@ function getTagStyle(tagColor?: string): CSSProperties | undefined {
   }
 
   const rgb = hexToRgb(tagColor);
-  const background = {
-    r: mixColor(rgb.r, 255, 0.12),
-    g: mixColor(rgb.g, 255, 0.12),
-    b: mixColor(rgb.b, 255, 0.12),
-  };
+  const background =
+    getRgbBrightness(rgb) >= 176
+      ? {
+          r: mixColor(rgb.r, 0, 0.16),
+          g: mixColor(rgb.g, 0, 0.16),
+          b: mixColor(rgb.b, 0, 0.16),
+        }
+      : rgb;
 
   return {
     backgroundColor: toRgbString(background),
-    color: getRgbBrightness(background) >= 176 ? "#1F2A2A" : "#FFFFFF",
+    color: "#FFFFFF",
   };
 }
 
@@ -134,7 +137,7 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
               {cell.lunarLabel ? (
                 <p
                   className={cn(
-                    "mt-1 self-center truncate text-center text-[9px] leading-none",
+                    "mt-1 self-center truncate text-center text-[10px] leading-none",
                     cell.isToday
                       ? "font-medium text-[#6CB6A3]"
                       : cell.isCurrentMonth

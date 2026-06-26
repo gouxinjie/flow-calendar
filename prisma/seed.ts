@@ -44,11 +44,11 @@ async function main() {
   // 创建默认标签
   const defaultTags = [
     { id: "tag_work", name: "工作", color: "#5DA9E9", icon: "briefcase", category: "work", sortOrder: 1 },
-    { id: "tag_study", name: "学习", color: "#5DA9E9", icon: "book", category: "work", sortOrder: 2 },
+    { id: "tag_study", name: "学习", color: "#5F6EF3", icon: "book", category: "work", sortOrder: 2 },
     { id: "tag_sport", name: "运动", color: "#FF9F43", icon: "barbell", category: "health", sortOrder: 3 },
-    { id: "tag_outdoor", name: "外出", color: "#FF9F43", icon: "compass", category: "leisure", sortOrder: 4 },
+    { id: "tag_outdoor", name: "外出", color: "#F46D5E", icon: "compass", category: "leisure", sortOrder: 4 },
     { id: "tag_social", name: "聚会", color: "#8B8AEF", icon: "users", category: "social", sortOrder: 5 },
-    { id: "tag_movie", name: "观影", color: "#8B8AEF", icon: "film", category: "leisure", sortOrder: 6 },
+    { id: "tag_movie", name: "观影", color: "#C27BFF", icon: "film", category: "leisure", sortOrder: 6 },
     { id: "tag_rest", name: "休息", color: "#A8B8B0", icon: "moon", category: "rest", sortOrder: 7 },
     { id: "tag_read", name: "阅读", color: "#22C3A6", icon: "book-open", category: "leisure", sortOrder: 8 },
   ];
