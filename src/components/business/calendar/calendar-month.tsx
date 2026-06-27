@@ -77,7 +77,6 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
       <div className="grid min-h-0 grid-cols-7 gap-y-3">
         {cells.map((cell) => {
           const visibleSummaries = cell.recordSummaries.slice(0, 2);
-          const totalRecordCount = cell.recordSummaries.length + cell.overflowCount;
           const cellSurfaceClass = cell.isToday
             ? cell.isSelected
               ? "border-2 border-[#107A4F] bg-[#F2FBF7] shadow-[inset_0_0_0_1px_rgba(16,122,79,0.16)]"
@@ -85,18 +84,6 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
             : cell.isSelected
               ? "border-[#58C9AF] bg-[#F2FBF7] shadow-[inset_0_0_0_1px_rgba(88,201,175,0.08)]"
               : "bg-[#F8FCFA]";
-          const cornerBadgeText = cell.isSelected
-            ? totalRecordCount > 0
-              ? totalRecordCount > 9
-                ? "9+"
-                : String(totalRecordCount)
-              : null
-            : cell.overflowCount > 0
-              ? `+${cell.overflowCount > 9 ? "9" : cell.overflowCount}`
-              : null;
-          const cornerBadgeClassName = cell.isSelected
-            ? "bg-[#169968] text-white"
-            : "bg-[#E9F5F2] text-[#107A4F]";
 
           return (
             <Link
@@ -108,16 +95,6 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
                 !cell.isCurrentMonth && "opacity-50",
               )}
             >
-              {cornerBadgeText ? (
-                <span
-                  className={cn(
-                    "absolute right-1 top-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-semibold leading-none",
-                    cornerBadgeClassName,
-                  )}
-                >
-                  {cornerBadgeText}
-                </span>
-              ) : null}
 
               <div className="flex justify-center">
                 <span
