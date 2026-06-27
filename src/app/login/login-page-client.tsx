@@ -10,7 +10,7 @@
  * @updated 2026-06-28
  */
 import { useEffect, useState } from "react";
-import { Envelope, Lock, Eye, EyeSlash } from "@phosphor-icons/react";
+import { DeviceMobile, Lock, Eye, EyeSlash } from "@phosphor-icons/react";
 
 import { StateBanner } from "@/components/commons/state-banner";
 
@@ -24,7 +24,7 @@ const SESSION_COOKIE = "flow_calendar_session";
 interface LoginData {
   id: string;
   name: string;
-  email: string;
+  phone: string;
   sessionToken: string;
 }
 
@@ -45,8 +45,8 @@ export function LoginPageClient() {
   const [checking, setChecking] = useState(true);
   const [mode, setMode] = useState<"login" | "register">("login");
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("13113183859");
+  const [password, setPassword] = useState("xinjie123");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [notice, setNotice] = useState<{ tone: "error" | "success"; message: string } | null>(null);
@@ -71,8 +71,14 @@ export function LoginPageClient() {
       return;
     }
 
-    if (!email.trim() || !password) {
-      setNotice({ tone: "error", message: "请输入邮箱和密码" });
+    if (!phone.trim() || !password) {
+      setNotice({ tone: "error", message: "请输入手机号和密码" });
+      return;
+    }
+
+    // 前端校验手机号格式
+    if (!/^1\d{10}$/.test(phone.trim())) {
+      setNotice({ tone: "error", message: "请输入 11 位手机号" });
       return;
     }
 
@@ -87,7 +93,7 @@ export function LoginPageClient() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...(mode === "register" ? { name: name.trim() } : {}),
-          email: email.trim().toLowerCase(),
+          phone: phone.trim(),
           password,
         }),
       });
@@ -190,15 +196,15 @@ export function LoginPageClient() {
           </div>
         ) : null}
 
-        {/* 邮箱 */}
+        {/* 手机号 */}
         <div className="mb-3">
           <div className="flex items-center gap-2 rounded-[10px] border border-[#DCE7E4] bg-white px-4 py-3 focus-within:border-[#169968]">
-            <Envelope size={18} className="text-[#A8B8B0]" />
+            <DeviceMobile size={18} className="text-[#A8B8B0]" />
             <input
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="邮箱地址"
+              type="tel"
+              value={phone}
+              onChange={(event) => setPhone(event.target.value)}
+              placeholder="手机号"
               className="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none"
             />
           </div>

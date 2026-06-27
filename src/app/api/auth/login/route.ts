@@ -24,20 +24,28 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { email, password } = body;
+    const { phone, password } = body;
 
-    if (!email || !password) {
+    if (!phone || !password) {
       return NextResponse.json(
-        { success: false, code: "INVALID_PARAMS", message: "请输入邮箱和密码", data: null },
+        { success: false, code: "INVALID_PARAMS", message: "请输入手机号和密码", data: null },
+        { status: 400 },
+      );
+    }
+
+    // 校验手机号格式
+    if (!/^1\d{10}$/.test(String(phone).trim())) {
+      return NextResponse.json(
+        { success: false, code: "INVALID_PARAMS", message: "请输入 11 位手机号", data: null },
         { status: 400 },
       );
     }
 
     // 查找用户
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({ where: { phone: String(phone).trim() } });
     if (!user) {
       return NextResponse.json(
-        { success: false, code: "INVALID_CREDENTIALS", message: "邮箱或密码错误", data: null },
+        { success: false, code: "INVALID_CREDENTIALS", message: "手机号或密码错误", data: null },
         { status: 401 },
       );
     }
@@ -48,7 +56,7 @@ export async function POST(request: NextRequest) {
 
     if (!isPasswordValid) {
       return NextResponse.json(
-        { success: false, code: "INVALID_CREDENTIALS", message: "邮箱或密码错误", data: null },
+        { success: false, code: "INVALID_CREDENTIALS", message: "手机号或密码错误", data: null },
         { status: 401 },
       );
     }
@@ -74,7 +82,7 @@ export async function POST(request: NextRequest) {
       data: {
         id: user.id,
         name: user.name,
-        email: user.email,
+        phone: user.phone,
         // 客户端兜底：返回 session token 供客户端手动写 Cookie
         sessionToken: user.id,
       },

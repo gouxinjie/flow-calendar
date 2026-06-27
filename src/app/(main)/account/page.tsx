@@ -133,18 +133,18 @@ export default function AccountPage() {
           <h3 className="mb-3 text-[14px] font-semibold text-[#6B7A7A]">联系信息</h3>
 
           <div className="flex items-center gap-3 rounded-[14px] bg-[#F1FAF6] px-4 py-3">
-            <Envelope size={18} className="text-[#8EA09B]" />
+            <Phone size={18} className="text-[#8EA09B]" />
             <div className="min-w-0 flex-1">
-              <p className="text-[12px] text-[#8EA09B]">邮箱</p>
-              <p className="text-[14px] text-[#1F2A2A]">{profile?.email ?? "读取中…"}</p>
+              <p className="text-[12px] text-[#8EA09B]">手机号</p>
+              <p className="text-[14px] text-[#1F2A2A]">{profile?.phone ?? "读取中…"}</p>
             </div>
           </div>
 
           <div className="mt-3 flex items-center gap-3 rounded-[14px] bg-[#F1FAF6] px-4 py-3">
-            <Phone size={18} className="text-[#8EA09B]" />
+            <Envelope size={18} className="text-[#8EA09B]" />
             <div className="min-w-0 flex-1">
-              <p className="text-[12px] text-[#8EA09B]">当前手机号</p>
-              <p className="text-[14px] text-[#1F2A2A]">{phone || "未填写"}</p>
+              <p className="text-[12px] text-[#8EA09B]">邮箱</p>
+              <p className="text-[14px] text-[#1F2A2A]">{profile?.email ?? "未填写"}</p>
             </div>
           </div>
         </SectionCard>

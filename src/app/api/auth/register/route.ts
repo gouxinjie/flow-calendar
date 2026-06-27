@@ -21,9 +21,9 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, email, password } = body;
+    const { name, phone, password } = body;
 
-    if (!name || !email || !password) {
+    if (!name || !phone || !password) {
       return NextResponse.json(
         { success: false, code: "INVALID_PARAMS", message: "请填写完整信息", data: null },
         { status: 400 },
@@ -37,11 +37,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 检查邮箱是否已注册
-    const existing = await prisma.user.findUnique({ where: { email } });
+    // 校验手机号格式
+    if (!/^1\d{10}$/.test(String(phone).trim())) {
+      return NextResponse.json(
+        { success: false, code: "INVALID_PARAMS", message: "请输入 11 位手机号", data: null },
+        { status: 400 },
+      );
+    }
+
+    // 检查手机号是否已注册
+    const existing = await prisma.user.findUnique({ where: { phone: String(phone).trim() } });
     if (existing) {
       return NextResponse.json(
-        { success: false, code: "EMAIL_EXISTS", message: "该邮箱已注册", data: null },
+        { success: false, code: "PHONE_EXISTS", message: "该手机号已注册", data: null },
         { status: 409 },
       );
     }
@@ -49,7 +57,7 @@ export async function POST(request: NextRequest) {
     const user = await prisma.user.create({
       data: {
         name: String(name).trim(),
-        email: String(email).trim().toLowerCase(),
+        phone: String(phone).trim(),
         passwordHash: hashPassword(password),
       },
     });
@@ -64,7 +72,7 @@ export async function POST(request: NextRequest) {
       data: {
         id: user.id,
         name: user.name,
-        email: user.email,
+        phone: user.phone,
         sessionToken: user.id,
       },
     });

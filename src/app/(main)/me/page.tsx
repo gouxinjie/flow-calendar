@@ -95,7 +95,7 @@ export default function MePage() {
             </div>
             <div className="min-w-0 flex-1">
               <h2 className="text-[18px] font-semibold text-[#1F2A2A]">{profile.name}</h2>
-              <p className="mt-0.5 text-[13px] text-[#7C8A87]">{profile.email}</p>
+              <p className="mt-0.5 text-[13px] text-[#7C8A87]">{profile.phone}</p>
             </div>
           </SectionCard>
         ) : (
@@ -129,7 +129,7 @@ export default function MePage() {
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-[15px] font-medium text-[#1F2A2A]">账号与安全</p>
-                <p className="text-[12px] text-[#8EA09B]">查看用户名、邮箱和基础资料</p>
+                <p className="text-[12px] text-[#8EA09B]">查看用户名、手机号和基础资料</p>
               </div>
             </Link>
           </div>

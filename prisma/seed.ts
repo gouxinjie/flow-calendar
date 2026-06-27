@@ -12,7 +12,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   // 创建 Demo 用户（如果不存在）
-  const demoEmail = "2562755718@qq.com";
+  const demoPhone = "13113183859";
   const demoPassword = "xinjie123";
   const passwordHash = hashPassword(demoPassword);
 
@@ -25,12 +25,12 @@ async function main() {
     create: {
       id: "user_demo_001",
       name: "小律",
-      email: demoEmail,
+      phone: demoPhone,
       passwordHash,
     },
     update: {
       name: "小律",
-      email: demoEmail,
+      phone: demoPhone,
       passwordHash: existing && isHashedPassword(existing.passwordHash)
         ? hashPassword(demoPassword)
         : passwordHash,
@@ -38,7 +38,7 @@ async function main() {
   });
 
   console.log(
-    `${existing ? "Demo 用户已更新" : "Demo 用户已创建"}: 2562755718@qq.com / xinjie123`,
+    `${existing ? "Demo 用户已更新" : "Demo 用户已创建"}: ${demoPhone} / xinjie123`,
   );
 
   // 创建默认标签
