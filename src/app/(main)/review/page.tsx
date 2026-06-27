@@ -153,7 +153,7 @@ export default function ReviewPage() {
             type="button"
             onClick={() => setViewMode("summary")}
             className={`flex-1 rounded-[14px] px-3 py-2 text-[14px] font-medium ${
-              viewMode === "summary" ? "bg-[#EEF8F5] text-[#16967F]" : "text-[#6B7A7A]"
+              viewMode === "summary" ? "bg-[#EEF8F5] text-[#107A4F]" : "text-[#6B7A7A]"
             }`}
           >
             月度回顾
@@ -162,7 +162,7 @@ export default function ReviewPage() {
             type="button"
             onClick={() => setViewMode("records")}
             className={`flex-1 rounded-[14px] px-3 py-2 text-[14px] font-medium ${
-              viewMode === "records" ? "bg-[#EEF8F5] text-[#16967F]" : "text-[#6B7A7A]"
+              viewMode === "records" ? "bg-[#EEF8F5] text-[#107A4F]" : "text-[#6B7A7A]"
             }`}
           >
             全部记录
@@ -188,7 +188,7 @@ export default function ReviewPage() {
 
         {hasFilters ? (
           <div className="mb-4 flex flex-wrap items-center gap-2 rounded-[16px] bg-[#EEF8F5] px-3 py-3">
-            <span className="text-[12px] font-medium text-[#16967F]">当前筛选</span>
+            <span className="text-[12px] font-medium text-[#107A4F]">当前筛选</span>
             {filters.keyword ? (
               <span className="rounded-full bg-white px-3 py-1 text-[12px] text-[#1F2A2A]">
                 {filters.keyword}
@@ -212,7 +212,7 @@ export default function ReviewPage() {
             <button
               type="button"
               onClick={() => setFilters({})}
-              className="ml-auto text-[12px] font-semibold text-[#16967F]"
+              className="ml-auto text-[12px] font-semibold text-[#107A4F]"
             >
               清除
             </button>
@@ -229,11 +229,11 @@ export default function ReviewPage() {
               </h3>
 
               <div className="mb-4 grid grid-cols-2 gap-3">
-                <div className="rounded-[16px] bg-[#F7FAF9] p-4 text-center">
-                  <p className="font-numeric text-[30px] font-semibold text-[#22C3A6]">{summary.totalRecords}</p>
+                <div className="rounded-[16px] bg-[#F1FAF6] p-4 text-center">
+                  <p className="font-numeric text-[30px] font-semibold text-[#169968]">{summary.totalRecords}</p>
                   <p className="mt-1 text-[12px] text-[#6B7A7A]">记录总数</p>
                 </div>
-                <div className="rounded-[16px] bg-[#F7FAF9] p-4 text-center">
+                <div className="rounded-[16px] bg-[#F1FAF6] p-4 text-center">
                   <p className="font-numeric text-[30px] font-semibold text-[#5DA9E9]">{summary.recordDays}</p>
                   <p className="mt-1 text-[12px] text-[#6B7A7A]">记录天数</p>
                 </div>
@@ -272,7 +272,7 @@ export default function ReviewPage() {
               ) : (
                 <div className="flex flex-col gap-3">
                   {summary.recentRecords.slice(0, 5).map((record) => (
-                    <div key={record.id} className="flex items-start justify-between gap-3 rounded-[14px] bg-[#F7FAF9] px-3 py-3">
+                    <div key={record.id} className="flex items-start justify-between gap-3 rounded-[14px] bg-[#F1FAF6] px-3 py-3">
                       <div className="min-w-0 flex-1">
                         <p className="text-[13px] text-[#8EA09B]">
                           {dayjs(record.date).format("M月D日")}
@@ -298,13 +298,13 @@ export default function ReviewPage() {
             {groupedResults.map((group) => (
               <SectionCard key={group.date}>
                 <h3 className="mb-3 flex items-center gap-2 text-[14px] font-medium text-[#1F2A2A]">
-                  <CalendarBlank size={16} className="text-[#22C3A6]" />
+                  <CalendarBlank size={16} className="text-[#169968]" />
                   {dayjs(group.date).format("M月D日 dddd")}
                 </h3>
 
                 <div className="flex flex-col gap-2">
                   {group.records.map((record) => (
-                    <div key={record.id} className="flex items-center gap-3 rounded-[12px] bg-[#F7FAF9] px-3 py-3">
+                    <div key={record.id} className="flex items-center gap-3 rounded-[12px] bg-[#F1FAF6] px-3 py-3">
                       <div className="min-w-0 flex-1">
                         <p className="text-[14px] font-medium text-[#1F2A2A]">{record.title}</p>
                         <p className="mt-1 text-[12px] text-[#8EA09B]">

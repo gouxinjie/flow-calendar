@@ -5,6 +5,7 @@
  * @description 搜索与筛选弹层
  * @author gouxinjie
  * @created 2026-06-22
+ * @updated 2026-06-27
  */
 import { useState } from "react";
 
@@ -69,7 +70,7 @@ export function SearchFilterSheet({
           </button>
           <button
             onClick={handleApply}
-            className="flex h-[48px] flex-1 items-center justify-center rounded-[14px] bg-[#22C3A6] text-[14px] font-semibold text-white active:opacity-80"
+            className="flex h-[48px] flex-1 items-center justify-center rounded-[14px] bg-[#169968] text-[14px] font-semibold text-white active:opacity-80"
           >
             应用筛选
           </button>
@@ -86,7 +87,7 @@ export function SearchFilterSheet({
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             placeholder="搜索标题或备注…"
-            className="w-full rounded-[14px] border border-[#DCE7E4] px-4 py-3 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none focus:border-[#22C3A6]"
+            className="w-full rounded-[14px] border border-[#DCE7E4] px-4 py-3 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none focus:border-[#169968]"
           />
         </div>
 
@@ -131,7 +132,7 @@ export function SearchFilterSheet({
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="flex-1 rounded-[14px] border border-[#DCE7E4] px-3 py-3 text-[14px] text-[#1F2A2A] outline-none focus:border-[#22C3A6]"
+              className="flex-1 rounded-[14px] border border-[#DCE7E4] px-3 py-3 text-[14px] text-[#1F2A2A] outline-none focus:border-[#169968]"
               placeholder="开始日期"
             />
             <span className="text-[#A8B8B0]">至</span>
@@ -139,7 +140,7 @@ export function SearchFilterSheet({
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="flex-1 rounded-[14px] border border-[#DCE7E4] px-3 py-3 text-[14px] text-[#1F2A2A] outline-none focus:border-[#22C3A6]"
+              className="flex-1 rounded-[14px] border border-[#DCE7E4] px-3 py-3 text-[14px] text-[#1F2A2A] outline-none focus:border-[#169968]"
               placeholder="结束日期"
             />
           </div>
@@ -150,7 +151,7 @@ export function SearchFilterSheet({
             type="checkbox"
             checked={includeUncategorized}
             onChange={(e) => setIncludeUncategorized(e.target.checked)}
-            className="h-5 w-5 rounded accent-[#22C3A6]"
+            className="h-5 w-5 rounded accent-[#169968]"
           />
           <span className="text-[14px] text-[#1F2A2A]">包含未分类记录</span>
         </label>

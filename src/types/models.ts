@@ -182,7 +182,7 @@ export interface AccountFormData {
 
 /** 预设标签颜色方案 */
 export const TAG_COLOR_MAP: Record<TagColorTone, { bg: string; text: string; border: string }> = {
-  green: { bg: "#DDF7F1", text: "#16967F", border: "#22C3A6" },
+  green: { bg: "#D4F5E8", text: "#107A4F", border: "#169968" },
   blue: { bg: "#E8F4FD", text: "#3D8BC9", border: "#5DA9E9" },
   orange: { bg: "#FFF3E8", text: "#E08830", border: "#FF9F43" },
   purple: { bg: "#F0EFFC", text: "#6E6DCF", border: "#8B8AEF" },

@@ -197,7 +197,7 @@ export default function DateDetailPage() {
               <button
                 type="button"
                 onClick={handleCreate}
-                className="rounded-full bg-[#22C3A6] px-4 py-2 text-[13px] font-semibold text-white"
+                className="rounded-full bg-[#169968] px-4 py-2 text-[13px] font-semibold text-white"
               >
                 新增记录
               </button>
@@ -270,7 +270,7 @@ export default function DateDetailPage() {
         <button
           type="button"
           onClick={handleCreate}
-          className="flex h-[48px] w-full items-center justify-center rounded-[14px] bg-[#22C3A6] text-[14px] font-semibold text-white shadow-[0_18px_30px_rgba(34,195,166,0.24)]"
+          className="flex h-[48px] w-full items-center justify-center rounded-[14px] bg-[#169968] text-[14px] font-semibold text-white shadow-[0_18px_30px_rgba(22,153,104,0.24)]"
         >
           + 新增记录
         </button>

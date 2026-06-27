@@ -32,7 +32,7 @@ export function ToggleSwitch({
       onCheckedChange={onCheckedChange}
       className={cn(
         "relative h-7 w-12 shrink-0 rounded-full border transition-colors duration-200 ease-out outline-none",
-        "data-[state=checked]:border-[#16967F] data-[state=checked]:bg-[#22C3A6]",
+        "data-[state=checked]:border-[#107A4F] data-[state=checked]:bg-[#169968]",
         "data-[state=unchecked]:border-[#D8DADF] data-[state=unchecked]:bg-[#D8DADF]",
         "focus-visible:ring-2 focus-visible:ring-[#BEEDE3] focus-visible:ring-offset-2 focus-visible:ring-offset-white",
         "disabled:cursor-not-allowed disabled:opacity-60",

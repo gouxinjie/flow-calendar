@@ -163,7 +163,7 @@ export default function CalendarPage() {
             <button
               type="button"
               onClick={() => setShowRecordEditor(true)}
-              className="shrink-0 rounded-full bg-[#22C3A6] px-3.5 py-2 text-[12px] font-semibold text-white"
+              className="shrink-0 rounded-full bg-[#169968] px-3.5 py-2 text-[12px] font-semibold text-white"
             >
               新增
             </button>

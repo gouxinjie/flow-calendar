@@ -5,6 +5,7 @@
  * @description 新增/编辑记录弹层
  * @author gouxinjie
  * @created 2026-06-22
+ * @updated 2026-06-27
  */
 import { useState } from "react";
 
@@ -92,7 +93,7 @@ export function RecordEditor({
             className={cn(
               "flex h-[48px] flex-1 items-center justify-center rounded-[14px] text-[14px] font-semibold text-white transition-opacity",
               title.trim() && !saving
-                ? "bg-[#22C3A6] active:opacity-80"
+                ? "bg-[#169968] active:opacity-80"
                 : "bg-[#A8B8B0] cursor-not-allowed",
             )}
           >
@@ -118,7 +119,7 @@ export function RecordEditor({
             onChange={(e) => setTitle(e.target.value)}
             placeholder="做了什么？"
             maxLength={50}
-            className="w-full rounded-[14px] border border-[#DCE7E4] px-4 py-3 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none focus:border-[#22C3A6]"
+            className="w-full rounded-[14px] border border-[#DCE7E4] px-4 py-3 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none focus:border-[#169968]"
           />
         </div>
 
@@ -163,7 +164,7 @@ export function RecordEditor({
             value={date}
             onChange={(e) => setDate(e.target.value)}
             max={new Date().toISOString().split("T")[0]}
-            className="w-full rounded-[14px] border border-[#DCE7E4] px-4 py-3 text-[14px] text-[#1F2A2A] outline-none focus:border-[#22C3A6]"
+            className="w-full rounded-[14px] border border-[#DCE7E4] px-4 py-3 text-[14px] text-[#1F2A2A] outline-none focus:border-[#169968]"
           />
         </div>
 
@@ -176,20 +177,20 @@ export function RecordEditor({
               onClick={() => setTimeType("all_day")}
               className={cn(
                 "rounded-[10px] px-4 py-2 text-[13px] font-medium transition-colors",
-                timeType === "all_day" ? "bg-[#22C3A6] text-white" : "bg-[#F3F7F6] text-[#6B7A7A]",
-              )}
-            >
-              全天
-            </button>
-            <button
-              onClick={() => setTimeType("scheduled")}
-              className={cn(
-                "rounded-[10px] px-4 py-2 text-[13px] font-medium transition-colors",
-                timeType === "scheduled"
-                  ? "bg-[#22C3A6] text-white"
-                  : "bg-[#F3F7F6] text-[#6B7A7A]",
-              )}
-            >
+                timeType === "all_day" ? "bg-[#169968] text-white" : "bg-[#F3F7F6] text-[#6B7A7A]",
+            )}
+          >
+            全天
+          </button>
+          <button
+            onClick={() => setTimeType("scheduled")}
+            className={cn(
+              "rounded-[10px] px-4 py-2 text-[13px] font-medium transition-colors",
+              timeType === "scheduled"
+                ? "bg-[#169968] text-white"
+                : "bg-[#F3F7F6] text-[#6B7A7A]",
+            )}
+          >
               指定时间
             </button>
           </div>
@@ -199,7 +200,7 @@ export function RecordEditor({
               type="time"
               value={startTime}
               onChange={(e) => setStartTime(e.target.value)}
-              className="w-full rounded-[14px] border border-[#DCE7E4] px-4 py-3 text-[14px] text-[#1F2A2A] outline-none focus:border-[#22C3A6]"
+              className="w-full rounded-[14px] border border-[#DCE7E4] px-4 py-3 text-[14px] text-[#1F2A2A] outline-none focus:border-[#169968]"
             />
           ) : null}
         </div>
@@ -214,7 +215,7 @@ export function RecordEditor({
             placeholder="补充一些细节…"
             maxLength={200}
             rows={3}
-            className="w-full resize-none rounded-[14px] border border-[#DCE7E4] px-4 py-3 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none focus:border-[#22C3A6]"
+            className="w-full resize-none rounded-[14px] border border-[#DCE7E4] px-4 py-3 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none focus:border-[#169968]"
           />
         </div>
       </div>

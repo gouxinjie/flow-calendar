@@ -2,20 +2,20 @@
 
 /* ========== CSS 变量 / 设计 Token ========== */
 :root {
-  --brand: #22c3a6;
-  --brand-deep: #16967f;
-  --brand-soft: #ddf7f1;
+  --brand: #169968;
+  --brand-deep: #107a4f;
+  --brand-soft: #d4f5e8;
   --accent-blue: #5da9e9;
   --accent-orange: #ff9f43;
   --accent-purple: #8b8aef;
   --accent-greyGreen: #a8b8b0;
-  --bg-page: #f7faf9;
+  --bg-page: #f1faf6;
   --bg-card: #ffffff;
   --text-primary: #1f2a2a;
   --text-secondary: #6b7a7a;
   --border-color: #dce7e4;
   --error: #e06060;
-  --success: #22c3a6;
+  --success: #169968;
 }
 
 @theme inline {
@@ -42,7 +42,7 @@
   body {
     background:
       radial-gradient(circle at top, rgba(34, 195, 166, 0.08), transparent 28%),
-      linear-gradient(180deg, #f5faf8 0%, #f7faf9 38%, #f4f8f7 100%);
+      linear-gradient(180deg, #f5faf8 0%, #f1faf6 38%, #f4f8f7 100%);
     color: var(--text-primary);
     font-family: var(--font-noto-sans-sc), sans-serif;
     font-size: 14px;

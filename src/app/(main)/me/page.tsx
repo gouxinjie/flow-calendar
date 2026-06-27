@@ -90,7 +90,7 @@ export default function MePage() {
           <SectionCard className="mb-4 h-[110px] animate-pulse bg-white/70" />
         ) : profile ? (
           <SectionCard className="mb-4 flex items-center gap-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#DDF7F1] text-[22px] font-semibold text-[#16967F]">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#D4F5E8] text-[22px] font-semibold text-[#107A4F]">
               {profile.name.charAt(0)}
             </div>
             <div className="min-w-0 flex-1">
@@ -112,7 +112,7 @@ export default function MePage() {
               className="flex items-center gap-3 py-3 first:pt-0 last:pb-0 active:opacity-70"
             >
               <div className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#F2F8F6]">
-                <TagSimple size={20} className="text-[#22C3A6]" />
+                <TagSimple size={20} className="text-[#169968]" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-[15px] font-medium text-[#1F2A2A]">标签管理</p>
@@ -125,7 +125,7 @@ export default function MePage() {
               className="flex items-center gap-3 py-3 first:pt-0 last:pb-0 active:opacity-70"
             >
               <div className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#F2F8F6]">
-                <User size={20} className="text-[#22C3A6]" />
+                <User size={20} className="text-[#169968]" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-[15px] font-medium text-[#1F2A2A]">账号与安全</p>
@@ -138,7 +138,7 @@ export default function MePage() {
         <SectionCard className="mb-4">
           <div className="flex items-start gap-3">
             <div className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#F2F8F6]">
-              <ArrowsClockwise size={20} className="text-[#22C3A6]" />
+              <ArrowsClockwise size={20} className="text-[#169968]" />
             </div>
             <div className="min-w-0 flex-1">
               <h3 className="text-[15px] font-medium text-[#1F2A2A]">同步状态</h3>
@@ -152,7 +152,7 @@ export default function MePage() {
         <SectionCard>
           <div className="flex items-start gap-3">
             <div className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#F2F8F6]">
-              <Info size={20} className="text-[#22C3A6]" />
+              <Info size={20} className="text-[#169968]" />
             </div>
             <div className="min-w-0 flex-1">
               <h3 className="text-[15px] font-medium text-[#1F2A2A]">关于 Flow Calendar</h3>

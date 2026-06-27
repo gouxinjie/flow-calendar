@@ -3,13 +3,14 @@
  * @description 通用状态提示条
  * @author gouxinjie
  * @created 2026-06-22
+ * @updated 2026-06-27
  */
 import { cn } from "@/lib/cn";
 
 type BannerTone = "success" | "error" | "info";
 
 const TONE_CLASS_MAP: Record<BannerTone, string> = {
-  success: "border-[#B9EBDD] bg-[#ECFAF5] text-[#16967F]",
+  success: "border-[#B9EBDD] bg-[#ECFAF5] text-[#107A4F]",
   error: "border-[#F2C0C0] bg-[#FFF5F5] text-[#D85A5A]",
   info: "border-[#DCE7E4] bg-white text-[#516262]",
 };

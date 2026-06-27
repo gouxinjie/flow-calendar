@@ -3,6 +3,7 @@
  * @description 提供移动端页面壳层、通用卡片、标签徽章等共享 UI
  * @author gouxinjie
  * @created 2026-06-22
+ * @updated 2026-06-27
  */
 import type { ReactNode } from "react";
 import Link from "next/link";
@@ -28,7 +29,7 @@ export function AppCanvas({
           className,
         )}
       >
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(34,195,166,0.09),_transparent_34%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(22,153,104,0.09),_transparent_34%)]" />
         {children}
       </div>
     </div>
@@ -82,7 +83,7 @@ export function SectionCard({
   children?: ReactNode;
   className?: string;
 }) {
-  return <section className={cn("surface-card !rounded-[8px] p-4", className)}>{children}</section>;
+  return <section className={cn("surface-card !rounded-[16px] p-4", className)}>{children}</section>;
 }
 
 /**
@@ -110,14 +111,4 @@ export function TagBadge({
   );
 }
 
-/**
- * @description 彩色圆点，用于日历单元格中标识记录
- */
-export function ColorDot({ color }: { color: string }) {
-  return (
-    <span
-      className="inline-block h-1.5 w-1.5 shrink-0 rounded-full"
-      style={{ backgroundColor: color }}
-    />
-  );
-}
+

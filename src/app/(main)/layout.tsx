@@ -20,7 +20,7 @@ export default function MainLayout({
 }>) {
   return (
     <AuthGuard>
-      <AppCanvas className="bg-[#f7faf9]">
+      <AppCanvas className="bg-[#f1faf6]">
         <main className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain">{children}</main>
         <BottomNav />
       </AppCanvas>

@@ -80,7 +80,7 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
           const totalRecordCount = cell.recordSummaries.length + cell.overflowCount;
           const cellSurfaceClass = cell.isToday
             ? cell.isSelected
-              ? "border-2 border-[#16967F] bg-[#F2FBF7] shadow-[inset_0_0_0_1px_rgba(22,150,127,0.16)]"
+              ? "border-2 border-[#107A4F] bg-[#F2FBF7] shadow-[inset_0_0_0_1px_rgba(16,122,79,0.16)]"
               : "border-2 border-[#58C9AF] bg-white"
             : cell.isSelected
               ? "border-[#58C9AF] bg-[#F2FBF7] shadow-[inset_0_0_0_1px_rgba(88,201,175,0.08)]"
@@ -95,8 +95,8 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
               ? `+${cell.overflowCount > 9 ? "9" : cell.overflowCount}`
               : null;
           const cornerBadgeClassName = cell.isSelected
-            ? "bg-[#22C3A6] text-white"
-            : "bg-[#E9F5F2] text-[#16967F]";
+            ? "bg-[#169968] text-white"
+            : "bg-[#E9F5F2] text-[#107A4F]";
 
           return (
             <Link
@@ -124,8 +124,8 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
                   className={cn(
                     "font-numeric text-[15px] font-semibold leading-none",
                     cell.isToday &&
-                      "inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-[#22C3A6] px-1 text-white",
-                    !cell.isToday && cell.isSelected && "text-[#16967F]",
+                      "inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-[#169968] px-1 text-white",
+                    !cell.isToday && cell.isSelected && "text-[#107A4F]",
                     !cell.isToday && cell.isCurrentMonth && "text-[#1F2A2A]",
                     !cell.isCurrentMonth && "text-[#BCC6C3]",
                   )}
@@ -155,7 +155,7 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
                     key={summary.id}
                     className={cn(
                       "inline-flex h-6 w-[4em] items-center justify-center self-center whitespace-nowrap rounded-[4px] px-1.5 text-[11px] font-normal leading-none tracking-[-0.02em]",
-                      !summary.tagColor && "bg-[#22C3A6] text-white",
+                      !summary.tagColor && "bg-[#169968] text-white",
                       !cell.isCurrentMonth && "opacity-70",
                     )}
                     style={getTagStyle(summary.tagColor)}
