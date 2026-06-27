@@ -5,32 +5,41 @@
  * @route POST /api/auth/logout - 退出
  * @author gouxinjie
  * @created 2026-06-22
+ * @updated 2026-06-26
  */
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/server/db";
 import { setSession } from "@/server/auth";
 import { isTrustedMutationRequest } from "@/server/request";
 import { hashPassword, isHashedPassword, verifyPassword } from "@/server/password";
-import { success, error } from "@/server/response";
 
 /** POST /api/auth/login - 登录 */
 export async function POST(request: NextRequest) {
   try {
     if (!isTrustedMutationRequest(request)) {
-      return error("FORBIDDEN", "非法请求来源", 403);
+      return NextResponse.json(
+        { success: false, code: "FORBIDDEN", message: "非法请求来源", data: null },
+        { status: 403 },
+      );
     }
 
     const body = await request.json();
     const { email, password } = body;
 
     if (!email || !password) {
-      return error("INVALID_PARAMS", "请输入邮箱和密码", 400);
+      return NextResponse.json(
+        { success: false, code: "INVALID_PARAMS", message: "请输入邮箱和密码", data: null },
+        { status: 400 },
+      );
     }
 
     // 查找用户
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-      return error("INVALID_CREDENTIALS", "邮箱或密码错误", 401);
+      return NextResponse.json(
+        { success: false, code: "INVALID_CREDENTIALS", message: "邮箱或密码错误", data: null },
+        { status: 401 },
+      );
     }
 
     const isPasswordValid = isHashedPassword(user.passwordHash)
@@ -38,7 +47,10 @@ export async function POST(request: NextRequest) {
       : user.passwordHash === password;
 
     if (!isPasswordValid) {
-      return error("INVALID_CREDENTIALS", "邮箱或密码错误", 401);
+      return NextResponse.json(
+        { success: false, code: "INVALID_CREDENTIALS", message: "邮箱或密码错误", data: null },
+        { status: 401 },
+      );
     }
 
     if (!isHashedPassword(user.passwordHash)) {
@@ -53,13 +65,27 @@ export async function POST(request: NextRequest) {
     // 设置会话
     await setSession(user.id);
 
-    return success({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-    }, "登录成功");
+    // 夸克浏览器等环境可能不处理 fetch 响应中的 Set-Cookie
+    // 同时返回 sessionToken 到 body 中，客户端可做双重写入
+    const response = NextResponse.json({
+      success: true,
+      code: 200,
+      message: "登录成功",
+      data: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        // 客户端兜底：返回 session token 供客户端手动写 Cookie
+        sessionToken: user.id,
+      },
+    });
+
+    return response;
   } catch (err) {
     console.error("登录失败:", err);
-    return error("INTERNAL_ERROR", "登录失败", 500);
+    return NextResponse.json(
+      { success: false, code: "INTERNAL_ERROR", message: "登录失败", data: null },
+      { status: 500 },
+    );
   }
 }

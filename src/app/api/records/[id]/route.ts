@@ -12,14 +12,7 @@ import { prisma } from "@/server/db";
 import { getUserId } from "@/server/auth";
 import { isTrustedMutationRequest } from "@/server/request";
 import { success, error } from "@/server/response";
-
-function isValidDate(date: string): boolean {
-  return dayjs(date, "YYYY-MM-DD", true).isValid();
-}
-
-function isValidTime(time: string): boolean {
-  return dayjs(time, "HH:mm", true).isValid();
-}
+import { isValidDate, isValidTime } from "@/lib/validation";
 
 /** PUT /api/records/[id] - 更新记录 */
 export async function PUT(

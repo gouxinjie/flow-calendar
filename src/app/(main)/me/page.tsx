@@ -15,7 +15,7 @@ import { ArrowsClockwise, Info, TagSimple, User } from "@phosphor-icons/react";
 import { EmptyState } from "@/components/commons/empty-state";
 import { StateBanner } from "@/components/commons/state-banner";
 import { SectionCard } from "@/components/business/shared/mobile-shell";
-import { requestApi } from "@/services/api-client";
+import { requestApi, clearSessionToken } from "@/services/api-client";
 import type { UserProfile } from "@/types/models";
 
 export default function MePage() {
@@ -65,8 +65,11 @@ export default function MePage() {
         method: "POST",
         body: JSON.stringify({}),
       });
-      router.push("/login");
-      router.refresh();
+      // 清除客户端兜底 cookie
+      document.cookie = "flow_calendar_session=; path=/; max-age=0; SameSite=Lax";
+      // 清除 localStorage 中的 session token
+      clearSessionToken();
+      window.location.href = "/login";
     } catch (requestError) {
       setFeedback(requestError instanceof Error ? requestError.message : "退出失败");
     }

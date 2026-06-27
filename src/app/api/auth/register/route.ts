@@ -3,35 +3,47 @@
  * @route POST /api/auth/register
  * @author gouxinjie
  * @created 2026-06-22
+ * @updated 2026-06-26
  */
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/server/db";
 import { setSession } from "@/server/auth";
 import { isTrustedMutationRequest } from "@/server/request";
 import { hashPassword } from "@/server/password";
-import { success, error } from "@/server/response";
 
 export async function POST(request: NextRequest) {
   try {
     if (!isTrustedMutationRequest(request)) {
-      return error("FORBIDDEN", "非法请求来源", 403);
+      return NextResponse.json(
+        { success: false, code: "FORBIDDEN", message: "非法请求来源", data: null },
+        { status: 403 },
+      );
     }
 
     const body = await request.json();
     const { name, email, password } = body;
 
     if (!name || !email || !password) {
-      return error("INVALID_PARAMS", "请填写完整信息", 400);
+      return NextResponse.json(
+        { success: false, code: "INVALID_PARAMS", message: "请填写完整信息", data: null },
+        { status: 400 },
+      );
     }
 
     if (password.length < 6) {
-      return error("INVALID_PARAMS", "密码至少 6 位", 400);
+      return NextResponse.json(
+        { success: false, code: "INVALID_PARAMS", message: "密码至少 6 位", data: null },
+        { status: 400 },
+      );
     }
 
     // 检查邮箱是否已注册
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) {
-      return error("EMAIL_EXISTS", "该邮箱已注册", 409);
+      return NextResponse.json(
+        { success: false, code: "EMAIL_EXISTS", message: "该邮箱已注册", data: null },
+        { status: 409 },
+      );
     }
 
     const user = await prisma.user.create({
@@ -45,13 +57,24 @@ export async function POST(request: NextRequest) {
     // 自动登录
     await setSession(user.id);
 
-    return success({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-    }, "注册成功", 201);
+    const response = NextResponse.json({
+      success: true,
+      code: 201,
+      message: "注册成功",
+      data: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        sessionToken: user.id,
+      },
+    });
+
+    return response;
   } catch (err) {
     console.error("注册失败:", err);
-    return error("INTERNAL_ERROR", "注册失败", 500);
+    return NextResponse.json(
+      { success: false, code: "INTERNAL_ERROR", message: "注册失败", data: null },
+      { status: 500 },
+    );
   }
 }
