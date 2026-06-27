@@ -7,14 +7,14 @@
  * 避免依赖服务端 RSC 请求携带 Cookie（夸克浏览器不携带）。
  * @author gouxinjie
  * @created 2026-06-22
- * @updated 2026-06-26
+ * @updated 2026-06-27
  */
 import { useEffect, useState } from "react";
 import { Envelope, Lock, Eye, EyeSlash } from "@phosphor-icons/react";
 
 import { StateBanner } from "@/components/commons/state-banner";
 
-import { requestApi, saveSessionToken, getSessionToken } from "@/services/api-client";
+import { saveSessionToken, getSessionToken } from "@/services/api-client";
 import type { ApiResponse } from "@/types/models";
 
 /** 会话 Cookie 名称，与服务端保持一致 */
@@ -131,8 +131,10 @@ export function LoginPageClient() {
 
   return (
     <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-[#F7FAF9] px-6">
-      {/* 检查登录状态时显示空白，避免闪烁登录表单 */}
-      {checking ? null : (
+      {/* 检查登录状态时显示加载提示，防止 JS 加载失败时完全空白 */}
+      {checking ? (
+        <p className="text-[#A8B8B0] text-[14px] animate-pulse">加载中...</p>
+      ) : (
         <>
           {/* Logo / 品牌区 */}
           <div className="mb-10 text-center">

@@ -28,7 +28,15 @@ export default function RootLayout({
       lang="zh-CN"
       className={`${notoSansSc.variable} ${manrope.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <noscript>
+          <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-[#F7FAF9] px-6">
+            <p className="text-[#1F2A2A] text-[16px] font-medium">请启用 JavaScript</p>
+            <p className="mt-2 text-[#6B7A7A] text-[14px]">Flow Calendar 需要 JavaScript 才能运行</p>
+          </div>
+        </noscript>
+      </body>
     </html>
   );
 }
