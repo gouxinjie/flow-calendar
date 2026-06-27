@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, tagId, date, timeType, startTime, note } = body;
+    const { title, tagId, date, timeType, startTime, endTime, note } = body;
     const normalizedTitle = String(title ?? "").trim();
     const normalizedDate = String(date ?? "").trim();
     const normalizedNote = String(note ?? "").trim();
@@ -114,8 +114,16 @@ export async function POST(request: NextRequest) {
       return error("INVALID_PARAMS", "无效的时间类型", 400);
     }
 
-    if (timeType === "scheduled" && (!startTime || !isValidTime(String(startTime)))) {
-      return error("INVALID_PARAMS", "指定时间记录需要合法时间", 400);
+    if (timeType === "scheduled") {
+      if (!startTime || !isValidTime(String(startTime))) {
+        return error("INVALID_PARAMS", "指定时间记录需要合法开始时间", 400);
+      }
+      if (!endTime || !isValidTime(String(endTime))) {
+        return error("INVALID_PARAMS", "指定时间记录需要合法结束时间", 400);
+      }
+      if (String(startTime) >= String(endTime)) {
+        return error("INVALID_PARAMS", "结束时间必须晚于开始时间", 400);
+      }
     }
 
     // 限制每天最多 3 条记录
@@ -145,6 +153,7 @@ export async function POST(request: NextRequest) {
         date: normalizedDate,
         timeType,
         startTime: timeType === "scheduled" ? String(startTime) : null,
+        endTime: timeType === "scheduled" ? String(endTime) : null,
         note: normalizedNote || null,
       },
       include: { tag: true },

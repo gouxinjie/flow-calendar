@@ -59,6 +59,7 @@ export interface ActivityLog {
   date: string;
   timeType: TimeType;
   startTime?: string | null;
+  endTime?: string | null;
   tag?: ActivityTag | null;
   createdAt: string;
   updatedAt: string;
@@ -161,6 +162,7 @@ export interface RecordFormData {
   date: string;
   timeType: TimeType;
   startTime?: string;
+  endTime?: string;
   note?: string;
 }
 

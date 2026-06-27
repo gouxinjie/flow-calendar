@@ -102,6 +102,7 @@ export default function DateDetailPage() {
       date: record.date,
       timeType: record.timeType,
       startTime: record.startTime ?? undefined,
+      endTime: record.endTime ?? undefined,
       note: record.note ?? undefined,
     });
     setShowEditor(true);
@@ -115,6 +116,7 @@ export default function DateDetailPage() {
       date: record.date,
       timeType: record.timeType,
       startTime: record.startTime ?? undefined,
+      endTime: record.endTime ?? undefined,
       note: record.note ?? undefined,
     });
     setShowEditor(true);
@@ -217,7 +219,7 @@ export default function DateDetailPage() {
                     <div className="flex items-center gap-2">
                       {record.startTime ? (
                         <span className="font-numeric text-[13px] font-semibold text-[#243332]">
-                          {record.startTime}
+                          {record.startTime}{record.endTime ? ` - ${record.endTime}` : ""}
                         </span>
                       ) : (
                         <span className="rounded-full bg-[#EEF6F4] px-2 py-1 text-[11px] font-medium text-[#6B7A7A]">
@@ -262,7 +264,7 @@ export default function DateDetailPage() {
                 {record.timeType === "scheduled" && record.startTime ? (
                   <div className="mt-3 flex items-center gap-2 border-t border-[#EEF3F1] pt-3 text-[12px] text-[#8EA09B]">
                     <Clock size={14} />
-                    按具体时间记录
+                    {record.endTime ? `${record.startTime} - ${record.endTime}` : record.startTime}
                   </div>
                 ) : null}
               </SectionCard>

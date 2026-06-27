@@ -31,7 +31,7 @@ export async function PUT(
 
     const { id } = await params;
     const body = await request.json();
-    const { title, tagId, date, timeType, startTime, note } = body;
+    const { title, tagId, date, timeType, startTime, endTime, note } = body;
 
     // 校验记录归属
     const existing = await prisma.activityLog.findUnique({ where: { id } });
@@ -55,8 +55,16 @@ export async function PUT(
       return error("INVALID_PARAMS", "无效的时间类型", 400);
     }
 
-    if (timeType === "scheduled" && (!startTime || !isValidTime(String(startTime)))) {
-      return error("INVALID_PARAMS", "指定时间记录需要合法时间", 400);
+    if (timeType === "scheduled") {
+      if (!startTime || !isValidTime(String(startTime))) {
+        return error("INVALID_PARAMS", "指定时间记录需要合法开始时间", 400);
+      }
+      if (!endTime || !isValidTime(String(endTime))) {
+        return error("INVALID_PARAMS", "指定时间记录需要合法结束时间", 400);
+      }
+      if (String(startTime) >= String(endTime)) {
+        return error("INVALID_PARAMS", "结束时间必须晚于开始时间", 400);
+      }
     }
 
     if (tagId) {
@@ -77,8 +85,11 @@ export async function PUT(
         ...(tagId !== undefined && { tagId: tagId || null }),
         ...(date !== undefined && { date }),
         ...(timeType !== undefined && { timeType }),
-        ...(timeType === "scheduled" && { startTime: String(startTime) }),
-        ...(timeType === "all_day" && { startTime: null }),
+        ...(timeType === "scheduled" && {
+          startTime: String(startTime),
+          endTime: String(endTime),
+        }),
+        ...(timeType === "all_day" && { startTime: null, endTime: null }),
         ...(note !== undefined && { note: String(note).trim() || null }),
       },
       include: { tag: true },
