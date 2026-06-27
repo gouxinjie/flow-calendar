@@ -113,7 +113,7 @@ export default function CalendarPage() {
 
   return (
     <div className="relative flex h-full min-h-0 flex-col overflow-hidden">
-      <header className="relative z-10 shrink-0 px-4 pb-2.5 pt-3.5">
+      <header className="relative z-10 shrink-0 px-3 pb-2.5 pt-3.5">
         <div className="flex items-start justify-between">
           <div>
             <button
@@ -150,7 +150,7 @@ export default function CalendarPage() {
         </div>
       </header>
 
-      <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-4 pb-[112px]">
+      <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-3 pb-[112px]">
         {feedback ? <StateBanner tone="success" message={feedback} /> : null}
         {pageError ? <StateBanner tone="error" message={pageError} /> : null}
 
