@@ -57,9 +57,23 @@ export function RecordEditor({
   const [timeType, setTimeType] = useState<TimeType>(initialForm.timeType);
   const [startTime, setStartTime] = useState(initialForm.startTime);
   const [note, setNote] = useState(initialForm.note);
+  const [localError, setLocalError] = useState("");
 
   const handleSave = async () => {
-    if (!title.trim() || saving) return;
+    setLocalError("");
+
+    if (!title.trim()) {
+      return;
+    }
+
+    // 指定时间记录必须填写合法时间
+    if (timeType === "scheduled" && !startTime) {
+      setLocalError("请选择指定时间");
+      return;
+    }
+
+    if (saving) return;
+
     await onSave({
       title: title.trim(),
       tagId,
@@ -103,9 +117,9 @@ export function RecordEditor({
       }
     >
       <div className="flex flex-col gap-4">
-        {errorMessage ? (
+        {errorMessage || localError ? (
           <div className="rounded-[14px] border border-[#F2C0C0] bg-[#FFF5F5] px-4 py-3 text-[13px] text-[#D85A5A]">
-            {errorMessage}
+            {localError || errorMessage}
           </div>
         ) : null}
 
@@ -174,7 +188,7 @@ export function RecordEditor({
           </label>
           <div className="mb-3 flex gap-2">
             <button
-              onClick={() => setTimeType("all_day")}
+              onClick={() => { setTimeType("all_day"); setLocalError(""); }}
               className={cn(
                 "rounded-[10px] px-4 py-2 text-[13px] font-medium transition-colors",
                 timeType === "all_day" ? "bg-[#169968] text-white" : "bg-[#F3F7F6] text-[#6B7A7A]",
@@ -199,7 +213,7 @@ export function RecordEditor({
             <input
               type="time"
               value={startTime}
-              onChange={(e) => setStartTime(e.target.value)}
+              onChange={(e) => { setStartTime(e.target.value); setLocalError(""); }}
               className="w-full rounded-[14px] border border-[#DCE7E4] px-4 py-3 text-[14px] text-[#1F2A2A] outline-none focus:border-[#169968]"
             />
           ) : null}
