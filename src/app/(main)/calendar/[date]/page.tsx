@@ -15,12 +15,16 @@ import dayjs from "dayjs";
 import { ConfirmSheet } from "@/components/commons/confirm-sheet";
 import { EmptyState } from "@/components/commons/empty-state";
 import { StateBanner } from "@/components/commons/state-banner";
+import { cn } from "@/lib/cn";
 import { RecordEditor } from "@/components/business/record/record-editor";
 import { ScreenHeader, SectionCard, TagBadge } from "@/components/business/shared/mobile-shell";
 import { getLunarLabel } from "@/lib/calendar";
 import { sortRecordsByTimeline } from "@/lib/record";
 import { requestApi } from "@/services/api-client";
 import type { ActivityLog, ActivityTag, RecordFormData } from "@/types/models";
+
+/** 每天最多记录条数 */
+const MAX_RECORDS_PER_DAY = 3;
 
 export default function DateDetailPage() {
   const params = useParams();
@@ -82,6 +86,7 @@ export default function DateDetailPage() {
   const displayDate = dayjs(date).format("M月D日 dddd");
   const lunarLabel = getLunarLabel(date);
   const sortedRecords = useMemo(() => sortRecordsByTimeline(records), [records]);
+  const isFull = sortedRecords.length >= MAX_RECORDS_PER_DAY;
 
   const handleCreate = () => {
     setEditingRecord(null);
@@ -270,9 +275,15 @@ export default function DateDetailPage() {
         <button
           type="button"
           onClick={handleCreate}
-          className="flex h-[48px] w-full items-center justify-center rounded-[14px] bg-[#169968] text-[14px] font-semibold text-white shadow-[0_18px_30px_rgba(22,153,104,0.24)]"
+          disabled={isFull}
+          className={cn(
+            "flex h-[48px] w-full items-center justify-center rounded-[14px] text-[14px] font-semibold text-white shadow-[0_18px_30px_rgba(22,153,104,0.24)] transition-colors",
+            isFull
+              ? "cursor-not-allowed bg-[#B5C9C4] shadow-none"
+              : "bg-[#169968]",
+          )}
         >
-          + 新增记录
+          {isFull ? "当日记录已满（3条）" : "+  新增记录"}
         </button>
       </div>
 

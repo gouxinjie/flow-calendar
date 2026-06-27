@@ -16,6 +16,7 @@ import { CalendarMonth } from "@/components/business/calendar/calendar-month";
 import { MonthPickerSheet } from "@/components/business/calendar/month-picker-sheet";
 import { RecordEditor } from "@/components/business/record/record-editor";
 import { StateBanner } from "@/components/commons/state-banner";
+import { cn } from "@/lib/cn";
 import { buildMonthCells, formatMonthTitle, getWeekdayLabels } from "@/lib/calendar";
 import { requestApi } from "@/services/api-client";
 import { useCalendarStore } from "@/stores/calendar-store";
@@ -81,6 +82,10 @@ export default function CalendarPage() {
   const monthTitle = formatMonthTitle(currentMonth);
   const weekdays = getWeekdayLabels();
   const showInlineEmptyTip = !loading && !pageError && records.length === 0;
+  const selectedDateRecordCount = useMemo(() => {
+    return records.filter((r) => r.date === selectedDate).length;
+  }, [records, selectedDate]);
+  const isSelectedDateFull = selectedDateRecordCount >= 3;
   const lunarTodayLabel = useMemo(() => {
     const todayCell = cells.find((cell) => cell.date === today);
     return todayCell?.lunarLabel ?? "";
@@ -178,8 +183,12 @@ export default function CalendarPage() {
       <button
         type="button"
         onClick={() => setShowRecordEditor(true)}
-        className="glass-fab absolute bottom-0 left-1/2 z-20 flex h-12 w-12 -translate-x-1/2 items-center justify-center overflow-hidden rounded-full text-white active:scale-[0.97]"
-        aria-label="新增记录"
+        disabled={isSelectedDateFull}
+        className={cn(
+          "glass-fab absolute bottom-0 left-1/2 z-20 flex h-12 w-12 -translate-x-1/2 items-center justify-center overflow-hidden rounded-full text-white active:scale-[0.97]",
+          isSelectedDateFull && "cursor-not-allowed opacity-50",
+        )}
+        aria-label={isSelectedDateFull ? "当日记录已满" : "新增记录"}
       >
         <span
           aria-hidden="true"

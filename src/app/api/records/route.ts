@@ -118,6 +118,14 @@ export async function POST(request: NextRequest) {
       return error("INVALID_PARAMS", "指定时间记录需要合法时间", 400);
     }
 
+    // 限制每天最多 3 条记录
+    const sameDayCount = await prisma.activityLog.count({
+      where: { userId, date: normalizedDate },
+    });
+    if (sameDayCount >= 3) {
+      return error("LIMIT_EXCEEDED", "每天最多记录 3 条", 400);
+    }
+
     if (tagId) {
       const tag = await prisma.activityTag.findFirst({
         where: { id: String(tagId), userId },
