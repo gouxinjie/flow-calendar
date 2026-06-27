@@ -2,20 +2,20 @@
 
 /* ========== CSS 变量 / 设计 Token ========== */
 :root {
-  --brand: #169968;
-  --brand-deep: #107a4f;
-  --brand-soft: #d4f5e8;
+  --brand: #22C3A6;
+  --brand-deep: #16967F;
+  --brand-soft: #DDF7F1;
   --accent-blue: #5da9e9;
   --accent-orange: #ff9f43;
   --accent-purple: #8b8aef;
   --accent-greyGreen: #a8b8b0;
-  --bg-page: #f1faf6;
+  --bg-page: #F7FAF9;
   --bg-card: #ffffff;
   --text-primary: #1f2a2a;
   --text-secondary: #6b7a7a;
   --border-color: #dce7e4;
   --error: #e06060;
-  --success: #169968;
+  --success: #22C3A6;
 }
 
 @theme inline {
@@ -42,7 +42,7 @@
   body {
     background:
       radial-gradient(circle at top, rgba(34, 195, 166, 0.08), transparent 28%),
-      linear-gradient(180deg, #f5faf8 0%, #f1faf6 38%, #f4f8f7 100%);
+      linear-gradient(180deg, #f9fcfb 0%, #F7FAF9 38%, #f5f8f7 100%);
     color: var(--text-primary);
     font-family: var(--font-noto-sans-sc), sans-serif;
     font-size: 14px;
@@ -101,8 +101,8 @@
   .glass-fab {
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 30%, rgba(255, 255, 255, 0) 100%),
-      linear-gradient(155deg, rgba(88, 215, 192, 0.96) 0%, rgba(34, 195, 166, 0.94) 52%, rgba(20, 138, 117, 0.96) 100%);
-    border: 1px solid rgba(20, 138, 117, 0.45);
+      linear-gradient(155deg, rgba(88, 215, 192) 0%, rgba(34, 195, 166, 0.94) 52%, rgba(22, 150, 127, 0.96) 100%);
+    border: 1px solid rgba(22, 150, 127, 0.45);
     backdrop-filter: blur(12px) saturate(118%);
     box-shadow:
       0 10px 20px rgba(34, 195, 166, 0.16),

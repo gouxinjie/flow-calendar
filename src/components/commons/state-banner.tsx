@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @component StateBanner
  * @description 通用状态提示条
  * @author gouxinjie
@@ -10,7 +10,7 @@ import { cn } from "@/lib/cn";
 type BannerTone = "success" | "error" | "info";
 
 const TONE_CLASS_MAP: Record<BannerTone, string> = {
-  success: "border-[#B9EBDD] bg-[#ECFAF5] text-[#107A4F]",
+  success: "border-[#B5EBDE] bg-[#EDFBF7] text-[#16967F]",
   error: "border-[#F2C0C0] bg-[#FFF5F5] text-[#D85A5A]",
   info: "border-[#DCE7E4] bg-white text-[#516262]",
 };

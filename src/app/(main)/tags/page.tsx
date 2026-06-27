@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 /**
  * @page TagsPage
@@ -93,7 +93,7 @@ export default function TagsPage() {
         rightSlot={
           <Link
             href="/tags/new"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-[#169968] text-white shadow-[0_12px_24px_rgba(22,153,104,0.25)]"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-[#22C3A6] text-white shadow-[0_12px_24px_rgba(34,195,166,0.25)]"
           >
             <Plus size={18} weight="bold" />
           </Link>
@@ -112,7 +112,7 @@ export default function TagsPage() {
             action={
               <Link
                 href="/tags/new"
-                className="rounded-full bg-[#169968] px-4 py-2 text-[13px] font-semibold text-white"
+                className="rounded-full bg-[#22C3A6] px-4 py-2 text-[13px] font-semibold text-white"
               >
                 新建标签
               </Link>

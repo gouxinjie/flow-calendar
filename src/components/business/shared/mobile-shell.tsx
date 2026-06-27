@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @component MobileShell
  * @description 提供移动端页面壳层、通用卡片、标签徽章等共享 UI
  * @author gouxinjie
@@ -29,7 +29,7 @@ export function AppCanvas({
           className,
         )}
       >
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(22,153,104,0.09),_transparent_34%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(34,195,166,0.09),_transparent_34%)]" />
         {children}
       </div>
     </div>

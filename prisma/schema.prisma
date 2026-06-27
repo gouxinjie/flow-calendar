@@ -31,9 +31,6 @@ model ActivityLog {
   title       String
   note        String?
   date        String    // YYYY-MM-DD 格式
-  timeType    String    @default("ALL_DAY") // ALL_DAY | SCHEDULED
-  startTime   String?   // HH:mm 格式，仅 scheduled 类型使用
-  endTime     String?   // HH:mm 格式，仅 scheduled 类型使用，时间段结束
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)

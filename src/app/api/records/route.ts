@@ -12,7 +12,7 @@ import { prisma } from "@/server/db";
 import { getUserId } from "@/server/auth";
 import { isTrustedMutationRequest } from "@/server/request";
 import { success, error } from "@/server/response";
-import { isValidDate, isValidTime } from "@/lib/validation";
+import { isValidDate } from "@/lib/validation";
 
 /** GET /api/records - 查询记录列表 */
 export async function GET(request: NextRequest) {
@@ -66,7 +66,7 @@ export async function GET(request: NextRequest) {
     const records = await prisma.activityLog.findMany({
       where,
       include: { tag: true },
-      orderBy: [{ date: sort }, { startTime: sort }, { createdAt: sort }],
+      orderBy: [{ date: sort }, { createdAt: sort }],
     });
 
     return success(records);
@@ -89,14 +89,14 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, tagId, date, timeType, startTime, endTime, note } = body;
+    const { title, tagId, date, note } = body;
     const normalizedTitle = String(title ?? "").trim();
     const normalizedDate = String(date ?? "").trim();
     const normalizedNote = String(note ?? "").trim();
 
     // 校验必填字段
-    if (!normalizedTitle || !normalizedDate || !timeType) {
-      return error("INVALID_PARAMS", "缺少必填字段：标题、日期、时间类型", 400);
+    if (!normalizedTitle || !normalizedDate) {
+      return error("INVALID_PARAMS", "缺少必填字段：标题、日期", 400);
     }
 
     if (!isValidDate(normalizedDate)) {
@@ -107,23 +107,6 @@ export async function POST(request: NextRequest) {
     const today = dayjs().format("YYYY-MM-DD");
     if (normalizedDate > today) {
       return error("INVALID_DATE", "不能创建未来日期的记录", 400);
-    }
-
-    // 校验时间类型
-    if (!["all_day", "scheduled"].includes(String(timeType))) {
-      return error("INVALID_PARAMS", "无效的时间类型", 400);
-    }
-
-    if (timeType === "scheduled") {
-      if (!startTime || !isValidTime(String(startTime))) {
-        return error("INVALID_PARAMS", "指定时间记录需要合法开始时间", 400);
-      }
-      if (!endTime || !isValidTime(String(endTime))) {
-        return error("INVALID_PARAMS", "指定时间记录需要合法结束时间", 400);
-      }
-      if (String(startTime) >= String(endTime)) {
-        return error("INVALID_PARAMS", "结束时间必须晚于开始时间", 400);
-      }
     }
 
     // 限制每天最多 3 条记录
@@ -151,9 +134,6 @@ export async function POST(request: NextRequest) {
         title: normalizedTitle,
         tagId: tagId || null,
         date: normalizedDate,
-        timeType,
-        startTime: timeType === "scheduled" ? String(startTime) : null,
-        endTime: timeType === "scheduled" ? String(endTime) : null,
         note: normalizedNote || null,
       },
       include: { tag: true },

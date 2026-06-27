@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 /**
  * @page EditTagPage
@@ -143,7 +143,7 @@ export default function EditTagPage() {
               placeholder="如：跑步、阅读、聚会"
               maxLength={10}
               disabled={loading}
-              className="w-full rounded-[14px] border border-[#DCE7E4] px-4 py-3 text-[14px] text-[#1F2A2A] outline-none focus:border-[#169968]"
+              className="w-full rounded-[14px] border border-[#DCE7E4] px-4 py-3 text-[14px] text-[#1F2A2A] outline-none focus:border-[#22C3A6]"
             />
           </div>
 
@@ -181,7 +181,7 @@ export default function EditTagPage() {
                   className={cn(
                     "rounded-[10px] px-4 py-2 text-[13px] font-medium transition-colors",
                     selectedCategory === value
-                      ? "bg-[#169968] text-white"
+                      ? "bg-[#22C3A6] text-white"
                       : "bg-[#F3F7F6] text-[#6B7A7A]",
                   )}
                 >
@@ -209,7 +209,7 @@ export default function EditTagPage() {
           disabled={!name.trim() || saving || loading}
           className={cn(
             "flex h-[48px] w-full items-center justify-center rounded-[14px] text-[14px] font-semibold text-white transition-opacity",
-            name.trim() && !saving && !loading ? "bg-[#169968]" : "bg-[#A8B8B0] cursor-not-allowed",
+            name.trim() && !saving && !loading ? "bg-[#22C3A6]" : "bg-[#A8B8B0] cursor-not-allowed",
           )}
         >
           {saving ? "保存中…" : "保存"}

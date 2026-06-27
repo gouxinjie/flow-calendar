@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @description 主应用布局，包含底部导航。
  *
  * 鉴权架构（从外到内）：
@@ -20,7 +20,7 @@ export default function MainLayout({
 }>) {
   return (
     <AuthGuard>
-      <AppCanvas className="bg-[#f1faf6]">
+      <AppCanvas className="bg-[#F7FAF9]">
         <main className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain">{children}</main>
         <BottomNav />
       </AppCanvas>

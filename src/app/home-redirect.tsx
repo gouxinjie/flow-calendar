@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 /**
  * @component HomeRedirect
@@ -27,7 +27,7 @@ export function HomeRedirect() {
 
   // 渲染加载提示，防止 JS 加载失败时完全空白
   return (
-    <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-[#F1FAF6]">
+    <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-[#F7FAF9]">
       <p className="text-[#A8B8B0] text-[14px] animate-pulse">正在进入...</p>
     </div>
   );

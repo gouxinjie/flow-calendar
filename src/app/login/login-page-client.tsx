@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 /**
  * @component LoginPageClient
@@ -127,7 +127,7 @@ export function LoginPageClient() {
   };
 
   return (
-    <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-[#F1FAF6] px-6">
+    <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-[#F7FAF9] px-6">
       {/* 检查登录状态时显示加载提示，防止 JS 加载失败时完全空白 */}
       {checking ? (
         <p className="text-[#A8B8B0] text-[14px] animate-pulse">加载中...</p>
@@ -135,13 +135,13 @@ export function LoginPageClient() {
         <>
           {/* Logo / 品牌区 */}
           <div className="mb-10 text-center">
-        <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-[12px] border border-[#D6ECE6] bg-white shadow-[0_24px_50px_rgba(22,153,104,0.12)]">
+        <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-[12px] border border-[#D6ECE6] bg-white shadow-[0_24px_50px_rgba(34,195,166,0.12)]">
           <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-            <rect x="4" y="8" width="28" height="24" rx="4" stroke="#169968" strokeWidth="2" fill="white" />
-            <line x1="4" y1="16" x2="32" y2="16" stroke="#169968" strokeWidth="2" />
-            <line x1="12" y1="8" x2="12" y2="12" stroke="#169968" strokeWidth="2" />
-            <line x1="24" y1="8" x2="24" y2="12" stroke="#169968" strokeWidth="2" />
-            <circle cx="12" cy="21" r="2" fill="#169968" />
+            <rect x="4" y="8" width="28" height="24" rx="4" stroke="#22C3A6" strokeWidth="2" fill="white" />
+            <line x1="4" y1="16" x2="32" y2="16" stroke="#22C3A6" strokeWidth="2" />
+            <line x1="12" y1="8" x2="12" y2="12" stroke="#22C3A6" strokeWidth="2" />
+            <line x1="24" y1="8" x2="24" y2="12" stroke="#22C3A6" strokeWidth="2" />
+            <circle cx="12" cy="21" r="2" fill="#22C3A6" />
             <circle cx="20" cy="21" r="2" fill="#FF9F43" />
             <circle cx="16" cy="26" r="1.5" fill="#5DA9E9" />
             <circle cx="22" cy="26" r="1.5" fill="#8B8AEF" />
@@ -184,7 +184,7 @@ export function LoginPageClient() {
 
         {mode === "register" ? (
           <div className="mb-3">
-            <div className="flex items-center gap-2 rounded-[10px] border border-[#DCE7E4] bg-white px-4 py-3 focus-within:border-[#169968]">
+            <div className="flex items-center gap-2 rounded-[10px] border border-[#DCE7E4] bg-white px-4 py-3 focus-within:border-[#22C3A6]">
               <input
                 type="text"
                 value={name}
@@ -198,7 +198,7 @@ export function LoginPageClient() {
 
         {/* 手机号 */}
         <div className="mb-3">
-          <div className="flex items-center gap-2 rounded-[10px] border border-[#DCE7E4] bg-white px-4 py-3 focus-within:border-[#169968]">
+          <div className="flex items-center gap-2 rounded-[10px] border border-[#DCE7E4] bg-white px-4 py-3 focus-within:border-[#22C3A6]">
             <DeviceMobile size={18} className="text-[#A8B8B0]" />
             <input
               type="tel"
@@ -212,7 +212,7 @@ export function LoginPageClient() {
 
         {/* 密码 */}
         <div className="mb-6">
-          <div className="flex items-center gap-2 rounded-[10px] border border-[#DCE7E4] bg-white px-4 py-3 focus-within:border-[#169968]">
+          <div className="flex items-center gap-2 rounded-[10px] border border-[#DCE7E4] bg-white px-4 py-3 focus-within:border-[#22C3A6]">
             <Lock size={18} className="text-[#A8B8B0]" />
             <input
               type={showPassword ? "text" : "password"}
@@ -237,7 +237,7 @@ export function LoginPageClient() {
           type="button"
           onClick={handleSubmit}
           disabled={loading}
-          className="flex h-[48px] w-full items-center justify-center rounded-[10px] bg-[#169968] text-[14px] font-semibold text-white active:opacity-80 disabled:opacity-60"
+          className="flex h-[48px] w-full items-center justify-center rounded-[10px] bg-[#22C3A6] text-[14px] font-semibold text-white active:opacity-80 disabled:opacity-60"
         >
           {loading ? "处理中..." : mode === "login" ? "登录" : "注册并进入"}
         </button>
@@ -250,7 +250,7 @@ export function LoginPageClient() {
           <button
             type="button"
             onClick={() => setMode(mode === "login" ? "register" : "login")}
-            className="font-medium text-[#169968]"
+            className="font-medium text-[#22C3A6]"
           >
             {mode === "login" ? "去注册" : "去登录"}
           </button>

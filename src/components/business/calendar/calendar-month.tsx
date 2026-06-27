@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 /**
  * @component CalendarMonth
@@ -65,7 +65,7 @@ function getTagStyle(tagColor?: string): CSSProperties | undefined {
 
 export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
   return (
-    <div className="flex flex-col rounded-[8px] border border-[#E7EFEC] bg-white px-3 pb-3 pt-2 shadow-[0_14px_30px_rgba(18,46,40,0.04)]">
+    <div className="flex flex-col rounded-[8px] border border-[#DCE7E4] bg-white px-3 pb-3 pt-2 shadow-[0_14px_30px_rgba(18,46,40,0.04)]">
       <div className="mb-2 grid grid-cols-7 text-center text-[11px] font-semibold text-[#1F2A2A]">
         {weekdays.map((day) => (
           <span key={day} className="py-1.5">
@@ -79,11 +79,11 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
           const visibleSummaries = cell.recordSummaries.slice(0, 2);
           const cellSurfaceClass = cell.isToday
             ? cell.isSelected
-              ? "border-2 border-[#107A4F] bg-[#F2FBF7] shadow-[inset_0_0_0_1px_rgba(16,122,79,0.16)]"
-              : "border-2 border-[#58C9AF] bg-white"
+              ? "border-2 border-[#16967F] bg-[#F5FDFB] shadow-[inset_0_0_0_1px_rgba(22,150,127,0.16)]"
+              : "border-2 border-[#5DD1B8] bg-white"
             : cell.isSelected
-              ? "border-[#58C9AF] bg-[#F2FBF7] shadow-[inset_0_0_0_1px_rgba(88,201,175,0.08)]"
-              : "bg-[#F8FCFA]";
+              ? "border-[#5DD1B8] bg-[#F5FDFB] shadow-[inset_0_0_0_1px_rgba(93,209,184,0.08)]"
+              : "bg-[#F7FAF9]";
 
           return (
             <Link
@@ -101,8 +101,8 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
                   className={cn(
                     "font-numeric text-[15px] font-semibold leading-none",
                     cell.isToday &&
-                      "inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-[#169968] px-1 text-white",
-                    !cell.isToday && cell.isSelected && "text-[#107A4F]",
+                      "inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-[#22C3A6] px-1 text-white",
+                    !cell.isToday && cell.isSelected && "text-[#16967F]",
                     !cell.isToday && cell.isCurrentMonth && "text-[#1F2A2A]",
                     !cell.isCurrentMonth && "text-[#BCC6C3]",
                   )}
@@ -116,7 +116,7 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
                   className={cn(
                     "mt-1 self-center truncate text-center text-[10px] leading-none",
                     cell.isToday
-                      ? "font-medium text-[#6CB6A3]"
+                      ? "font-medium text-[#54C1AC]"
                       : cell.isCurrentMonth
                         ? "text-[#A8B8B0]"
                         : "text-[#CBD3D1]",
@@ -132,7 +132,7 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
                     key={summary.id}
                     className={cn(
                       "inline-flex h-6 w-[4em] items-center justify-center self-center whitespace-nowrap rounded-[4px] px-1.5 text-[11px] font-normal leading-none tracking-[-0.02em]",
-                      !summary.tagColor && "bg-[#169968] text-white",
+                      !summary.tagColor && "bg-[#22C3A6] text-white",
                       !cell.isCurrentMonth && "opacity-70",
                     )}
                     style={getTagStyle(summary.tagColor)}

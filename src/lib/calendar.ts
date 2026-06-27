@@ -94,22 +94,6 @@ export function buildMonthCells(
     const currentDay = gridStart.add(index, "day");
     const dateKey = currentDay.format("YYYY-MM-DD");
     const dateRecords = (groupedRecords.get(dateKey) ?? []).sort((left, right) => {
-      if (left.timeType !== right.timeType) {
-        return left.timeType === "scheduled" ? -1 : 1;
-      }
-
-      if (left.startTime && right.startTime) {
-        return left.startTime.localeCompare(right.startTime);
-      }
-
-      if (left.startTime) {
-        return -1;
-      }
-
-      if (right.startTime) {
-        return 1;
-      }
-
       return left.createdAt.localeCompare(right.createdAt);
     });
 

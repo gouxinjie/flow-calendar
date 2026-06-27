@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
         date: { startsWith: month },
       },
       include: { tag: true },
-      orderBy: [{ date: "desc" }, { startTime: "desc" }, { createdAt: "desc" }],
+      orderBy: [{ date: "desc" }, { createdAt: "desc" }],
     });
 
     // 记录总数

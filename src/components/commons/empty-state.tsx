@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @component EmptyState
  * @description 通用空状态组件
  * @author gouxinjie
@@ -22,7 +22,7 @@ export function EmptyState({
   return (
     <div className="flex flex-col items-center justify-center rounded-[24px] border border-dashed border-[#DCE7E4] bg-white/70 px-6 py-12 text-center">
       {icon ? (
-        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#EEF6F4] text-[#8EA19C]">
+        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#F0F8F6] text-[#8BA09B]">
           {icon}
         </div>
       ) : null}

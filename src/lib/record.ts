@@ -4,27 +4,10 @@
 import type { ActivityLog } from "@/types/models";
 
 /**
- * @description 按时间正序排列同一天记录
- * 指定时间优先，全天记录排在最后
+ * @description 按时间正序排列同一天记录（默认按创建时间正序）
  */
 export function sortRecordsByTimeline(records: ActivityLog[]): ActivityLog[] {
   return [...records].sort((left, right) => {
-    if (left.timeType !== right.timeType) {
-      return left.timeType === "scheduled" ? -1 : 1;
-    }
-
-    if (left.startTime && right.startTime) {
-      return left.startTime.localeCompare(right.startTime);
-    }
-
-    if (left.startTime) {
-      return -1;
-    }
-
-    if (right.startTime) {
-      return 1;
-    }
-
     return left.createdAt.localeCompare(right.createdAt);
   });
 }
@@ -37,19 +20,6 @@ export function sortRecordsByRecent(records: ActivityLog[]): ActivityLog[] {
     if (left.date !== right.date) {
       return right.date.localeCompare(left.date);
     }
-
-    if (left.startTime && right.startTime) {
-      return right.startTime.localeCompare(left.startTime);
-    }
-
-    if (left.startTime) {
-      return -1;
-    }
-
-    if (right.startTime) {
-      return 1;
-    }
-
     return right.createdAt.localeCompare(left.createdAt);
   });
 }

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 /**
  * @page DateDetailPage
@@ -9,7 +9,7 @@
  */
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
-import { Clock, Copy, DotsThree, NotePencil } from "@phosphor-icons/react";
+import { Copy, DotsThree, NotePencil } from "@phosphor-icons/react";
 import dayjs from "dayjs";
 
 import { ConfirmSheet } from "@/components/commons/confirm-sheet";
@@ -58,7 +58,7 @@ export default function DateDetailPage() {
           return;
         }
 
-        setRecords(sortRecordsByTimeline(nextRecords));
+        setRecords(nextRecords);
         setTags(nextTags);
       } catch (requestError) {
         if (!active) {
@@ -100,9 +100,6 @@ export default function DateDetailPage() {
       title: record.title,
       tagId: record.tagId ?? undefined,
       date: record.date,
-      timeType: record.timeType,
-      startTime: record.startTime ?? undefined,
-      endTime: record.endTime ?? undefined,
       note: record.note ?? undefined,
     });
     setShowEditor(true);
@@ -114,9 +111,6 @@ export default function DateDetailPage() {
       title: record.title,
       tagId: record.tagId ?? undefined,
       date: record.date,
-      timeType: record.timeType,
-      startTime: record.startTime ?? undefined,
-      endTime: record.endTime ?? undefined,
       note: record.note ?? undefined,
     });
     setShowEditor(true);
@@ -204,7 +198,7 @@ export default function DateDetailPage() {
               <button
                 type="button"
                 onClick={handleCreate}
-                className="rounded-full bg-[#169968] px-4 py-2 text-[13px] font-semibold text-white"
+                className="rounded-full bg-[#22C3A6] px-4 py-2 text-[13px] font-semibold text-white"
               >
                 新增记录
               </button>
@@ -217,15 +211,6 @@ export default function DateDetailPage() {
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      {record.startTime ? (
-                        <span className="font-numeric text-[13px] font-semibold text-[#243332]">
-                          {record.startTime}{record.endTime ? ` - ${record.endTime}` : ""}
-                        </span>
-                      ) : (
-                        <span className="rounded-full bg-[#EEF6F4] px-2 py-1 text-[11px] font-medium text-[#6B7A7A]">
-                          全天
-                        </span>
-                      )}
                       {record.tag ? (
                         <TagBadge label={record.tag.name} color={record.tag.color} compact />
                       ) : (
@@ -261,12 +246,6 @@ export default function DateDetailPage() {
                   </div>
                 </div>
 
-                {record.timeType === "scheduled" && record.startTime ? (
-                  <div className="mt-3 flex items-center gap-2 border-t border-[#EEF3F1] pt-3 text-[12px] text-[#8EA09B]">
-                    <Clock size={14} />
-                    {record.endTime ? `${record.startTime} - ${record.endTime}` : record.startTime}
-                  </div>
-                ) : null}
               </SectionCard>
             ))}
           </div>
@@ -279,10 +258,10 @@ export default function DateDetailPage() {
           onClick={handleCreate}
           disabled={isFull}
           className={cn(
-            "flex h-[48px] w-full items-center justify-center rounded-[14px] text-[14px] font-semibold text-white shadow-[0_18px_30px_rgba(22,153,104,0.24)] transition-colors",
+            "flex h-[48px] w-full items-center justify-center rounded-[14px] text-[14px] font-semibold text-white shadow-[0_18px_30px_rgba(34,195,166,0.24)] transition-colors",
             isFull
               ? "cursor-not-allowed bg-[#B5C9C4] shadow-none"
-              : "bg-[#169968]",
+              : "bg-[#22C3A6]",
           )}
         >
           {isFull ? "当日记录已满（3条）" : "+  新增记录"}

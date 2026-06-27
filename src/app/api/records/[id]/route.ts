@@ -12,7 +12,7 @@ import { prisma } from "@/server/db";
 import { getUserId } from "@/server/auth";
 import { isTrustedMutationRequest } from "@/server/request";
 import { success, error } from "@/server/response";
-import { isValidDate, isValidTime } from "@/lib/validation";
+import { isValidDate } from "@/lib/validation";
 
 /** PUT /api/records/[id] - 更新记录 */
 export async function PUT(
@@ -31,7 +31,7 @@ export async function PUT(
 
     const { id } = await params;
     const body = await request.json();
-    const { title, tagId, date, timeType, startTime, endTime, note } = body;
+    const { title, tagId, date, note } = body;
 
     // 校验记录归属
     const existing = await prisma.activityLog.findUnique({ where: { id } });
@@ -48,22 +48,6 @@ export async function PUT(
       const today = dayjs().format("YYYY-MM-DD");
       if (date > today) {
         return error("INVALID_DATE", "不能修改为未来日期", 400);
-      }
-    }
-
-    if (timeType && !["all_day", "scheduled"].includes(String(timeType))) {
-      return error("INVALID_PARAMS", "无效的时间类型", 400);
-    }
-
-    if (timeType === "scheduled") {
-      if (!startTime || !isValidTime(String(startTime))) {
-        return error("INVALID_PARAMS", "指定时间记录需要合法开始时间", 400);
-      }
-      if (!endTime || !isValidTime(String(endTime))) {
-        return error("INVALID_PARAMS", "指定时间记录需要合法结束时间", 400);
-      }
-      if (String(startTime) >= String(endTime)) {
-        return error("INVALID_PARAMS", "结束时间必须晚于开始时间", 400);
       }
     }
 
@@ -84,12 +68,6 @@ export async function PUT(
         ...(title !== undefined && { title: String(title).trim() }),
         ...(tagId !== undefined && { tagId: tagId || null }),
         ...(date !== undefined && { date }),
-        ...(timeType !== undefined && { timeType }),
-        ...(timeType === "scheduled" && {
-          startTime: String(startTime),
-          endTime: String(endTime),
-        }),
-        ...(timeType === "all_day" && { startTime: null, endTime: null }),
         ...(note !== undefined && { note: String(note).trim() || null }),
       },
       include: { tag: true },
