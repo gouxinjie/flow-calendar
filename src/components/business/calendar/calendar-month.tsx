@@ -65,7 +65,7 @@ function getTagStyle(tagColor?: string): CSSProperties | undefined {
 
 export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
   return (
-    <div className="flex flex-col rounded-[12px] border border-[#E7EFEC] bg-white px-3 pb-3 pt-2 shadow-[0_14px_30px_rgba(18,46,40,0.04)]">
+    <div className="flex flex-col rounded-[8px] border border-[#E7EFEC] bg-white px-3 pb-3 pt-2 shadow-[0_14px_30px_rgba(18,46,40,0.04)]">
       <div className="mb-2 grid grid-cols-7 text-center text-[11px] font-semibold text-[#1F2A2A]">
         {weekdays.map((day) => (
           <span key={day} className="py-1.5">
