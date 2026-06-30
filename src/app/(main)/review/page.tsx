@@ -487,15 +487,27 @@ export default function ReviewPage() {
                 <p className="text-[13px] text-[#8EA09B]">本月还没有带标签的记录。</p>
               ) : (
                 <div className="flex flex-col gap-3.5">
-                  {topTagsWithIcon.map((tag) => (
-                    <div key={tag.tagId} className="grid grid-cols-[2.25rem_5rem_1fr_2rem] items-center gap-3">
-                      <span
-                        className="flex h-9 w-9 items-center justify-center rounded-[10px] text-[16px]"
-                        style={{ backgroundColor: `${tag.tagColor}26` }}
-                        aria-hidden="true"
-                      >
-                        {tag.tagIcon ?? "🏷"}
-                      </span>
+                  {topTagsWithIcon.map((tag) => {
+                    const hasIcon = Boolean(tag.tagIcon);
+                    return (
+                    <div
+                      key={tag.tagId}
+                      className={cn(
+                        "grid items-center gap-3",
+                        hasIcon
+                          ? "grid-cols-[2.25rem_5rem_1fr_2rem]"
+                          : "grid-cols-[5rem_1fr_2rem]",
+                      )}
+                    >
+                      {hasIcon ? (
+                        <span
+                          className="flex h-9 w-9 items-center justify-center rounded-[10px] text-[16px]"
+                          style={{ backgroundColor: `${tag.tagColor}26` }}
+                          aria-hidden="true"
+                        >
+                          {tag.tagIcon}
+                        </span>
+                      ) : null}
                       <span className="truncate text-[13px] font-medium text-[#1F2A2A]">
                         {tag.tagName}
                       </span>
@@ -515,7 +527,8 @@ export default function ReviewPage() {
                         {tag.count}
                       </span>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </SectionCard>
@@ -555,15 +568,19 @@ export default function ReviewPage() {
           ) : (
             <SectionCard>
               <div className="flex flex-col divide-y divide-[#EEF4F2]">
-                {tagStats.map(({ tag, count }) => (
+                {tagStats.map(({ tag, count }) => {
+                  const hasIcon = Boolean(tag.icon);
+                  return (
                   <div key={tag.id} className="flex items-center gap-3 py-3">
-                    <span
-                      className="flex h-9 w-9 items-center justify-center rounded-[10px] text-[16px]"
-                      style={{ backgroundColor: `${tag.color}26` }}
-                      aria-hidden="true"
-                    >
-                      {tag.icon ?? "🏷"}
-                    </span>
+                    {hasIcon ? (
+                      <span
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] text-[16px]"
+                        style={{ backgroundColor: `${tag.color}26` }}
+                        aria-hidden="true"
+                      >
+                        {tag.icon}
+                      </span>
+                    ) : null}
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-[14px] font-medium text-[#1F2A2A]">{tag.name}</p>
                       <p className="mt-0.5 text-[12px] text-[#8EA09B]">
@@ -574,7 +591,8 @@ export default function ReviewPage() {
                       {count}
                     </span>
                   </div>
-                ))}
+                );
+                })}
               </div>
             </SectionCard>
           )
