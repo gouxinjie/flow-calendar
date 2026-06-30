@@ -40,6 +40,9 @@ function PickerColumn({
   const isScrolling = useRef(false);
   const scrollTimer = useRef<ReturnType<typeof setTimeout>>();
 
+  // 顶部占位高度（与渲染中的 spacer 保持一致）
+  const topPadding = itemHeight * 2;
+
   // 初始化滚动到选中项
   useEffect(() => {
     const container = containerRef.current;
@@ -48,14 +51,14 @@ function PickerColumn({
     const idx = items.indexOf(selectedValue);
     if (idx === -1) return;
 
-    // 计算目标滚动位置：使选中项居中
-    const targetScroll = idx * itemHeight - (container.clientHeight - itemHeight) / 2;
+    // 计算目标滚动位置：使选中项居中（需加上顶部占位）
+    const targetScroll = topPadding + idx * itemHeight - (container.clientHeight - itemHeight) / 2;
 
     container.scrollTo({
       top: Math.max(0, targetScroll),
       behavior: "instant" as ScrollBehavior,
     });
-  }, [items, selectedValue, itemHeight]);
+  }, [items, selectedValue, itemHeight, topPadding]);
 
   // 处理滚动结束，确定最近的选项
   const handleScrollEnd = useCallback(() => {
@@ -63,20 +66,21 @@ function PickerColumn({
     if (!container) return;
 
     const centerY = container.scrollTop + container.clientHeight / 2;
-    const idx = Math.round(centerY / itemHeight - 0.5);
+    // 减去顶部占位后计算最近选项索引
+    const idx = Math.round((centerY - topPadding) / itemHeight - 0.5);
     const clampedIdx = Math.max(0, Math.min(idx, items.length - 1));
 
     if (items[clampedIdx] !== selectedValue) {
       onSelect(items[clampedIdx]);
     }
 
-    // 自动对齐到最近的选项
-    const targetScroll = clampedIdx * itemHeight - (container.clientHeight - itemHeight) / 2;
+    // 自动对齐到最近的选项（需加上顶部占位）
+    const targetScroll = topPadding + clampedIdx * itemHeight - (container.clientHeight - itemHeight) / 2;
     container.scrollTo({
       top: Math.max(0, targetScroll),
       behavior: "smooth",
     });
-  }, [items, selectedValue, onSelect, itemHeight]);
+  }, [items, selectedValue, onSelect, itemHeight, topPadding]);
 
   // 触摸/滚动事件
   const handleTouchStart = useCallback(() => {
@@ -161,30 +165,25 @@ function PickerColumn({
 
 /**
  * TimePicker 主组件
- * 点击展开/收起滚轮面板，面板内联展开适配滚动容器
+ * 点击触发器展开底部抽屉式时间选择面板
  */
 export function TimePicker({ value, onChange, clearable = true }: TimePickerProps) {
   const [open, setOpen] = useState(false);
-  const panelRef = useRef<HTMLDivElement>(null);
-  const [panelHeight, setPanelHeight] = useState(0);
+  const [visible, setVisible] = useState(false);
 
-  // 点击外部关闭
-  useEffect(() => {
-    if (!open) return;
-    const handleClickOutside = (e: MouseEvent) => {
-      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [open]);
+  // 打开/关闭动画时序控制
+  const handleOpen = useCallback(() => {
+    setOpen(true);
+    // 下一帧触发进场动画
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => setVisible(true));
+    });
+  }, []);
 
-  // 测量面板高度用于动画
-  const measureRef = useCallback((node: HTMLDivElement | null) => {
-    if (node) {
-      setPanelHeight(node.scrollHeight);
-    }
+  const handleClose = useCallback(() => {
+    setVisible(false);
+    // 等动画结束后移除 DOM
+    setTimeout(() => setOpen(false), 240);
   }, []);
 
   // 解析当前值
@@ -211,26 +210,29 @@ export function TimePicker({ value, onChange, clearable = true }: TimePickerProp
     (e: React.MouseEvent) => {
       e.stopPropagation();
       onChange("");
-      setOpen(false);
+      handleClose();
     },
-    [onChange],
+    [onChange, handleClose],
   );
+
+  const handleConfirm = useCallback(() => {
+    handleClose();
+  }, [handleClose]);
 
   const displayText = value || "选择时间";
 
   return (
-    <div className="relative" ref={panelRef}>
+    <>
       {/* 触发器：点击展开 */}
       <button
         type="button"
-        onClick={() => setOpen(!open)}
+        onClick={handleOpen}
         className={cn(
           "flex w-full items-center gap-2.5 rounded-[14px] border px-4 py-3 text-left",
           "transition-colors duration-200",
           value
             ? "border-[#DCE7E4] text-[#1F2A2A]"
             : "border-[#DCE7E4] text-[#A8B8B0]",
-          open ? "border-[#22C3A6] ring-1 ring-[#22C3A6]/20" : "",
         )}
       >
         <Clock
@@ -249,24 +251,37 @@ export function TimePicker({ value, onChange, clearable = true }: TimePickerProp
         ) : null}
       </button>
 
-      {/* 展开的滚轮面板 —— 内联展开 + 高度动画 */}
-      <div
-        className={cn(
-          "overflow-hidden transition-all duration-[240ms] ease-out",
-        )}
-        style={{
-          maxHeight: open ? panelHeight : 0,
-          opacity: open ? 1 : 0,
-        }}
-      >
-        <div ref={measureRef} className="mt-1">
+      {/* 底部抽屉遮罩 */}
+      {open ? (
+        <div className="fixed inset-0 z-50 flex items-end justify-center">
+          {/* 半透明遮罩 */}
           <div
             className={cn(
-              "rounded-[20px] border border-[#DCE7E4] bg-white p-4",
-              "shadow-[0_12px_32px_rgba(18,46,40,0.1)]",
+              "absolute inset-0 bg-black/30 transition-opacity duration-[240ms]",
+              visible ? "opacity-100" : "opacity-0",
             )}
+            onClick={handleClose}
+          />
+
+          {/* 底部抽屉面板 — 向上滑入 */}
+          <div
+            className={cn(
+              "relative w-full max-w-[480px] rounded-t-[20px] bg-white px-4 pb-8 pt-4",
+              "transition-transform duration-[240ms] ease-out",
+              "shadow-[0_-8px_32px_rgba(18,46,40,0.12)]",
+              visible ? "translate-y-0" : "translate-y-full",
+            )}
+            onClick={(e) => e.stopPropagation()}
           >
-            {/* 选中行高亮条 */}
+            {/* 拖拽条 */}
+            <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-[#DCE7E4]" />
+
+            {/* 标题 */}
+            <p className="mb-4 text-center text-[15px] font-semibold text-[#1F2A2A]">
+              选择时间
+            </p>
+
+            {/* 滚轮选择区 */}
             <div className="relative flex gap-3">
               {/* 小时列 */}
               <div className="relative flex-1">
@@ -318,29 +333,29 @@ export function TimePicker({ value, onChange, clearable = true }: TimePickerProp
               </div>
             </div>
 
-            {/* 底部快捷操作 */}
-            <div className="mt-3 flex gap-3 border-t border-[#F0F5F3] pt-3">
+            {/* 底部操作按钮 */}
+            <div className="mt-4 flex gap-3">
               <button
                 type="button"
                 onClick={() => {
                   onChange("");
-                  setOpen(false);
+                  handleClose();
                 }}
-                className="flex-1 rounded-[10px] py-2 text-[13px] font-medium text-[#A8B8B0] active:bg-[#F7FAF9]"
+                className="flex-1 rounded-[14px] border border-[#DCE7E4] py-3 text-[14px] font-medium text-[#A8B8B0] active:bg-[#F7FAF9]"
               >
                 清除
               </button>
               <button
                 type="button"
-                onClick={() => setOpen(false)}
-                className="flex-1 rounded-[10px] bg-[#22C3A6] py-2 text-[13px] font-semibold text-white active:opacity-80"
+                onClick={handleConfirm}
+                className="flex-1 rounded-[14px] bg-[#22C3A6] py-3 text-[14px] font-semibold text-white active:opacity-80"
               >
                 确定
               </button>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      ) : null}
+    </>
   );
 }

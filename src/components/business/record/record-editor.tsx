@@ -12,8 +12,10 @@ import { useState } from "react";
 import type { ActivityTag, RecordFormData } from "@/types/models";
 import { BottomSheet } from "@/components/business/shared/bottom-sheet";
 import { TimePicker } from "@/components/commons/time-picker";
+import { Trash } from "@phosphor-icons/react";
+
 import { cn } from "@/lib/cn";
-import { getNeutralButtonStyle, getTagButtonStyle } from "@/lib/tag-color";
+import { getTagButtonStyle } from "@/lib/tag-color";
 
 interface RecordEditorProps {
   open: boolean;
@@ -95,8 +97,9 @@ export function RecordEditor({
           {isEdit && onDelete ? (
             <button
               onClick={onDelete}
-              className="flex h-[48px] shrink-0 items-center justify-center rounded-[14px] border border-[#E06060] px-6 text-[14px] font-medium text-[#E06060] active:opacity-80"
+              className="flex h-[48px] shrink-0 items-center justify-center gap-1.5 rounded-[16px] border border-[#E06060] px-5 text-[14px] font-medium text-[#E06060] transition-colors duration-200 active:border-[#D85A5A] active:bg-[#FFF5F5] active:text-[#D85A5A]"
             >
+              <Trash size={18} weight="regular" />
               删除
             </button>
           ) : null}
@@ -145,16 +148,9 @@ export function RecordEditor({
 
         <div>
           <label className="mb-1.5 block text-[13px] font-medium text-[#6B7A7A]">
-            标签（可选）
+            标签
           </label>
           <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setTagId(undefined)}
-              className="rounded-[6px] px-4 py-1.5 text-[13px] font-medium transition-opacity active:opacity-80"
-              style={getNeutralButtonStyle(!tagId)}
-            >
-              无标签
-            </button>
             {tags
               .filter((t) => t.enabled)
               .map((tag) => (

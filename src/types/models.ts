@@ -84,6 +84,7 @@ export interface CalendarCell {
     id: string;
     title: string;
     tagColor?: string;
+    tagName?: string;
   }>;
   overflowCount: number;
 }

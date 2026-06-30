@@ -17,6 +17,7 @@ import {
 } from "@phosphor-icons/react";
 import dayjs from "dayjs";
 
+import { cn } from "@/lib/cn";
 import { EmptyState } from "@/components/commons/empty-state";
 import { StateBanner } from "@/components/commons/state-banner";
 import { SearchFilterSheet } from "@/components/business/review/search-filter-sheet";
@@ -184,6 +185,7 @@ export default function ReviewPage() {
       <div className="min-w-0 flex-1">
         <p className="text-[13px] text-[#8EA09B]">
           {dayjs(record.date).format("M月D日")}
+          {record.startTime ? ` · ${record.startTime}` : null}
         </p>
         <p className="mt-1 text-[14px] font-medium text-[#1F2A2A]">{record.title}</p>
       </div>
@@ -204,8 +206,11 @@ export default function ReviewPage() {
           <div key={record.id} className="flex items-center gap-3 rounded-[12px] bg-[#F7FAF9] px-3 py-3">
             <div className="min-w-0 flex-1">
               <p className="text-[14px] font-medium text-[#1F2A2A]">{record.title}</p>
+              {record.startTime ? (
+                <p className="mt-0.5 text-[12px] text-[#8EA09B]">{record.startTime}</p>
+              ) : null}
               {record.note ? (
-                <p className="mt-1 text-[12px] text-[#8EA09B]">{record.note}</p>
+                <p className={cn("text-[12px] text-[#8EA09B]", record.startTime ? "mt-0.5" : "mt-1")}>{record.note}</p>
               ) : null}
             </div>
             {record.tag ? (

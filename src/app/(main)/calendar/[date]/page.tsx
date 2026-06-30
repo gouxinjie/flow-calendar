@@ -5,11 +5,11 @@
  * @description 日期详情页
  * @author gouxinjie
  * @created 2026-06-22
- * @updated 2026-06-22
+ * @updated 2026-06-30
  */
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import { Copy, DotsThree, NotePencil, Trash } from "@phosphor-icons/react";
+import { Copy, DotsThree, PencilSimple, Trash } from "@phosphor-icons/react";
 import dayjs from "dayjs";
 
 import { ConfirmSheet } from "@/components/commons/confirm-sheet";
@@ -17,8 +17,8 @@ import { EmptyState } from "@/components/commons/empty-state";
 import { StateBanner } from "@/components/commons/state-banner";
 import { cn } from "@/lib/cn";
 import { RecordEditor } from "@/components/business/record/record-editor";
-import { ScreenHeader, SectionCard, TagBadge } from "@/components/business/shared/mobile-shell";
-import { getLunarLabel } from "@/lib/calendar";
+import { SectionCard, TagBadge } from "@/components/business/shared/mobile-shell";
+import { getDateBadgeInfo } from "@/lib/calendar";
 import { sortRecordsByTimeline } from "@/lib/record";
 import { requestApi } from "@/services/api-client";
 import type { ActivityLog, ActivityTag, RecordFormData } from "@/types/models";
@@ -100,8 +100,9 @@ export default function DateDetailPage() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [menuRecordId]);
 
-  const displayDate = dayjs(date).format("M月D日 dddd");
-  const lunarLabel = getLunarLabel(date);
+  const displayDate = dayjs(date).format("M月D日");
+  const displayWeekday = dayjs(date).format("dddd");
+  const dateBadge = useMemo(() => getDateBadgeInfo(date), [date]);
   const sortedRecords = useMemo(() => sortRecordsByTimeline(records), [records]);
   const isFull = sortedRecords.length >= MAX_RECORDS_PER_DAY;
 
@@ -212,10 +213,77 @@ export default function DateDetailPage() {
 
   return (
     <div className="flex h-full flex-col">
-      <ScreenHeader title={displayDate} subtitle={lunarLabel} backHref="/calendar" />
+      {/* 顶部：日期 + 节日 + 干支日 + 装饰植物 */}
+      <div className="relative shrink-0 px-4 pb-2 pt-3">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-baseline gap-2">
+              <h1 className="text-[26px] font-semibold tracking-[-0.03em] text-[#1F2A2A]">
+                {displayDate}
+              </h1>
+              {dateBadge.festivalName ? (
+                <span className="text-[14px] font-semibold text-[#22C3A6]">
+                  {dateBadge.festivalName}
+                </span>
+              ) : dateBadge.jieQi ? (
+                <span className="text-[14px] font-semibold text-[#22C3A6]">
+                  {dateBadge.jieQi}
+                </span>
+              ) : null}
+            </div>
+            <p className="mt-1.5 text-[12px] text-[#7A8A88]">
+              {dateBadge.lunarText} · {displayWeekday}
+            </p>
+          </div>
+          {/* 右上角植物装饰 */}
+          <div className="pointer-events-none relative -mr-2 -mt-1 h-16 w-20 shrink-0">
+            <svg
+              viewBox="0 0 100 80"
+              className="h-full w-full"
+              aria-hidden="true"
+            >
+              <defs>
+                <radialGradient id="leafA" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#B5E8C8" stopOpacity="0.9" />
+                  <stop offset="100%" stopColor="#7CC9A0" stopOpacity="0.7" />
+                </radialGradient>
+                <radialGradient id="leafB" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#C8EBD0" stopOpacity="0.8" />
+                  <stop offset="100%" stopColor="#8FD3AC" stopOpacity="0.6" />
+                </radialGradient>
+              </defs>
+              {/* 茎 */}
+              <path
+                d="M48 80 Q 52 50 58 20"
+                stroke="#7CC9A0"
+                strokeWidth="1.4"
+                fill="none"
+                strokeLinecap="round"
+                opacity="0.7"
+              />
+              {/* 叶子 */}
+              <ellipse cx="42" cy="58" rx="10" ry="5" fill="url(#leafA)" transform="rotate(-30 42 58)" />
+              <ellipse cx="62" cy="40" rx="11" ry="5.5" fill="url(#leafB)" transform="rotate(25 62 40)" />
+              <ellipse cx="56" cy="22" rx="9" ry="4.5" fill="url(#leafA)" transform="rotate(15 56 22)" />
+              <ellipse cx="74" cy="14" rx="6" ry="3.5" fill="url(#leafB)" transform="rotate(40 74 14)" />
+              <ellipse cx="38" cy="36" rx="7" ry="3.5" fill="url(#leafB)" transform="rotate(-40 38 36)" />
+            </svg>
+          </div>
+        </div>
+      </div>
 
       <div className="flex-1 overflow-y-auto px-4 pb-4 pt-2">
-        {notice ? <StateBanner tone={notice.tone} message={notice.message} className="mb-4" /> : null}
+        {/* 标题：当天记录 N */}
+        <div className="mb-3 flex items-center gap-2">
+          <h2 className="text-[16px] font-semibold tracking-[-0.02em] text-[#1F2A2A]">
+            当天记录
+          </h2>
+          <span className="text-[14px] font-medium text-[#8EA09B]">
+            {sortedRecords.length}
+          </span>
+        </div>
+
+        {notice ? <StateBanner tone={notice.tone} message={notice.message} className="mb-3" /> : null}
 
         {loading ? (
           <SectionCard className="h-[220px] animate-pulse bg-white/70" />
@@ -236,82 +304,90 @@ export default function DateDetailPage() {
         ) : (
           <div className="flex flex-col gap-3">
             {sortedRecords.map((record) => (
-              <SectionCard key={record.id} className="gap-3">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      {record.tag ? (
-                        <TagBadge label={record.tag.name} color={record.tag.color} compact />
-                      ) : (
-                        <span className="text-[11px] text-[#A8B8B0]">未分类</span>
-                      )}
+              <SectionCard key={record.id} className="!p-0">
+                <div className="flex items-stretch">
+                  {/* 左侧时间列 — 无 startTime 时不渲染 */}
+                  {record.startTime ? (
+                    <div className="flex w-[72px] shrink-0 flex-col items-start justify-start bg-white/0 px-4 pb-4 pt-4">
+                      <span className="font-numeric text-[16px] font-semibold tracking-[-0.02em] text-[#1F2A2A]">
+                        {record.startTime}
+                      </span>
                     </div>
-                    <h3 className="mt-3 text-[17px] font-semibold tracking-[-0.02em] text-[#1F2A2A]">
-                      {record.title}
-                    </h3>
-                    {record.note ? (
-                      <p className="mt-2 text-[13px] leading-6 text-[#667774]">{record.note}</p>
-                    ) : null}
-                  </div>
+                  ) : null}
 
-                  <div className="flex items-start gap-1.5">
-                    {/* 复制 */}
-                    <button
-                      type="button"
-                      onClick={() => handleCopy(record)}
-                      className="flex flex-col items-center gap-0.5"
-                    >
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA09B] active:bg-[#F3F7F6]">
-                        <Copy size={16} />
-                      </span>
-                      <span className="text-[10px] text-[#A8B8B0]">复制</span>
-                    </button>
-                    {/* 编辑 */}
-                    <button
-                      type="button"
-                      onClick={() => handleEdit(record)}
-                      className="flex flex-col items-center gap-0.5"
-                    >
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA09B] active:bg-[#F3F7F6]">
-                        <NotePencil size={16} />
-                      </span>
-                      <span className="text-[10px] text-[#A8B8B0]">编辑</span>
-                    </button>
-                    {/* 更多 */}
-                    <div className="relative" ref={menuRecordId === record.id ? menuRef : undefined}>
-                      <button
-                        type="button"
-                        onClick={() => setMenuRecordId(menuRecordId === record.id ? null : record.id)}
-                        className="flex flex-col items-center gap-0.5"
-                      >
-                        <span
-                          className={cn(
-                            "flex h-8 w-8 items-center justify-center rounded-full",
-                            menuRecordId === record.id
-                              ? "bg-[#F3F7F6] text-[#1F2A2A]"
-                              : "text-[#8EA09B] active:bg-[#F3F7F6]",
-                          )}
+                  {/* 右侧内容列 */}
+                  <div className="min-w-0 flex-1 px-3 pb-4 pt-4">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0 flex-1">
+                        {/* 标题行：色点 + 标题 + 标签 */}
+                        <div className="flex items-center gap-2">
+                          <span
+                            className="inline-block h-2 w-2 shrink-0 rounded-full"
+                            style={{ backgroundColor: record.tag?.color ?? "#A8B8B0" }}
+                            aria-hidden="true"
+                          />
+                          <h3 className="truncate text-[16px] font-semibold tracking-[-0.01em] text-[#1F2A2A]">
+                            {record.title}
+                          </h3>
+                        </div>
+                        {/* 标签徽章 */}
+                        {record.tag ? (
+                          <div className="mt-1.5">
+                            <TagBadge label={record.tag.name} color={record.tag.color} compact />
+                          </div>
+                        ) : null}
+                        {/* 备注 */}
+                        {record.note ? (
+                          <p className="mt-1.5 text-[13px] leading-6 text-[#5C6E6B]">
+                            {record.note}
+                          </p>
+                        ) : null}
+                      </div>
+
+                      {/* 右侧操作按钮（编辑 + 复制 + 更多） */}
+                      <div className="flex items-center">
+                        <button
+                          type="button"
+                          onClick={() => handleEdit(record)}
+                          className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA09B] active:bg-[#F3F7F6]"
+                          aria-label="编辑记录"
                         >
-                          <DotsThree size={16} weight="bold" />
-                        </span>
-                        <span className="text-[10px] text-[#A8B8B0]">更多</span>
-                      </button>
-                      {menuRecordId === record.id ? (
-                        <div className="absolute right-0 top-full z-30 mt-1 w-36 rounded-[14px] border border-[#DCE7E4] bg-white py-1 shadow-[0_8px_24px_rgba(18,46,40,0.12)]">
+                          <PencilSimple size={16} />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleCopy(record)}
+                          className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA09B] active:bg-[#F3F7F6]"
+                          aria-label="复制记录"
+                        >
+                          <Copy size={16} />
+                        </button>
+                        <div className="relative" ref={menuRecordId === record.id ? menuRef : undefined}>
                           <button
                             type="button"
-                            onClick={() => handleMenuDelete(record)}
-                            className="flex w-full items-center gap-2.5 px-4 py-2.5 text-[13px] font-medium text-[#E06060] active:bg-[#FFF5F5]"
+                            onClick={() => setMenuRecordId(menuRecordId === record.id ? null : record.id)}
+                            className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA09B] active:bg-[#F3F7F6]"
+                            aria-label="更多操作"
                           >
-                            <Trash size={15} />
-                            删除记录
+                            <DotsThree size={18} weight="bold" />
                           </button>
+                          {menuRecordId === record.id ? (
+                            <div className="absolute right-0 top-full z-30 mt-1 w-36 rounded-[14px] border border-[#DCE7E4] bg-white py-1 shadow-[0_8px_24px_rgba(18,46,40,0.12)]">
+                              <button
+                                type="button"
+                                onClick={() => handleMenuDelete(record)}
+                                className="flex w-full items-center gap-2.5 px-4 py-2.5 text-[13px] font-medium text-[#E06060] active:bg-[#FFF5F5]"
+                              >
+                                <Trash size={15} />
+                                删除记录
+                              </button>
+                            </div>
+                          ) : null}
                         </div>
-                      ) : null}
+                      </div>
                     </div>
                   </div>
                 </div>
-
               </SectionCard>
             ))}
           </div>

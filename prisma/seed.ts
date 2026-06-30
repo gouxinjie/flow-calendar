@@ -50,7 +50,9 @@ async function main() {
     { id: "tag_social", name: "聚会", color: "#8B8AEF", icon: "users", category: "social", sortOrder: 5 },
     { id: "tag_movie", name: "观影", color: "#C27BFF", icon: "film", category: "leisure", sortOrder: 6 },
     { id: "tag_rest", name: "休息", color: "#22C3A6", icon: "moon", category: "rest", sortOrder: 7 },
-    { id: "tag_read", name: "阅读", color: "#22C3A6", icon: "book-open", category: "leisure", sortOrder: 8 },
+    { id: "tag_read", name: "旅游", color: "#06B6D4", icon: "globe", category: "leisure", sortOrder: 8 },
+    { id: "tag_mood_good", name: "开心", color: "#F6AD55", icon: "smiley", category: "mood", sortOrder: 9 },
+    { id: "tag_mood_bad", name: "低落", color: "#A8B8B0", icon: "smiley-sad", category: "mood", sortOrder: 10 },
   ];
 
   for (const tag of defaultTags) {

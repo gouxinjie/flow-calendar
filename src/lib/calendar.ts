@@ -57,6 +57,42 @@ export function getLunarLabel(date: string): string {
   return lunarDay;
 }
 
+/** 节日返回结构 */
+export interface DateBadgeInfo {
+  /** 节日名称（如 劳动节、国庆节） */
+  festivalName?: string;
+  /** 节气名称（如 立夏、小满） */
+  jieQi?: string;
+  /** 农历日期（如 乙巳年 四月初四） */
+  lunarText: string;
+}
+
+/**
+ * @description 获取日期头部展示所需的所有字段：节日、节气、农历干支日
+ */
+export function getDateBadgeInfo(date: string): DateBadgeInfo {
+  const d = dayjs(date);
+  const solar = Solar.fromYmd(d.year(), d.month() + 1, d.date());
+  const lunar = solar.getLunar();
+
+  const jieQi = lunar.getJieQi();
+  const festivalName = solar.getFestivals()[0] ?? lunar.getFestivals()[0];
+
+  // 干支年
+  const ganzhiYear = `${lunar.getYearInGanZhi()}年`;
+  // 农历月份
+  const lunarMonth = `${lunar.getMonthInChinese()}月`;
+  // 农历日
+  const lunarDay = lunar.getDayInChinese();
+  const lunarText = `${ganzhiYear} ${lunarMonth}${lunarDay}`;
+
+  return {
+    festivalName,
+    jieQi,
+    lunarText,
+  };
+}
+
 /**
  * @description 构建月历网格数据
  * @param month - YYYY-MM 格式的月份
@@ -97,15 +133,19 @@ export function buildMonthCells(
       return left.createdAt.localeCompare(right.createdAt);
     });
 
-    // 取前 2 条记录作为摘要，优先展示标题，标签颜色仅作为辅助识别
-    const recordSummaries = dateRecords.slice(0, 2).map((r) => {
-      const tag = r.tagId ? tagMap.get(r.tagId) : undefined;
-      return {
-        id: r.id,
-        title: r.title,
-        tagColor: tag?.color,
-      };
-    });
+    // 取前 2 条有标签的记录作为摘要，无标签记录不展示徽章
+    const recordSummaries = dateRecords
+      .filter((r) => r.tagId)
+      .slice(0, 2)
+      .map((r) => {
+        const tag = tagMap.get(r.tagId!);
+        return {
+          id: r.id,
+          title: tag?.name ?? "",
+          tagColor: tag?.color,
+          tagName: tag?.name,
+        };
+      });
 
     return {
       date: dateKey,

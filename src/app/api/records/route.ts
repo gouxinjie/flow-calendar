@@ -70,6 +70,65 @@ export async function GET(request: NextRequest) {
       orderBy: [{ date: sort }, { createdAt: sort }],
     });
 
+    // 自动为当前月份及之前的周末（周六/周日）创建"休息"记录
+    if (month) {
+      const today = dayjs().format("YYYY-MM-DD");
+      const monthStart = dayjs(`${month}-01`);
+      const monthEnd = monthStart.endOf("month");
+
+      // 收集该月所有周末日期（周六=6, 周日=0），仅限今天及之前
+      const weekendDates: string[] = [];
+      let cursor = monthStart;
+      while (cursor.isBefore(monthEnd) || cursor.isSame(monthEnd, "day")) {
+        const dow = cursor.day();
+        if ((dow === 0 || dow === 6) && cursor.format("YYYY-MM-DD") <= today) {
+          weekendDates.push(cursor.format("YYYY-MM-DD"));
+        }
+        cursor = cursor.add(1, "day");
+      }
+
+      if (weekendDates.length > 0) {
+        // 查询已有记录的周末日期
+        const existingDates = await prisma.activityLog.findMany({
+          where: { userId, date: { in: weekendDates } },
+          select: { date: true },
+          distinct: ["date"],
+        });
+        const existingSet = new Set(existingDates.map((r) => r.date));
+
+        // 找出需要自动补记的周末日期
+        const datesToFill = weekendDates.filter((d) => !existingSet.has(d));
+
+        if (datesToFill.length > 0) {
+          // 查找"休息"标签
+          const restTag = await prisma.activityTag.findFirst({
+            where: { userId, name: "休息" },
+            select: { id: true },
+          });
+
+          if (restTag) {
+            await prisma.activityLog.createMany({
+              data: datesToFill.map((date) => ({
+                userId,
+                title: "休息",
+                tagId: restTag.id,
+                date,
+              })),
+            });
+
+            // 重新查询以包含新创建的记录
+            const updatedRecords = await prisma.activityLog.findMany({
+              where,
+              include: { tag: true },
+              orderBy: [{ date: sort }, { createdAt: sort }],
+            });
+
+            return success(updatedRecords);
+          }
+        }
+      }
+    }
+
     return success(records);
   } catch (err) {
     console.error("查询记录失败:", err);

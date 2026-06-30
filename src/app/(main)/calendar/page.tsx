@@ -218,6 +218,7 @@ export default function CalendarPage() {
         defaultDate={selectedDate}
         saving={savingRecord}
         errorMessage={recordError}
+
       />
     </div>
   );
