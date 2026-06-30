@@ -10,7 +10,7 @@
 import { useState } from "react";
 
 import { BottomSheet } from "@/components/business/shared/bottom-sheet";
-import { cn } from "@/lib/cn";
+import { getNeutralButtonStyle, getTagButtonStyle } from "@/lib/tag-color";
 import type { ActivityTag, SearchFilters } from "@/types/models";
 
 interface SearchFilterSheetProps {
@@ -98,10 +98,8 @@ export function SearchFilterSheet({
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setTagId(undefined)}
-              className={cn(
-                "rounded-[10px] px-3 py-1.5 text-[13px] font-medium",
-                !tagId ? "bg-[#1F2A2A] text-white" : "bg-[#F3F7F6] text-[#6B7A7A]",
-              )}
+              className="rounded-[6px] px-4 py-1.5 text-[13px] font-medium transition-opacity active:opacity-80"
+              style={getNeutralButtonStyle(!tagId)}
             >
               全部
             </button>
@@ -111,11 +109,8 @@ export function SearchFilterSheet({
                 <button
                   key={tag.id}
                   onClick={() => setTagId(tag.id)}
-                  className="rounded-[10px] px-3 py-1.5 text-[13px] font-medium transition-colors"
-                  style={{
-                    backgroundColor: tagId === tag.id ? tag.color : `${tag.color}18`,
-                    color: tagId === tag.id ? "#FFFFFF" : tag.color,
-                  }}
+                  className="rounded-[6px] px-4 py-1.5 text-[13px] font-medium transition-opacity active:opacity-80"
+                  style={getTagButtonStyle(tag.color, tagId === tag.id)}
                 >
                   {tag.name}
                 </button>

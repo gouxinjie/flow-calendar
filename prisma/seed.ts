@@ -49,7 +49,7 @@ async function main() {
     { id: "tag_outdoor", name: "外出", color: "#F46D5E", icon: "compass", category: "leisure", sortOrder: 4 },
     { id: "tag_social", name: "聚会", color: "#8B8AEF", icon: "users", category: "social", sortOrder: 5 },
     { id: "tag_movie", name: "观影", color: "#C27BFF", icon: "film", category: "leisure", sortOrder: 6 },
-    { id: "tag_rest", name: "休息", color: "#A8B8B0", icon: "moon", category: "rest", sortOrder: 7 },
+    { id: "tag_rest", name: "休息", color: "#22C3A6", icon: "moon", category: "rest", sortOrder: 7 },
     { id: "tag_read", name: "阅读", color: "#22C3A6", icon: "book-open", category: "leisure", sortOrder: 8 },
   ];
 

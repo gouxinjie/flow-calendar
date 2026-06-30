@@ -41,6 +41,12 @@ export default function ReviewPage() {
   const [summary, setSummary] = useState<MonthReview | null>(null);
   const [loading, setLoading] = useState(true);
   const [notice, setNotice] = useState("");
+  /** 全部记录时间范围：按月 / 最近3个月 / 最近6个月 / 本年 */
+  type RecordsTimeRange = "month" | "3months" | "6months" | "year";
+  const [recordsTimeRange, setRecordsTimeRange] = useState<RecordsTimeRange>("month");
+  /** 按时间范围拉取的全部记录 */
+  const [rangeRecords, setRangeRecords] = useState<ActivityLog[]>([]);
+  const [rangeLoading, setRangeLoading] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -92,6 +98,44 @@ export default function ReviewPage() {
     };
   }, [filters, reviewMonth]);
 
+  // 全部记录时间范围切换时，拉取对应日期范围的记录
+  useEffect(() => {
+    if (recordsTimeRange === "month") return;
+    let active = true;
+
+    async function loadRangeRecords() {
+      setRangeLoading(true);
+      try {
+        const today = dayjs();
+        const endDate = today.format("YYYY-MM-DD");
+        let startDate = "";
+
+        if (recordsTimeRange === "3months") {
+          startDate = today.subtract(3, "month").startOf("month").format("YYYY-MM-DD");
+        } else if (recordsTimeRange === "6months") {
+          startDate = today.subtract(6, "month").startOf("month").format("YYYY-MM-DD");
+        } else if (recordsTimeRange === "year") {
+          startDate = today.startOf("year").format("YYYY-MM-DD");
+        }
+
+        const query = new URLSearchParams();
+        query.set("startDate", startDate);
+        query.set("endDate", endDate);
+        query.set("sort", "desc");
+
+        const data = await requestApi<ActivityLog[]>(`/api/records?${query.toString()}`);
+        if (active) setRangeRecords(sortRecordsByRecent(data));
+      } catch {
+        // 静默失败
+      } finally {
+        if (active) setRangeLoading(false);
+      }
+    }
+
+    void loadRangeRecords();
+    return () => { active = false; };
+  }, [recordsTimeRange]);
+
   const groupedResults = useMemo<SearchResultGroup[]>(() => {
     const groupMap = new Map<string, ActivityLog[]>();
 
@@ -107,6 +151,20 @@ export default function ReviewPage() {
     }));
   }, [records]);
 
+  /** 时间范围预设的分组记录 */
+  const groupedRangeResults = useMemo<SearchResultGroup[]>(() => {
+    const groupMap = new Map<string, ActivityLog[]>();
+    for (const record of rangeRecords) {
+      const currentRecords = groupMap.get(record.date) ?? [];
+      currentRecords.push(record);
+      groupMap.set(record.date, currentRecords);
+    }
+    return Array.from(groupMap.entries()).map(([date, groupedRecords]) => ({
+      date,
+      records: groupedRecords,
+    }));
+  }, [rangeRecords]);
+
   const hasFilters = Boolean(filters.keyword || filters.tagId || filters.startDate || filters.endDate);
   const currentMonth = dayjs().format("YYYY-MM");
 
@@ -120,6 +178,47 @@ export default function ReviewPage() {
 
   const getTagLabel = (tagId?: string | null) => tags.find((tag) => tag.id === tagId);
 
+  /** 记录卡片小件（复用） */
+  const RecordCard = ({ record }: { record: ActivityLog }) => (
+    <div className="flex items-start justify-between gap-3 rounded-[14px] bg-[#F7FAF9] px-3 py-3">
+      <div className="min-w-0 flex-1">
+        <p className="text-[13px] text-[#8EA09B]">
+          {dayjs(record.date).format("M月D日")}
+        </p>
+        <p className="mt-1 text-[14px] font-medium text-[#1F2A2A]">{record.title}</p>
+      </div>
+      {record.tag ? <TagBadge label={record.tag.name} color={record.tag.color} compact /> : null}
+    </div>
+  );
+
+  /** 日期分组的记录区块（复用，全部记录列表用） */
+  const RecordGroup = ({ group }: { group: SearchResultGroup }) => (
+    <SectionCard key={group.date}>
+      <h3 className="mb-3 flex items-center gap-2 text-[14px] font-medium text-[#1F2A2A]">
+        <CalendarBlank size={16} className="text-[#22C3A6]" />
+        {dayjs(group.date).format("M月D日 dddd")}
+      </h3>
+
+      <div className="flex flex-col gap-2">
+        {group.records.map((record) => (
+          <div key={record.id} className="flex items-center gap-3 rounded-[12px] bg-[#F7FAF9] px-3 py-3">
+            <div className="min-w-0 flex-1">
+              <p className="text-[14px] font-medium text-[#1F2A2A]">{record.title}</p>
+              {record.note ? (
+                <p className="mt-1 text-[12px] text-[#8EA09B]">{record.note}</p>
+              ) : null}
+            </div>
+            {record.tag ? (
+              <TagBadge label={record.tag.name} color={record.tag.color} compact />
+            ) : (
+              <span className="text-[11px] text-[#A8B8B0]">未分类</span>
+            )}
+          </div>
+        ))}
+      </div>
+    </SectionCard>
+  );
+
   return (
     <div className="flex h-full flex-col">
       <header className="px-4 pb-2 pt-4">
@@ -127,7 +226,7 @@ export default function ReviewPage() {
         <p className="mt-1 text-[13px] text-[#8C9A97]">回顾过去，遇见成长</p>
       </header>
 
-      <div className="flex-1 overflow-y-auto px-4 pb-4">
+      <div className="flex-1 overflow-y-auto px-4 pb-4 [scrollbar-gutter:stable]">
         {notice ? <StateBanner tone="error" message={notice} className="mb-4" /> : null}
 
         <div className="mb-4 flex items-center gap-2">
@@ -148,12 +247,14 @@ export default function ReviewPage() {
           </button>
         </div>
 
-        <div className="mb-4 flex items-center justify-between rounded-[18px] bg-white/78 p-1">
+        <div className="mb-4 flex items-center rounded-[16px] bg-[#E8F2EF] p-1">
           <button
             type="button"
             onClick={() => setViewMode("summary")}
-            className={`flex-1 rounded-[14px] px-3 py-2 text-[14px] font-medium ${
-              viewMode === "summary" ? "bg-[#F2FBFA] text-[#16967F]" : "text-[#6B7A7A]"
+            className={`flex-1 rounded-[13px] px-4 py-2.5 text-[14px] font-medium transition-all duration-200 ${
+              viewMode === "summary"
+                ? "bg-white text-[#16967F] shadow-[0_2px_8px_rgba(18,46,40,0.08)]"
+                : "text-[#6B7A7A]"
             }`}
           >
             月度回顾
@@ -161,30 +262,59 @@ export default function ReviewPage() {
           <button
             type="button"
             onClick={() => setViewMode("records")}
-            className={`flex-1 rounded-[14px] px-3 py-2 text-[14px] font-medium ${
-              viewMode === "records" ? "bg-[#F2FBFA] text-[#16967F]" : "text-[#6B7A7A]"
+            className={`flex-1 rounded-[13px] px-4 py-2.5 text-[14px] font-medium transition-all duration-200 ${
+              viewMode === "records"
+                ? "bg-white text-[#16967F] shadow-[0_2px_8px_rgba(18,46,40,0.08)]"
+                : "text-[#6B7A7A]"
             }`}
           >
             全部记录
           </button>
         </div>
 
-        <SectionCard className="mb-4 flex items-center justify-between">
-          <button type="button" onClick={() => moveMonth("prev")} className="rounded-full p-2 text-[#6B7A7A]">
-            <CaretLeft size={18} />
-          </button>
-          <p className="text-[16px] font-semibold text-[#1F2A2A]">
-            {dayjs(`${reviewMonth}-01`).format("YYYY年M月")}
-          </p>
-          <button
-            type="button"
-            onClick={() => moveMonth("next")}
-            disabled={reviewMonth === currentMonth}
-            className="rounded-full p-2 text-[#6B7A7A] disabled:opacity-40"
-          >
-            <CaretRight size={18} />
-          </button>
-        </SectionCard>
+        {viewMode === "summary" ? (
+          <SectionCard className="mb-4 grid grid-cols-[36px_1fr_36px] items-center">
+            <button type="button" onClick={() => moveMonth("prev")} className="flex h-9 w-9 items-center justify-center rounded-full text-[#6B7A7A]">
+              <CaretLeft size={18} />
+            </button>
+            <p className="text-center text-[16px] font-semibold text-[#1F2A2A]">
+              {dayjs(`${reviewMonth}-01`).format("YYYY年M月")}
+            </p>
+            <button
+              type="button"
+              onClick={() => moveMonth("next")}
+              disabled={reviewMonth === currentMonth}
+              className="flex h-9 w-9 items-center justify-center rounded-full text-[#6B7A7A] disabled:opacity-40"
+            >
+              <CaretRight size={18} />
+            </button>
+          </SectionCard>
+        ) : null}
+
+        {/* 全部记录时间范围切换 */}
+        {viewMode === "records" ? (
+          <div className="mb-4 flex items-center rounded-[12px] bg-[#E8F2EF] p-1">
+            {([
+              { key: "month" as const, label: "按月" },
+              { key: "3months" as const, label: "3个月" },
+              { key: "6months" as const, label: "6个月" },
+              { key: "year" as const, label: "本年" },
+            ]).map(({ key, label }) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setRecordsTimeRange(key)}
+                className={`flex-1 rounded-[10px] px-2 py-2 text-[13px] font-medium transition-all duration-200 ${
+                  recordsTimeRange === key
+                    ? "bg-white text-[#16967F] shadow-[0_2px_8px_rgba(18,46,40,0.08)]"
+                    : "text-[#6B7A7A]"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        ) : null}
 
         {hasFilters ? (
           <div className="mb-4 flex flex-wrap items-center gap-2 rounded-[16px] bg-[#F2FBFA] px-3 py-3">
@@ -272,20 +402,33 @@ export default function ReviewPage() {
               ) : (
                 <div className="flex flex-col gap-3">
                   {summary.recentRecords.slice(0, 5).map((record) => (
-                    <div key={record.id} className="flex items-start justify-between gap-3 rounded-[14px] bg-[#F7FAF9] px-3 py-3">
-                      <div className="min-w-0 flex-1">
-                        <p className="text-[13px] text-[#8EA09B]">
-                          {dayjs(record.date).format("M月D日")}
-                        </p>
-                        <p className="mt-1 text-[14px] font-medium text-[#1F2A2A]">{record.title}</p>
-                      </div>
-                      {record.tag ? <TagBadge label={record.tag.name} color={record.tag.color} compact /> : null}
-                    </div>
+                    <RecordCard key={record.id} record={record} />
                   ))}
                 </div>
               )}
             </SectionCard>
           </div>
+        ) : recordsTimeRange !== "month" ? (
+          /* 时间范围预设模式 */
+          rangeLoading ? (
+            <div className="flex flex-col gap-4">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <SectionCard key={i} className="h-[120px] animate-pulse bg-white/60" />
+              ))}
+            </div>
+          ) : groupedRangeResults.length === 0 ? (
+            <EmptyState
+              icon={<CalendarBlank size={26} />}
+              title="没有找到符合条件的记录"
+              description="当前时间范围内还没有记录。"
+            />
+          ) : (
+            <div className="flex flex-col gap-4">
+              {groupedRangeResults.map((group) => (
+                <RecordGroup key={group.date} group={group} />
+              ))}
+            </div>
+          )
         ) : groupedResults.length === 0 ? (
           <EmptyState
             icon={<CalendarBlank size={26} />}
@@ -295,30 +438,7 @@ export default function ReviewPage() {
         ) : (
           <div className="flex flex-col gap-4">
             {groupedResults.map((group) => (
-              <SectionCard key={group.date}>
-                <h3 className="mb-3 flex items-center gap-2 text-[14px] font-medium text-[#1F2A2A]">
-                  <CalendarBlank size={16} className="text-[#22C3A6]" />
-                  {dayjs(group.date).format("M月D日 dddd")}
-                </h3>
-
-                <div className="flex flex-col gap-2">
-                  {group.records.map((record) => (
-                    <div key={record.id} className="flex items-center gap-3 rounded-[12px] bg-[#F7FAF9] px-3 py-3">
-                      <div className="min-w-0 flex-1">
-                        <p className="text-[14px] font-medium text-[#1F2A2A]">{record.title}</p>
-                        {record.note ? (
-                          <p className="mt-1 text-[12px] text-[#8EA09B]">{record.note}</p>
-                        ) : null}
-                      </div>
-                      {record.tag ? (
-                        <TagBadge label={record.tag.name} color={record.tag.color} compact />
-                      ) : (
-                        <span className="text-[11px] text-[#A8B8B0]">未分类</span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </SectionCard>
+              <RecordGroup key={group.date} group={group} />
             ))}
           </div>
         )}

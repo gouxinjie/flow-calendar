@@ -31,12 +31,19 @@ export async function PUT(
 
     const { id } = await params;
     const body = await request.json();
-    const { title, tagId, date, note } = body;
+    const { title, tagId, date, note, startTime } = body;
 
     // 校验记录归属
     const existing = await prisma.activityLog.findUnique({ where: { id } });
     if (!existing || existing.userId !== userId) {
       return error("NOT_FOUND", "记录不存在", 404);
+    }
+
+    // 校验开始时间格式
+    if (startTime !== undefined && startTime !== null && startTime !== "") {
+      if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(String(startTime))) {
+        return error("INVALID_PARAMS", "开始时间格式不正确", 400);
+      }
     }
 
     // 校验日期
@@ -69,6 +76,7 @@ export async function PUT(
         ...(tagId !== undefined && { tagId: tagId || null }),
         ...(date !== undefined && { date }),
         ...(note !== undefined && { note: String(note).trim() || null }),
+        ...(startTime !== undefined && { startTime: startTime ? String(startTime).trim() : null }),
       },
       include: { tag: true },
     });

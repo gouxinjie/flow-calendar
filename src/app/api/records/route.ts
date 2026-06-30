@@ -7,6 +7,7 @@
  */
 import { NextRequest } from "next/server";
 import dayjs from "dayjs";
+import type { Prisma } from "@prisma/client";
 
 import { prisma } from "@/server/db";
 import { getUserId } from "@/server/auth";
@@ -33,7 +34,7 @@ export async function GET(request: NextRequest) {
     const sort = searchParams.get("sort") === "asc" ? "asc" : "desc";
 
     // 构建查询条件
-    const where: Record<string, unknown> = { userId };
+    const where: Prisma.ActivityLogWhereInput = { userId };
 
     if (date) {
       where.date = date;
@@ -89,10 +90,11 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, tagId, date, note } = body;
+    const { title, tagId, date, note, startTime } = body;
     const normalizedTitle = String(title ?? "").trim();
     const normalizedDate = String(date ?? "").trim();
     const normalizedNote = String(note ?? "").trim();
+    const normalizedStartTime = startTime ? String(startTime).trim() : null;
 
     // 校验必填字段
     if (!normalizedTitle || !normalizedDate) {
@@ -101,6 +103,11 @@ export async function POST(request: NextRequest) {
 
     if (!isValidDate(normalizedDate)) {
       return error("INVALID_DATE", "日期格式不正确", 400);
+    }
+
+    // 校验开始时间格式 HH:mm
+    if (normalizedStartTime && !/^([01]\d|2[0-3]):[0-5]\d$/.test(normalizedStartTime)) {
+      return error("INVALID_PARAMS", "开始时间格式不正确", 400);
     }
 
     // 校验日期不能是未来
@@ -135,6 +142,7 @@ export async function POST(request: NextRequest) {
         tagId: tagId || null,
         date: normalizedDate,
         note: normalizedNote || null,
+        startTime: normalizedStartTime,
       },
       include: { tag: true },
     });

@@ -9,7 +9,7 @@
   --accent-orange: #ff9f43;
   --accent-purple: #8b8aef;
   --accent-greyGreen: #a8b8b0;
-  --bg-page: #F7FAF9;
+  --bg-page: #f1f9f6;
   --bg-card: #ffffff;
   --text-primary: #1f2a2a;
   --text-secondary: #6b7a7a;
@@ -40,9 +40,7 @@
   }
 
   body {
-    background:
-      radial-gradient(circle at top, rgba(34, 195, 166, 0.08), transparent 28%),
-      linear-gradient(180deg, #f9fcfb 0%, #F7FAF9 38%, #f5f8f7 100%);
+    background: #f1f9f6;
     color: var(--text-primary);
     font-family: var(--font-noto-sans-sc), sans-serif;
     font-size: 14px;
@@ -71,6 +69,22 @@
 ::-webkit-scrollbar-thumb {
   background: rgba(107, 122, 122, 0.18);
   border-radius: 999px;
+}
+
+/* ========== 页面切换动效 ========== */
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-page-enter {
+  animation: pageEnter 220ms ease-out both;
 }
 
 /* ========== 通用工具类 ========== */

@@ -5,12 +5,12 @@
  * @description 月历网格组件
  * @author gouxinjie
  * @created 2026-06-22
- * @updated 2026-06-24
+ * @updated 2026-06-30
  */
-import type { CSSProperties } from "react";
 import Link from "next/link";
 
 import { cn } from "@/lib/cn";
+import { getCalendarTagStyle } from "@/lib/tag-color";
 import type { CalendarCell } from "@/types/models";
 
 interface CalendarMonthProps {
@@ -20,47 +20,6 @@ interface CalendarMonthProps {
 
 function truncateLabel(text: string, maxLen = 3): string {
   return text.slice(0, maxLen);
-}
-
-function mixColor(channel: number, target: number, ratio: number): number {
-  return Math.round(channel * (1 - ratio) + target * ratio);
-}
-
-function hexToRgb(hex: string): { r: number; g: number; b: number } {
-  return {
-    r: Number.parseInt(hex.slice(1, 3), 16),
-    g: Number.parseInt(hex.slice(3, 5), 16),
-    b: Number.parseInt(hex.slice(5, 7), 16),
-  };
-}
-
-function toRgbString(rgb: { r: number; g: number; b: number }): string {
-  return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
-}
-
-function getRgbBrightness(rgb: { r: number; g: number; b: number }): number {
-  return (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
-}
-
-function getTagStyle(tagColor?: string): CSSProperties | undefined {
-  if (!tagColor || !/^#[0-9A-Fa-f]{6}$/.test(tagColor)) {
-    return undefined;
-  }
-
-  const rgb = hexToRgb(tagColor);
-  const background =
-    getRgbBrightness(rgb) >= 176
-      ? {
-          r: mixColor(rgb.r, 0, 0.16),
-          g: mixColor(rgb.g, 0, 0.16),
-          b: mixColor(rgb.b, 0, 0.16),
-        }
-      : rgb;
-
-  return {
-    backgroundColor: toRgbString(background),
-    color: "#FFFFFF",
-  };
 }
 
 export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
@@ -83,7 +42,7 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
               : "border-2 border-[#5DD1B8] bg-white"
             : cell.isSelected
               ? "border-[#5DD1B8] bg-[#F5FDFB] shadow-[inset_0_0_0_1px_rgba(93,209,184,0.08)]"
-              : "bg-[#F7FAF9]";
+              : "bg-white";
 
           return (
             <Link
@@ -104,7 +63,7 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
                       "inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-[#22C3A6] px-1 text-white",
                     !cell.isToday && cell.isSelected && "text-[#16967F]",
                     !cell.isToday && cell.isCurrentMonth && "text-[#1F2A2A]",
-                    !cell.isCurrentMonth && "text-[#BCC6C3]",
+                    !cell.isCurrentMonth && "text-[#afaeb1]",
                   )}
                 >
                   {cell.dayNumber}
@@ -119,7 +78,7 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
                       ? "font-medium text-[#54C1AC]"
                       : cell.isCurrentMonth
                         ? "text-[#A8B8B0]"
-                        : "text-[#CBD3D1]",
+                        : "text-[#afaeb1]",
                   )}
                 >
                   {cell.lunarLabel}
@@ -131,11 +90,10 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
                   <span
                     key={summary.id}
                     className={cn(
-                      "inline-flex h-6 w-[4em] items-center justify-center self-center whitespace-nowrap rounded-[4px] px-1.5 text-[11px] font-normal leading-none tracking-[-0.02em]",
-                      !summary.tagColor && "bg-[#22C3A6] text-white",
+                      "inline-flex h-6 w-[4em] items-center justify-center self-center whitespace-nowrap rounded-[4px] px-1.5 text-[11px] font-normal leading-none tracking-[-0.02em] text-white",
                       !cell.isCurrentMonth && "opacity-70",
                     )}
-                    style={getTagStyle(summary.tagColor)}
+                    style={{ background: getCalendarTagStyle(summary.tagColor).background }}
                   >
                     {truncateLabel(summary.title)}
                   </span>

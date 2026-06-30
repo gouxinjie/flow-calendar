@@ -123,9 +123,9 @@ export default function AccountPage() {
           <input
             type="tel"
             value={phone}
-            onChange={(event) => setPhone(event.target.value)}
+            readOnly
             placeholder="可选，用于后续同步能力"
-            className="w-full rounded-[14px] border border-[#DCE7E4] bg-white px-4 py-3 text-[14px] text-[#1F2A2A] outline-none focus:border-[#22C3A6]"
+            className="w-full rounded-[14px] border border-[#DCE7E4] bg-[#F7FAF9] px-4 py-3 text-[14px] text-[#1F2A2A] outline-none"
           />
         </SectionCard>
 

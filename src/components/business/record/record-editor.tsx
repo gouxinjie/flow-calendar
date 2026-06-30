@@ -11,7 +11,9 @@ import { useState } from "react";
 
 import type { ActivityTag, RecordFormData } from "@/types/models";
 import { BottomSheet } from "@/components/business/shared/bottom-sheet";
+import { TimePicker } from "@/components/commons/time-picker";
 import { cn } from "@/lib/cn";
+import { getNeutralButtonStyle, getTagButtonStyle } from "@/lib/tag-color";
 
 interface RecordEditorProps {
   open: boolean;
@@ -23,17 +25,20 @@ interface RecordEditorProps {
   defaultDate: string;
   saving?: boolean;
   errorMessage?: string;
+  /** 编辑器模式：create=新增 / edit=编辑 / copy=复制 */
+  mode?: "create" | "edit" | "copy";
 }
 
 function getInitialRecordForm(
   initialData: RecordFormData | undefined,
   defaultDate: string,
-): Required<RecordFormData> {
+): Required<RecordFormData> & { startTime: string } {
   return {
     title: initialData?.title ?? "",
     tagId: initialData?.tagId ?? "",
     date: initialData?.date ?? defaultDate,
     note: initialData?.note ?? "",
+    startTime: initialData?.startTime ?? "",
   };
 }
 
@@ -47,10 +52,12 @@ export function RecordEditor({
   defaultDate,
   saving = false,
   errorMessage,
+  mode,
 }: RecordEditorProps) {
   const initialForm = getInitialRecordForm(initialData, defaultDate);
   const [title, setTitle] = useState(initialForm.title);
   const [tagId, setTagId] = useState<string | undefined>(initialForm.tagId || undefined);
+  const [startTime, setStartTime] = useState(initialForm.startTime);
   const [note, setNote] = useState(initialForm.note);
   const [localError, setLocalError] = useState("");
 
@@ -66,18 +73,23 @@ export function RecordEditor({
     await onSave({
       title: title.trim(),
       tagId,
+      startTime: startTime || undefined,
       date: defaultDate,
       note: note.trim() || undefined,
     });
   };
 
-  const isEdit = !!initialData;
+  const isEdit = mode === "edit";
+  const isCopy = mode === "copy";
+
+  // 标题按模式区分
+  const editorTitle = isEdit ? "编辑记录" : isCopy ? "复制记录" : "新增记录";
 
   return (
     <BottomSheet
       open={open}
       onClose={onClose}
-      title={isEdit ? "编辑记录" : "新增记录"}
+      title={editorTitle}
       footer={
         <div className="flex gap-3">
           {isEdit && onDelete ? (
@@ -126,15 +138,20 @@ export function RecordEditor({
 
         <div>
           <label className="mb-1.5 block text-[13px] font-medium text-[#6B7A7A]">
+            开始时间（可选）
+          </label>
+          <TimePicker value={startTime} onChange={setStartTime} />
+        </div>
+
+        <div>
+          <label className="mb-1.5 block text-[13px] font-medium text-[#6B7A7A]">
             标签（可选）
           </label>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setTagId(undefined)}
-              className={cn(
-                "rounded-[10px] px-3 py-1.5 text-[13px] font-medium transition-colors",
-                !tagId ? "bg-[#1F2A2A] text-white" : "bg-[#F3F7F6] text-[#6B7A7A]",
-              )}
+              className="rounded-[6px] px-4 py-1.5 text-[13px] font-medium transition-opacity active:opacity-80"
+              style={getNeutralButtonStyle(!tagId)}
             >
               无标签
             </button>
@@ -144,11 +161,8 @@ export function RecordEditor({
                 <button
                   key={tag.id}
                   onClick={() => setTagId(tag.id)}
-                  className="rounded-[10px] px-3 py-1.5 text-[13px] font-medium transition-colors"
-                  style={{
-                    backgroundColor: tagId === tag.id ? tag.color : `${tag.color}18`,
-                    color: tagId === tag.id ? "#FFFFFF" : tag.color,
-                  }}
+                  className="rounded-[6px] px-4 py-1.5 text-[13px] font-medium transition-opacity active:opacity-80"
+                  style={getTagButtonStyle(tag.color, tagId === tag.id)}
                 >
                   {tag.name}
                 </button>

@@ -160,7 +160,7 @@ export default function CalendarPage() {
         {pageError ? <StateBanner tone="error" message={pageError} /> : null}
 
         {showInlineEmptyTip ? (
-          <section className="surface-card flex items-center justify-between gap-3 px-4 py-3">
+          <section className="surface-card flex items-center justify-between gap-3 px-4 py-3 !rounded-[10px]">
             <div className="min-w-0">
               <p className="text-[13px] font-semibold text-[#1F2A2A]">这个月还没有记录</p>
               <p className="mt-0.5 text-[12px] text-[#6B7A7A]">点底部加号，先记下一条。</p>
@@ -168,7 +168,7 @@ export default function CalendarPage() {
             <button
               type="button"
               onClick={() => setShowRecordEditor(true)}
-              className="shrink-0 rounded-full bg-[#22C3A6] px-3.5 py-2 text-[12px] font-semibold text-white"
+              className="shrink-0 rounded-lg bg-[#22C3A6] px-3.5 py-2 text-[12px] font-semibold text-white"
             >
               新增
             </button>

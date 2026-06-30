@@ -53,7 +53,11 @@ export interface ActivityLog {
   tagId?: string | null;
   title: string;
   note?: string | null;
+  timeType: string;          // all_day / scheduled
+  status: string;             // logged（本期仅此一种状态）
+  startTime?: string | null;
   date: string;
+  repeatRuleId?: string | null;
   tag?: ActivityTag | null;
   createdAt: string;
   updatedAt: string;
@@ -153,6 +157,7 @@ export type ApiResponse<T> = ApiSuccess<T> | ApiError;
 export interface RecordFormData {
   title: string;
   tagId?: string;
+  startTime?: string;
   date: string;
   note?: string;
 }

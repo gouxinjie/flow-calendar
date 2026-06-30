@@ -7,9 +7,9 @@
  * @created 2026-06-22
  * @updated 2026-06-22
  */
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import { Copy, DotsThree, NotePencil } from "@phosphor-icons/react";
+import { Copy, DotsThree, NotePencil, Trash } from "@phosphor-icons/react";
 import dayjs from "dayjs";
 
 import { ConfirmSheet } from "@/components/commons/confirm-sheet";
@@ -40,6 +40,11 @@ export default function DateDetailPage() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [editingRecord, setEditingRecord] = useState<ActivityLog | null>(null);
   const [draftRecord, setDraftRecord] = useState<RecordFormData | undefined>(undefined);
+  /** 编辑器模式 */
+  const [editorMode, setEditorMode] = useState<"create" | "edit" | "copy">("create");
+  /** 当前打开更多菜单的记录 ID */
+  const [menuRecordId, setMenuRecordId] = useState<string | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let active = true;
@@ -83,6 +88,18 @@ export default function DateDetailPage() {
     };
   }, [date]);
 
+  // 点击外部关闭更多菜单
+  useEffect(() => {
+    if (!menuRecordId) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuRecordId(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [menuRecordId]);
+
   const displayDate = dayjs(date).format("M月D日 dddd");
   const lunarLabel = getLunarLabel(date);
   const sortedRecords = useMemo(() => sortRecordsByTimeline(records), [records]);
@@ -91,6 +108,7 @@ export default function DateDetailPage() {
   const handleCreate = () => {
     setEditingRecord(null);
     setDraftRecord(undefined);
+    setEditorMode("create");
     setShowEditor(true);
   };
 
@@ -100,8 +118,10 @@ export default function DateDetailPage() {
       title: record.title,
       tagId: record.tagId ?? undefined,
       date: record.date,
+      startTime: record.startTime ?? undefined,
       note: record.note ?? undefined,
     });
+    setEditorMode("edit");
     setShowEditor(true);
   };
 
@@ -111,9 +131,18 @@ export default function DateDetailPage() {
       title: record.title,
       tagId: record.tagId ?? undefined,
       date: record.date,
+      startTime: record.startTime ?? undefined,
       note: record.note ?? undefined,
     });
+    setEditorMode("copy");
     setShowEditor(true);
+  };
+
+  /** 从更多菜单触发删除：直接弹确认窗 */
+  const handleMenuDelete = (record: ActivityLog) => {
+    setEditingRecord(record);
+    setMenuRecordId(null);
+    setShowDeleteConfirm(true);
   };
 
   const handleSave = async (data: RecordFormData) => {
@@ -225,24 +254,61 @@ export default function DateDetailPage() {
                     ) : null}
                   </div>
 
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-start gap-1.5">
+                    {/* 复制 */}
                     <button
                       type="button"
                       onClick={() => handleCopy(record)}
-                      className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA09B] active:bg-[#F3F7F6]"
+                      className="flex flex-col items-center gap-0.5"
                     >
-                      <Copy size={16} />
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA09B] active:bg-[#F3F7F6]">
+                        <Copy size={16} />
+                      </span>
+                      <span className="text-[10px] text-[#A8B8B0]">复制</span>
                     </button>
+                    {/* 编辑 */}
                     <button
                       type="button"
                       onClick={() => handleEdit(record)}
-                      className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA09B] active:bg-[#F3F7F6]"
+                      className="flex flex-col items-center gap-0.5"
                     >
-                      <NotePencil size={16} />
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA09B] active:bg-[#F3F7F6]">
+                        <NotePencil size={16} />
+                      </span>
+                      <span className="text-[10px] text-[#A8B8B0]">编辑</span>
                     </button>
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full text-[#D2DAD8]">
-                      <DotsThree size={16} weight="bold" />
-                    </span>
+                    {/* 更多 */}
+                    <div className="relative" ref={menuRecordId === record.id ? menuRef : undefined}>
+                      <button
+                        type="button"
+                        onClick={() => setMenuRecordId(menuRecordId === record.id ? null : record.id)}
+                        className="flex flex-col items-center gap-0.5"
+                      >
+                        <span
+                          className={cn(
+                            "flex h-8 w-8 items-center justify-center rounded-full",
+                            menuRecordId === record.id
+                              ? "bg-[#F3F7F6] text-[#1F2A2A]"
+                              : "text-[#8EA09B] active:bg-[#F3F7F6]",
+                          )}
+                        >
+                          <DotsThree size={16} weight="bold" />
+                        </span>
+                        <span className="text-[10px] text-[#A8B8B0]">更多</span>
+                      </button>
+                      {menuRecordId === record.id ? (
+                        <div className="absolute right-0 top-full z-30 mt-1 w-36 rounded-[14px] border border-[#DCE7E4] bg-white py-1 shadow-[0_8px_24px_rgba(18,46,40,0.12)]">
+                          <button
+                            type="button"
+                            onClick={() => handleMenuDelete(record)}
+                            className="flex w-full items-center gap-2.5 px-4 py-2.5 text-[13px] font-medium text-[#E06060] active:bg-[#FFF5F5]"
+                          >
+                            <Trash size={15} />
+                            删除记录
+                          </button>
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
                 </div>
 
@@ -283,6 +349,7 @@ export default function DateDetailPage() {
         defaultDate={date}
         saving={saving}
         errorMessage={notice?.tone === "error" ? notice.message : undefined}
+        mode={editorMode}
       />
 
       <ConfirmSheet

@@ -23,18 +23,21 @@ model User {
 }
 
 /// 活动记录表 - 用户每天的生活记录
-/// 本期只有"已记录"一种状态，不引入计划型状态
 model ActivityLog {
-  id          String    @id @default(cuid())
-  userId      String
-  tagId       String?
-  title       String
-  note        String?
-  date        String    // YYYY-MM-DD 格式
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tag         ActivityTag? @relation(fields: [tagId], references: [id], onDelete: SetNull)
+  id            String    @id @default(cuid())
+  userId        String
+  tagId         String?
+  title         String
+  note          String?
+  timeType      String    @default("all_day") // 时间类型：all_day / scheduled
+  status        String    @default("logged")  // 记录状态：logged（本期仅此一种）
+  startTime     String?   // HH:mm 格式开始时间，如 "07:30"
+  date          String    // YYYY-MM-DD 格式
+  repeatRuleId  String?   // 重复规则 ID，非重复事件为 null
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tag           ActivityTag? @relation(fields: [tagId], references: [id], onDelete: SetNull)
 
   @@index([userId, date])
 }
