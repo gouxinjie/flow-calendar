@@ -47,8 +47,23 @@ export async function GET(request: NextRequest) {
     const uniqueDates = new Set(records.map((r) => r.date));
     const recordDays = uniqueDates.size;
 
+    // 查询上月记录数与天数，用于环比
+    const previousMonth = dayjs(`${month}-01`).subtract(1, "month").format("YYYY-MM");
+    const previousRecords = await prisma.activityLog.findMany({
+      where: {
+        userId,
+        date: { startsWith: previousMonth },
+      },
+      select: { date: true },
+    });
+    const previousTotal = previousRecords.length;
+    const previousUniqueDates = new Set(previousRecords.map((r) => r.date));
+    const previousDays = previousUniqueDates.size;
+    const totalRecordsDelta = totalRecords - previousTotal;
+    const recordDaysDelta = recordDays - previousDays;
+
     // 高频标签 Top N（排除未分类）
-    const tagCountMap = new Map<string, { tagId: string; tagName: string; tagColor: string; count: number }>();
+    const tagCountMap = new Map<string, { tagId: string; tagName: string; tagColor: string; tagIcon: string | null; count: number }>();
     for (const r of records) {
       if (r.tag) {
         const existing = tagCountMap.get(r.tag.id);
@@ -59,6 +74,7 @@ export async function GET(request: NextRequest) {
             tagId: r.tag.id,
             tagName: r.tag.name,
             tagColor: r.tag.color,
+            tagIcon: r.tag.icon ?? null,
             count: 1,
           });
         }
@@ -76,6 +92,8 @@ export async function GET(request: NextRequest) {
       month: parseInt(month.split("-")[1]),
       totalRecords,
       recordDays,
+      totalRecordsDelta,
+      recordDaysDelta,
       topTags,
       recentRecords,
     });

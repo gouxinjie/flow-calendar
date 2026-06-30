@@ -104,10 +104,15 @@ export interface MonthReview {
   month: number;
   totalRecords: number;
   recordDays: number;
+  /** 较上月记录数差值（正数=增加） */
+  totalRecordsDelta: number;
+  /** 较上月记录天数差值（正数=增加） */
+  recordDaysDelta: number;
   topTags: Array<{
     tagId: string;
     tagName: string;
     tagColor: string;
+    tagIcon?: string | null;
     count: number;
   }>;
   recentRecords: ActivityLog[];
