@@ -172,15 +172,6 @@ export default function ReviewPage() {
     }));
   }, [rangeRecords]);
 
-  /** 高频标签整理：叠加 tag 详情以拿到 icon */
-  const topTagsWithIcon = useMemo(() => {
-    if (!summary) return [];
-    return summary.topTags.map((tag) => {
-      const fullTag = tags.find((t) => t.id === tag.tagId);
-      return { ...tag, tagIcon: fullTag?.icon ?? tag.tagIcon ?? null };
-    });
-  }, [summary, tags]);
-
   const hasFilters = Boolean(filters.keyword || filters.tagId || filters.startDate || filters.endDate);
   const currentMonth = dayjs().format("YYYY-MM");
 
@@ -481,33 +472,17 @@ export default function ReviewPage() {
             {/* 高频标签 Top 5 */}
             <SectionCard>
               <h3 className="mb-4 text-[15px] font-semibold text-[#1F2A2A]">
-                高频标签 <span className="text-[#A8B8B0]">Top {topTagsWithIcon.length || 5}</span>
+                高频标签 <span className="text-[#A8B8B0]">Top {summary.topTags.length || 5}</span>
               </h3>
-              {topTagsWithIcon.length === 0 ? (
+              {summary.topTags.length === 0 ? (
                 <p className="text-[13px] text-[#8EA09B]">本月还没有带标签的记录。</p>
               ) : (
                 <div className="flex flex-col gap-3.5">
-                  {topTagsWithIcon.map((tag) => {
-                    const hasIcon = Boolean(tag.tagIcon);
-                    return (
+                  {summary.topTags.map((tag) => (
                     <div
                       key={tag.tagId}
-                      className={cn(
-                        "grid items-center gap-3",
-                        hasIcon
-                          ? "grid-cols-[2.25rem_5rem_1fr_2rem]"
-                          : "grid-cols-[5rem_1fr_2rem]",
-                      )}
+                      className="grid grid-cols-[3.5rem_1fr_1rem] items-center gap-2"
                     >
-                      {hasIcon ? (
-                        <span
-                          className="flex h-9 w-9 items-center justify-center rounded-[10px] text-[16px]"
-                          style={{ backgroundColor: `${tag.tagColor}26` }}
-                          aria-hidden="true"
-                        >
-                          {tag.tagIcon}
-                        </span>
-                      ) : null}
                       <span className="truncate text-[13px] font-medium text-[#1F2A2A]">
                         {tag.tagName}
                       </span>
@@ -516,7 +491,7 @@ export default function ReviewPage() {
                           className="h-2 rounded-full transition-all"
                           style={{
                             width: `${Math.max(
-                              (tag.count / Math.max(topTagsWithIcon[0]?.count ?? 1, 1)) * 100,
+                              (tag.count / Math.max(summary.topTags[0]?.count ?? 1, 1)) * 100,
                               18,
                             )}%`,
                             backgroundColor: tag.tagColor,
@@ -527,8 +502,7 @@ export default function ReviewPage() {
                         {tag.count}
                       </span>
                     </div>
-                    );
-                  })}
+                  ))}
                 </div>
               )}
             </SectionCard>
@@ -568,19 +542,8 @@ export default function ReviewPage() {
           ) : (
             <SectionCard>
               <div className="flex flex-col divide-y divide-[#EEF4F2]">
-                {tagStats.map(({ tag, count }) => {
-                  const hasIcon = Boolean(tag.icon);
-                  return (
-                  <div key={tag.id} className="flex items-center gap-3 py-3">
-                    {hasIcon ? (
-                      <span
-                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] text-[16px]"
-                        style={{ backgroundColor: `${tag.color}26` }}
-                        aria-hidden="true"
-                      >
-                        {tag.icon}
-                      </span>
-                    ) : null}
+                {tagStats.map(({ tag, count }) => (
+                  <div key={tag.id} className="flex items-center gap-2 py-3">
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-[14px] font-medium text-[#1F2A2A]">{tag.name}</p>
                       <p className="mt-0.5 text-[12px] text-[#8EA09B]">
@@ -591,8 +554,7 @@ export default function ReviewPage() {
                       {count}
                     </span>
                   </div>
-                );
-                })}
+                ))}
               </div>
             </SectionCard>
           )
