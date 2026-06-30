@@ -185,16 +185,12 @@ export default function CalendarPage() {
         onClick={() => setShowRecordEditor(true)}
         disabled={isSelectedDateFull}
         className={cn(
-          "glass-fab absolute bottom-0 left-1/2 z-20 flex h-12 w-12 -translate-x-1/2 items-center justify-center overflow-hidden rounded-full text-white active:scale-[0.97]",
+          "glass-fab absolute bottom-0 left-1/2 z-20 flex h-[52px] w-[52px] -translate-x-1/2 items-center justify-center rounded-full text-white",
           isSelectedDateFull && "cursor-not-allowed opacity-50",
         )}
         aria-label={isSelectedDateFull ? "当日记录已满" : "新增记录"}
       >
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute left-[10px] top-[7px] h-3 w-5 rounded-full bg-white/10 blur-[2px]"
-        />
-        <Plus size={28} weight="bold" className="relative drop-shadow-[0_3px_8px_rgba(18,70,60,0.16)]" />
+        <Plus size={26} weight="regular" />
       </button>
 
       <MonthPickerSheet

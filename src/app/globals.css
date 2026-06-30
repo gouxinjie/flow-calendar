@@ -111,18 +111,21 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.65);
   }
 
-  /* 悬浮主按钮的玻璃质感 */
+  /* 悬浮主按钮：纯色实心 + 柔和投影 */
   .glass-fab {
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 30%, rgba(255, 255, 255, 0) 100%),
-      linear-gradient(155deg, rgba(88, 215, 192) 0%, rgba(34, 195, 166, 0.94) 52%, rgba(22, 150, 127, 0.96) 100%);
-    border: 1px solid rgba(22, 150, 127, 0.45);
-    backdrop-filter: blur(12px) saturate(118%);
+    background: linear-gradient(180deg, #2ECDB1 0%, #22C3A6 55%, #1BAE94 100%);
     box-shadow:
-      0 10px 20px rgba(34, 195, 166, 0.16),
-      0 4px 10px rgba(20, 54, 48, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.18),
-      inset 0 -4px 10px rgba(10, 88, 74, 0.12);
+      0 8px 18px rgba(34, 195, 166, 0.32),
+      0 2px 6px rgba(20, 54, 48, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  .glass-fab:active {
+    transform: scale(0.96);
+    box-shadow:
+      0 4px 10px rgba(34, 195, 166, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
   }
 
   .safe-pb {
