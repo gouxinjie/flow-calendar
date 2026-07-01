@@ -96,55 +96,55 @@ export default function AccountPage() {
         {notice ? <StateBanner tone={notice.tone} message={notice.message} className="mb-4" /> : null}
 
         <SectionCard className="mb-4">
-          <h3 className="mb-4 text-[14px] font-semibold text-[#6B7A7A]">基本资料</h3>
+          <h3 className="mb-4 text-[13px] font-semibold text-[#9BAE97]">基本资料</h3>
 
-          <div className="mb-4 flex items-center gap-3">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#F3FAF7] text-[22px] font-semibold text-[#3D9428]">
+          <div className="mb-5 flex items-center gap-3">
+            <div className="flex h-[52px] w-[52px] items-center justify-center rounded-full bg-[#E3F5DA] text-[20px] font-semibold text-[#5EBF3F] shadow-[0_2px_8px_rgba(94,191,63,0.15)]">
               {profile?.name?.charAt(0) ?? "F"}
             </div>
             <div>
-              <p className="text-[15px] font-medium text-[#1F2A2A]">
+              <p className="text-[15px] text-[#1F2A2A]">
                 {loading ? "读取中…" : profile?.name ?? "未命名用户"}
               </p>
-              <p className="mt-1 text-[12px] text-[#8EA094]">当前版本暂不支持上传头像</p>
+              <p className="mt-0.5 text-[12px] text-[#9BAE97]">暂不支持自定义头像</p>
             </div>
           </div>
 
-          <label className="mb-2 block text-[13px] font-medium text-[#6B7A7A]">用户名</label>
+          <label className="mb-2 block text-[13px] text-[#6B7A7A]">用户名</label>
           <input
             type="text"
             value={name}
             onChange={(event) => setName(event.target.value)}
             placeholder="请输入用户名"
-            className="mb-4 w-full rounded-[14px] border border-[#DCEAD2] bg-white px-4 py-3 text-[14px] text-[#1F2A2A] outline-none focus:border-[#5EBF3F]"
+            className="mb-4 w-full rounded-[16px] border border-[#DCEAD2] bg-white px-4 py-3 text-[14px] text-[#1F2A2A] outline-none transition-colors placeholder:text-[#BFC7C3] focus:border-[#5EBF3F] focus:ring-1 focus:ring-[#5EBF3F]/20"
           />
 
-          <label className="mb-2 block text-[13px] font-medium text-[#6B7A7A]">手机号</label>
+          <label className="mb-2 block text-[13px] text-[#6B7A7A]">手机号</label>
           <input
             type="tel"
             value={phone}
             readOnly
-            placeholder="可选，用于后续同步能力"
-            className="w-full rounded-[14px] border border-[#DCEAD2] bg-[#F3FAF7] px-4 py-3 text-[14px] text-[#1F2A2A] outline-none"
+            placeholder="暂不可修改"
+            className="w-full rounded-[16px] border border-[#DCEAD2] bg-[#F3FAF7] px-4 py-3 text-[14px] text-[#7C8A87] outline-none"
           />
         </SectionCard>
 
         <SectionCard className="mb-4">
-          <h3 className="mb-3 text-[14px] font-semibold text-[#6B7A7A]">联系信息</h3>
+          <h3 className="mb-3 text-[13px] font-semibold text-[#9BAE97]">联系信息</h3>
 
-          <div className="flex items-center gap-3 rounded-[14px] bg-[#F3FAF7] px-4 py-3">
-            <Phone size={18} className="text-[#8EA094]" />
+          <div className="flex items-center gap-3 rounded-[16px] bg-[#F3FAF7] px-4 py-3">
+            <Phone size={16} className="text-[#9BAE97] shrink-0" />
             <div className="min-w-0 flex-1">
               <p className="text-[12px] text-[#8EA094]">手机号</p>
-              <p className="text-[14px] text-[#1F2A2A]">{profile?.phone ?? "读取中…"}</p>
+              <p className="text-[14px] text-[#1F2A2A]">{profile?.phone ?? "—"}</p>
             </div>
           </div>
 
-          <div className="mt-3 flex items-center gap-3 rounded-[14px] bg-[#F3FAF7] px-4 py-3">
-            <Envelope size={18} className="text-[#8EA094]" />
+          <div className="mt-3 flex items-center gap-3 rounded-[16px] bg-[#F3FAF7] px-4 py-3">
+            <Envelope size={16} className="text-[#9BAE97] shrink-0" />
             <div className="min-w-0 flex-1">
               <p className="text-[12px] text-[#8EA094]">邮箱</p>
-              <p className="text-[14px] text-[#1F2A2A]">{profile?.email ?? "未填写"}</p>
+              <p className="text-[14px] text-[#7C8A87]">{profile?.email ?? "未填写"}</p>
             </div>
           </div>
         </SectionCard>
@@ -153,7 +153,7 @@ export default function AccountPage() {
           type="button"
           onClick={handleSave}
           disabled={saving || loading}
-          className="w-full rounded-[16px] bg-[#5EBF3F] py-3 text-[14px] font-semibold text-white disabled:opacity-60"
+          className="w-full rounded-[16px] bg-[#5EBF3F] py-3.5 text-[14px] font-semibold text-white transition-colors active:bg-[#4DAB30] disabled:opacity-50"
         >
           {saving ? "保存中…" : "保存修改"}
         </button>

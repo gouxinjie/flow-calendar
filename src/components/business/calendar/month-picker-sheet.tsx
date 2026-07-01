@@ -34,7 +34,7 @@ export function MonthPickerSheet({
   const thisYear = currentDate.getFullYear();
   const thisMonth = currentDate.getMonth() + 1;
 
-  const yearOptions = Array.from({ length: thisYear - 2020 + 1 }, (_, i) => 2020 + i);
+  const yearOptions = Array.from({ length: thisYear - 2021 + 1 }, (_, i) => 2021 + i);
 
   const handleSelect = (m: number) => {
     onSelect(year, m);

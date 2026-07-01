@@ -7,7 +7,7 @@
  * @created 2026-06-22
  * @updated 2026-07-01 — 改用 WAAPI 方案，解决 CSS 动画类切换不可靠的问题
  */
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { X } from "@phosphor-icons/react";
 
 interface BottomSheetProps {
@@ -51,8 +51,8 @@ export function BottomSheet({ open, onClose, title, children, footer }: BottomSh
     }
   }, [open]);
 
-  // 步骤 2：ref 挂载完成后执行动画（mounted 变化触发）
-  useEffect(() => {
+  // 步骤 2：useLayoutEffect 确保动画在浏览器绘制前启动，消除闪烁
+  useLayoutEffect(() => {
     if (!mounted) return;
     if (!panelRef.current || !shadeRef.current) return;
 
@@ -91,12 +91,18 @@ export function BottomSheet({ open, onClose, title, children, footer }: BottomSh
       <div
         ref={shadeRef}
         className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+        style={{ opacity: 0 }}
         onClick={onClose}
       />
+      {/* 面板底部预留导航栏高度，避免遮挡底部导航 */}
       <div
         ref={panelRef}
-        className="absolute bottom-0 left-0 right-0 z-10 max-h-[85vh] overflow-y-auto rounded-t-[28px] bg-[#FCFEFA]"
-        style={{ boxShadow: "0 -18px 40px rgba(45, 76, 70, 0.14)" }}
+        className="absolute left-0 right-0 z-10 max-h-[85vh] overflow-y-auto rounded-t-[28px] bg-[#FCFEFA]"
+        style={{
+          bottom: `calc(72px + env(safe-area-inset-bottom, 0px))`,
+          boxShadow: "0 -18px 40px rgba(45, 76, 70, 0.14)",
+          transform: "translateY(100%)",
+        }}
       >
         <div className="sticky top-0 z-10 rounded-t-[28px] border-b border-[#E0ECD7] bg-[#FCFEFA]/96 px-5 py-4 backdrop-blur">
           <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-[#D9E8E3]" />
