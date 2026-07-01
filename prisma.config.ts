@@ -5,7 +5,5 @@ export default defineConfig({
   migrations: {
     path: "prisma/migrations",
   },
-  datasource: {
-    url: "file:./prisma/dev.db",
-  },
+  /** datasource 的 url 由 schema.prisma 中 env("DATABASE_URL") 控制，此处不做覆盖 */
 });

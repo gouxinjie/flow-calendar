@@ -1,0 +1,76 @@
+name: Deploy to Alibaba Cloud ECS
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 生成 Prisma Client
+        run: npx prisma generate
+
+      - name: 构建项目
+        run: npm run build
+        env:
+          DATABASE_URL: "file:./dev.db" # 构建时仅需通过类型检查，实际数据库在 ECS 上
+
+      - name: 打包部署产物
+        run: |
+          mkdir -p deploy-package/.next/static
+          # standalone 自包含产物（含精简 node_modules）
+          cp -r .next/standalone/* deploy-package/
+          # 静态资源
+          cp -r .next/static/* deploy-package/.next/static/
+          # Prisma schema（ECS 上需运行 prisma generate / db push）
+          cp -r prisma deploy-package/
+          # PM2 配置（部署到 app 目录内，相对路径即可）
+          cp ecosystem.config.js deploy-package/
+          # 移除开发数据库文件，避免覆盖生产数据
+          rm -f deploy-package/prisma/dev.db
+          echo "打包完成 — $(du -sh deploy-package | cut -f1)"
+
+      - name: 同步文件到 ECS
+        uses: easingthemes/ssh-deploy@v5
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.ECS_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.ECS_HOST }}
+          REMOTE_USER: ${{ secrets.ECS_USER }}
+          SOURCE: "deploy-package/"
+          TARGET: ${{ secrets.ECS_DEPLOY_PATH }}
+          ARGS: "-avz --delete --exclude='prisma/prod.db' --exclude='.env'"
+          SCRIPT_BEFORE: |
+            mkdir -p ${{ secrets.ECS_DEPLOY_PATH }}
+          SCRIPT_AFTER: |
+            # 创建持久化数据目录（与 app 同级）
+            DEPLOY_BASE=$(dirname ${{ secrets.ECS_DEPLOY_PATH }})
+            mkdir -p $DEPLOY_BASE/data
+            mkdir -p $DEPLOY_BASE/logs
+
+            # 写入生产环境变量
+            cat > ${{ secrets.ECS_DEPLOY_PATH }}/.env << 'DOTENV'
+            DATABASE_URL="file:/var/www/flow-calendar/data/prod.db"
+            DOTENV
+
+            # 安装依赖 & 同步数据库
+            cd ${{ secrets.ECS_DEPLOY_PATH }}
+            npx prisma generate
+            npx prisma db push
+
+            # PM2 热重载（首次则启动）
+            pm2 reload ecosystem.config.js || pm2 start ecosystem.config.js
+            pm2 save
