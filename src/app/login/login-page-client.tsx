@@ -42,7 +42,6 @@ function setClientSessionCookie(userId: string): void {
 }
 
 export function LoginPageClient() {
-  const [checking, setChecking] = useState(true);
   const [mode, setMode] = useState<"login" | "register">("login");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("13113183859");
@@ -51,18 +50,15 @@ export function LoginPageClient() {
   const [loading, setLoading] = useState(false);
   const [notice, setNotice] = useState<{ tone: "error" | "success"; message: string } | null>(null);
 
-  // 客户端检查是否已有 session token（Cookie 或 localStorage），有则直接跳转月历页
-  // 夸克浏览器在 RSC 请求中不携带 Cookie，服务端无法做 redirect，
-  // 因此改为客户端兜底检查。
+  // 后台静默检查登录状态，已登录则直接跳转月历页
+  // 不阻塞表单渲染，避免 JS 加载慢时一直显示"加载中..."
   // 使用 window.location.replace 而非 router.replace，
   // 避免 Next.js 路由尚未初始化完成时抛出 "Router action dispatched before initialization" 错误
   useEffect(() => {
     const sessionToken = getSessionToken();
     if (sessionToken) {
       window.location.replace("/calendar");
-      return;
     }
-    setChecking(false);
   }, []);
 
   const handleSubmit = async () => {
@@ -128,13 +124,8 @@ export function LoginPageClient() {
 
   return (
     <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-[#f1f9f6] px-6">
-      {/* 检查登录状态时显示加载提示，防止 JS 加载失败时完全空白 */}
-      {checking ? (
-        <p className="text-[#A8B8B0] text-[14px] animate-pulse">加载中...</p>
-      ) : (
-        <>
-          {/* Logo / 品牌区 */}
-          <div className="animate-page-enter">
+      {/* Logo / 品牌区 */}
+      <div className="animate-page-enter">
           <div className="mb-10 text-center">
         <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-[12px] border border-[#D6ECE6] bg-white shadow-[0_24px_50px_rgba(34,195,166,0.12)]">
           <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
@@ -258,8 +249,6 @@ export function LoginPageClient() {
         </p>
           </div>
           </div>
-        </>
-      )}
     </div>
   );
 }
