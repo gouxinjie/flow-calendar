@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 /**
  * @component BottomSheet
@@ -39,12 +39,12 @@ export function BottomSheet({ open, onClose, title, children, footer }: BottomSh
       <div
         className={cn(
           "absolute bottom-0 left-0 right-0 z-10",
-          "max-h-[85vh] overflow-y-auto rounded-t-[28px] bg-[#FCFEFD]",
+          "max-h-[85vh] overflow-y-auto rounded-t-[28px] bg-[#FCFEFA]",
           "animate-slide-up",
         )}
         style={{ boxShadow: "0 -18px 40px rgba(45, 76, 70, 0.14)" }}
       >
-        <div className="sticky top-0 z-10 rounded-t-[28px] border-b border-[#E4EEEB] bg-[#FCFEFD]/96 px-5 py-4 backdrop-blur">
+        <div className="sticky top-0 z-10 rounded-t-[28px] border-b border-[#E0ECD7] bg-[#FCFEFA]/96 px-5 py-4 backdrop-blur">
           <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-[#D9E8E3]" />
           <div className="flex items-center justify-between">
             <h2 className="text-[18px] font-semibold tracking-[-0.02em] text-[#1F2A2A]">
@@ -52,7 +52,7 @@ export function BottomSheet({ open, onClose, title, children, footer }: BottomSh
             </h2>
             <button
               onClick={onClose}
-              className="flex h-8 w-8 items-center justify-center rounded-full text-[#6B7A7A] active:bg-[#F3F7F6]"
+              className="flex h-8 w-8 items-center justify-center rounded-full text-[#6B7A7A] active:bg-[#F4F9F1]"
               aria-label="关闭"
             >
               <X size={18} />
@@ -63,7 +63,7 @@ export function BottomSheet({ open, onClose, title, children, footer }: BottomSh
         <div className="px-5 py-4">{children}</div>
 
         {footer ? (
-          <div className="safe-pb sticky bottom-0 border-t border-[#E4EEEB] bg-[#FCFEFD]/96 px-5 py-4 backdrop-blur">
+          <div className="safe-pb sticky bottom-0 border-t border-[#E0ECD7] bg-[#FCFEFA]/96 px-5 py-4 backdrop-blur">
             {footer}
           </div>
         ) : null}

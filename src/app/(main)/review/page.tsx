@@ -228,9 +228,9 @@ export default function ReviewPage() {
         </span>
         <span className="text-[14px] text-[#6B7A7A]">{unit}</span>
       </div>
-      <p className="mt-2 text-[12px] text-[#8EA09B]">
+      <p className="mt-2 text-[12px] text-[#8EA094]">
         较上月{" "}
-        <span className={cn("font-medium", delta > 0 ? "text-[#16967F]" : delta < 0 ? "text-[#E06060]" : "text-[#8EA09B]")}>
+        <span className={cn("font-medium", delta > 0 ? "text-[#3D9428]" : delta < 0 ? "text-[#E06060]" : "text-[#8EA094]")}>
           {formatDelta(delta)}
         </span>
       </p>
@@ -277,12 +277,12 @@ export default function ReviewPage() {
           onClick={() => setViewMode(key)}
           className={cn(
             "relative pb-3 text-[15px] font-medium transition-colors",
-            viewMode === key ? "text-[#1F2A2A]" : "text-[#A8B8B0]",
+            viewMode === key ? "text-[#1F2A2A]" : "text-[#9BAE97]",
           )}
         >
           {label}
           {viewMode === key ? (
-            <span className="absolute -bottom-px left-1/2 h-[2px] w-7 -translate-x-1/2 rounded-full bg-[#22C3A6]" />
+            <span className="absolute -bottom-px left-1/2 h-[2px] w-7 -translate-x-1/2 rounded-full bg-[#5EBF3F]" />
           ) : null}
         </button>
       ))}
@@ -294,7 +294,7 @@ export default function ReviewPage() {
     const time = record.startTime ?? "—";
     return (
       <div className="flex items-center gap-3 py-3">
-        <div className="w-[78px] shrink-0 text-[12px] text-[#8EA09B]">
+        <div className="w-[78px] shrink-0 text-[12px] text-[#8EA094]">
           <p>{dayjs(record.date).format("M月D日")}</p>
           <p className="mt-0.5 font-numeric tabular-nums">{time}</p>
         </div>
@@ -308,9 +308,9 @@ export default function ReviewPage() {
 
   /** 记录卡片小件（复用于全部记录） */
   const RecordCard = ({ record }: { record: ActivityLog }) => (
-    <div className="flex items-start justify-between gap-3 rounded-[14px] bg-[#F7FAF9] px-3 py-3">
+    <div className="flex items-start justify-between gap-3 rounded-[14px] bg-[#F3FAF7] px-3 py-3">
       <div className="min-w-0 flex-1">
-        <p className="text-[13px] text-[#8EA09B]">
+        <p className="text-[13px] text-[#8EA094]">
           {dayjs(record.date).format("M月D日")}
           {record.startTime ? ` · ${record.startTime}` : null}
         </p>
@@ -324,20 +324,20 @@ export default function ReviewPage() {
   const RecordGroup = ({ group }: { group: SearchResultGroup }) => (
     <SectionCard key={group.date}>
       <h3 className="mb-3 flex items-center gap-2 text-[14px] font-medium text-[#1F2A2A]">
-        <CalendarBlank size={16} className="text-[#22C3A6]" />
+        <CalendarBlank size={16} className="text-[#5EBF3F]" />
         {dayjs(group.date).format("M月D日 dddd")}
       </h3>
 
       <div className="flex flex-col gap-2">
         {group.records.map((record) => (
-          <div key={record.id} className="flex items-center gap-3 rounded-[12px] bg-[#F7FAF9] px-3 py-3">
+          <div key={record.id} className="flex items-center gap-3 rounded-[12px] bg-[#F3FAF7] px-3 py-3">
             <div className="min-w-0 flex-1">
               <p className="text-[14px] font-medium text-[#1F2A2A]">{record.title}</p>
               {record.startTime ? (
-                <p className="mt-0.5 text-[12px] text-[#8EA09B]">{record.startTime}</p>
+                <p className="mt-0.5 text-[12px] text-[#8EA094]">{record.startTime}</p>
               ) : null}
               {record.note ? (
-                <p className={cn("text-[12px] text-[#8EA09B]", record.startTime ? "mt-0.5" : "mt-1")}>
+                <p className={cn("text-[12px] text-[#8EA094]", record.startTime ? "mt-0.5" : "mt-1")}>
                   {record.note}
                 </p>
               ) : null}
@@ -345,7 +345,7 @@ export default function ReviewPage() {
             {record.tag ? (
               <TagBadge label={record.tag.name} color={record.tag.color} compact />
             ) : (
-              <span className="text-[11px] text-[#A8B8B0]">未分类</span>
+              <span className="text-[11px] text-[#9BAE97]">未分类</span>
             )}
           </div>
         ))}
@@ -404,7 +404,7 @@ export default function ReviewPage() {
                 className={cn(
                   "flex-1 rounded-[10px] px-2 py-2 text-[13px] font-medium transition-all duration-200",
                   recordsTimeRange === key
-                    ? "bg-white text-[#16967F] shadow-[0_2px_8px_rgba(18,46,40,0.08)]"
+                    ? "bg-white text-[#3D9428] shadow-[0_2px_8px_rgba(18,46,40,0.08)]"
                     : "text-[#6B7A7A]",
                 )}
               >
@@ -415,8 +415,8 @@ export default function ReviewPage() {
         ) : null}
 
         {hasFilters ? (
-          <div className="mb-4 flex flex-wrap items-center gap-2 rounded-[16px] bg-[#F2FBFA] px-3 py-3">
-            <span className="text-[12px] font-medium text-[#16967F]">当前筛选</span>
+          <div className="mb-4 flex flex-wrap items-center gap-2 rounded-[16px] bg-[#F1FAF2] px-3 py-3">
+            <span className="text-[12px] font-medium text-[#3D9428]">当前筛选</span>
             {filters.keyword ? (
               <span className="rounded-full bg-white px-3 py-1 text-[12px] text-[#1F2A2A]">
                 {filters.keyword}
@@ -440,7 +440,7 @@ export default function ReviewPage() {
             <button
               type="button"
               onClick={() => setFilters({})}
-              className="ml-auto text-[12px] font-semibold text-[#16967F]"
+              className="ml-auto text-[12px] font-semibold text-[#3D9428]"
             >
               清除
             </button>
@@ -458,7 +458,7 @@ export default function ReviewPage() {
                 value={summary.totalRecords}
                 unit="条"
                 delta={summary.totalRecordsDelta}
-                color="#22C3A6"
+                color="#5EBF3F"
               />
               <SummaryStatCard
                 title="记录天数"
@@ -472,10 +472,10 @@ export default function ReviewPage() {
             {/* 高频标签 Top 5 */}
             <SectionCard>
               <h3 className="mb-4 text-[15px] font-semibold text-[#1F2A2A]">
-                高频标签 <span className="text-[#A8B8B0]">Top {summary.topTags.length || 5}</span>
+                高频标签 <span className="text-[#9BAE97]">Top {summary.topTags.length || 5}</span>
               </h3>
               {summary.topTags.length === 0 ? (
-                <p className="text-[13px] text-[#8EA09B]">本月还没有带标签的记录。</p>
+                <p className="text-[13px] text-[#8EA094]">本月还没有带标签的记录。</p>
               ) : (
                 <div className="flex flex-col gap-3.5">
                   {summary.topTags.map((tag) => (
@@ -517,14 +517,14 @@ export default function ReviewPage() {
                 <button
                   type="button"
                   onClick={() => setViewMode("records")}
-                  className="flex items-center gap-0.5 text-[12px] font-medium text-[#16967F]"
+                  className="flex items-center gap-0.5 text-[12px] font-medium text-[#3D9428]"
                 >
                   查看更多
                   <ArrowRight size={12} weight="bold" />
                 </button>
               </div>
               {summary.recentRecords.length === 0 ? (
-                <p className="py-6 text-center text-[13px] text-[#8EA09B]">这个月暂时还没有内容。</p>
+                <p className="py-6 text-center text-[13px] text-[#8EA094]">这个月暂时还没有内容。</p>
               ) : (
                 <div className="divide-y divide-[#EEF4F2]">
                   {summary.recentRecords.slice(0, 5).map((record) => (
@@ -549,7 +549,7 @@ export default function ReviewPage() {
                   <div key={tag.id} className="flex items-center gap-2 py-3">
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-[14px] font-medium text-[#1F2A2A]">{tag.name}</p>
-                      <p className="mt-0.5 text-[12px] text-[#8EA09B]">
+                      <p className="mt-0.5 text-[12px] text-[#8EA094]">
                         本月 {count} 次 · 累计 {count} 次
                       </p>
                     </div>

@@ -10,9 +10,9 @@ import { cn } from "@/lib/cn";
 type BannerTone = "success" | "error" | "info";
 
 const TONE_CLASS_MAP: Record<BannerTone, string> = {
-  success: "border-[#B5EBDE] bg-[#EDFBF7] text-[#16967F]",
+  success: "border-[#B5EBDE] bg-[#EDFBF7] text-[#3D9428]",
   error: "border-[#F2C0C0] bg-[#FFF5F5] text-[#D85A5A]",
-  info: "border-[#DCE7E4] bg-white text-[#516262]",
+  info: "border-[#DCEAD2] bg-white text-[#516262]",
 };
 
 interface StateBannerProps {

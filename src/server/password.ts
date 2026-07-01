@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @description 密码哈希与校验工具
  */
 import { randomBytes, scryptSync, timingSafeEqual } from "node:crypto";

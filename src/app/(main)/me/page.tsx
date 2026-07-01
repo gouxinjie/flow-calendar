@@ -88,7 +88,7 @@ export default function MePage() {
           <SectionCard className="mb-4 h-[110px] animate-pulse bg-white/70" />
         ) : profile ? (
           <SectionCard className="mb-4 flex items-center gap-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#DDF7F1] text-[22px] font-semibold text-[#16967F]">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#F3FAF7] text-[22px] font-semibold text-[#3D9428]">
               {profile.name.charAt(0)}
             </div>
             <div className="min-w-0 flex-1">
@@ -109,12 +109,12 @@ export default function MePage() {
               href="/tags"
               className="flex items-center gap-3 py-3 first:pt-0 last:pb-0 active:opacity-70"
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#F2F8F6]">
-                <TagSimple size={20} className="text-[#22C3A6]" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#F0F6EC]">
+                <TagSimple size={20} className="text-[#5EBF3F]" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-[15px] font-medium text-[#1F2A2A]">标签管理</p>
-                <p className="text-[12px] text-[#8EA09B]">整理颜色、顺序与启用状态</p>
+                <p className="text-[12px] text-[#8EA094]">整理颜色、顺序与启用状态</p>
               </div>
             </Link>
 
@@ -122,12 +122,12 @@ export default function MePage() {
               href="/account"
               className="flex items-center gap-3 py-3 first:pt-0 last:pb-0 active:opacity-70"
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#F2F8F6]">
-                <User size={20} className="text-[#22C3A6]" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#F0F6EC]">
+                <User size={20} className="text-[#5EBF3F]" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-[15px] font-medium text-[#1F2A2A]">账号与安全</p>
-                <p className="text-[12px] text-[#8EA09B]">查看用户名、手机号和基础资料</p>
+                <p className="text-[12px] text-[#8EA094]">查看用户名、手机号和基础资料</p>
               </div>
             </Link>
           </div>
@@ -135,8 +135,8 @@ export default function MePage() {
 
         <SectionCard className="mb-4">
           <div className="flex items-start gap-3">
-            <div className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#F2F8F6]">
-              <ArrowsClockwise size={20} className="text-[#22C3A6]" />
+            <div className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#F0F6EC]">
+              <ArrowsClockwise size={20} className="text-[#5EBF3F]" />
             </div>
             <div className="min-w-0 flex-1">
               <h3 className="text-[15px] font-medium text-[#1F2A2A]">同步状态</h3>
@@ -149,8 +149,8 @@ export default function MePage() {
 
         <SectionCard>
           <div className="flex items-start gap-3">
-            <div className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#F2F8F6]">
-              <Info size={20} className="text-[#22C3A6]" />
+            <div className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#F0F6EC]">
+              <Info size={20} className="text-[#5EBF3F]" />
             </div>
             <div className="min-w-0 flex-1">
               <h3 className="text-[15px] font-medium text-[#1F2A2A]">关于 青柠日历</h3>

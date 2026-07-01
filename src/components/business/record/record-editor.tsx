@@ -109,8 +109,8 @@ export function RecordEditor({
             className={cn(
               "flex h-[48px] flex-1 items-center justify-center rounded-[14px] text-[14px] font-semibold text-white transition-opacity",
               title.trim() && !saving
-                ? "bg-[#22C3A6] active:opacity-80"
-                : "bg-[#A8B8B0] cursor-not-allowed",
+                ? "bg-[#5EBF3F] active:opacity-80"
+                : "bg-[#9BAE97] cursor-not-allowed",
             )}
           >
             {saving ? "保存中…" : "保存"}
@@ -135,7 +135,7 @@ export function RecordEditor({
             onChange={(e) => setTitle(e.target.value)}
             placeholder="做了什么？"
             maxLength={50}
-            className="w-full rounded-[14px] border border-[#DCE7E4] px-4 py-3 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none focus:border-[#22C3A6]"
+            className="w-full rounded-[14px] border border-[#DCEAD2] px-4 py-3 text-[14px] text-[#1F2A2A] placeholder-[#9BAE97] outline-none focus:border-[#5EBF3F]"
           />
         </div>
 
@@ -176,7 +176,7 @@ export function RecordEditor({
             placeholder="补充一些细节…"
             maxLength={200}
             rows={3}
-            className="w-full resize-none rounded-[14px] border border-[#DCE7E4] px-4 py-3 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none focus:border-[#22C3A6]"
+            className="w-full resize-none rounded-[14px] border border-[#DCEAD2] px-4 py-3 text-[14px] text-[#1F2A2A] placeholder-[#9BAE97] outline-none focus:border-[#5EBF3F]"
           />
         </div>
       </div>

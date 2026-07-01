@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 /**
  * @component TimePicker
@@ -149,7 +149,7 @@ function PickerColumn({
                 "text-[17px] transition-all duration-200",
                 isSelected
                   ? "text-[#1F2A2A] font-semibold scale-110"
-                  : "text-[#A8B8B0] font-medium",
+                  : "text-[#9BAE97] font-medium",
               )}
             >
               {item}
@@ -231,20 +231,20 @@ export function TimePicker({ value, onChange, clearable = true }: TimePickerProp
           "flex w-full items-center gap-2.5 rounded-[14px] border px-4 py-3 text-left",
           "transition-colors duration-200",
           value
-            ? "border-[#DCE7E4] text-[#1F2A2A]"
-            : "border-[#DCE7E4] text-[#A8B8B0]",
+            ? "border-[#DCEAD2] text-[#1F2A2A]"
+            : "border-[#DCEAD2] text-[#9BAE97]",
         )}
       >
         <Clock
           size={18}
           weight={value ? "fill" : "regular"}
-          className={value ? "text-[#22C3A6]" : "text-[#A8B8B0]"}
+          className={value ? "text-[#5EBF3F]" : "text-[#9BAE97]"}
         />
         <span className="flex-1 text-[14px]">{displayText}</span>
         {value && clearable ? (
           <span
             onClick={handleClear}
-            className="flex h-6 w-6 items-center justify-center rounded-full text-[#A8B8B0] hover:text-[#6B7A7A] active:bg-[#F3F7F6]"
+            className="flex h-6 w-6 items-center justify-center rounded-full text-[#9BAE97] hover:text-[#6B7A7A] active:bg-[#F4F9F1]"
           >
             <X size={14} />
           </span>
@@ -274,7 +274,7 @@ export function TimePicker({ value, onChange, clearable = true }: TimePickerProp
             onClick={(e) => e.stopPropagation()}
           >
             {/* 拖拽条 */}
-            <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-[#DCE7E4]" />
+            <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-[#DCEAD2]" />
 
             {/* 标题 */}
             <p className="mb-4 text-center text-[15px] font-semibold text-[#1F2A2A]">
@@ -285,13 +285,13 @@ export function TimePicker({ value, onChange, clearable = true }: TimePickerProp
             <div className="relative flex gap-3">
               {/* 小时列 */}
               <div className="relative flex-1">
-                <div className="mb-2 text-center text-[11px] font-medium text-[#A8B8B0] uppercase tracking-wider">
+                <div className="mb-2 text-center text-[11px] font-medium text-[#9BAE97] uppercase tracking-wider">
                   时
                 </div>
                 <div className="relative">
                   {/* 选中行高亮背景 */}
                   <div
-                    className="pointer-events-none absolute left-1 right-1 z-0 rounded-[10px] bg-[#DDF7F1]/60"
+                    className="pointer-events-none absolute left-1 right-1 z-0 rounded-[10px] bg-[#F3FAF7]/60"
                     style={{
                       top: "calc(50% - 20px)",
                       height: 40,
@@ -312,13 +312,13 @@ export function TimePicker({ value, onChange, clearable = true }: TimePickerProp
 
               {/* 分钟列 */}
               <div className="relative flex-1">
-                <div className="mb-2 text-center text-[11px] font-medium text-[#A8B8B0] uppercase tracking-wider">
+                <div className="mb-2 text-center text-[11px] font-medium text-[#9BAE97] uppercase tracking-wider">
                   分
                 </div>
                 <div className="relative">
                   {/* 选中行高亮背景 */}
                   <div
-                    className="pointer-events-none absolute left-1 right-1 z-0 rounded-[10px] bg-[#DDF7F1]/60"
+                    className="pointer-events-none absolute left-1 right-1 z-0 rounded-[10px] bg-[#F3FAF7]/60"
                     style={{
                       top: "calc(50% - 20px)",
                       height: 40,
@@ -341,14 +341,14 @@ export function TimePicker({ value, onChange, clearable = true }: TimePickerProp
                   onChange("");
                   handleClose();
                 }}
-                className="flex-1 rounded-[14px] border border-[#DCE7E4] py-3 text-[14px] font-medium text-[#A8B8B0] active:bg-[#F7FAF9]"
+                className="flex-1 rounded-[14px] border border-[#DCEAD2] py-3 text-[14px] font-medium text-[#9BAE97] active:bg-[#F3FAF7]"
               >
                 清除
               </button>
               <button
                 type="button"
                 onClick={handleConfirm}
-                className="flex-1 rounded-[14px] bg-[#22C3A6] py-3 text-[14px] font-semibold text-white active:opacity-80"
+                className="flex-1 rounded-[14px] bg-[#5EBF3F] py-3 text-[14px] font-semibold text-white active:opacity-80"
               >
                 确定
               </button>

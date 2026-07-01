@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @description 服务端鉴权工具 - 从会话 Cookie 或自定义 Header 中解析用户身份
  * 同时支持 Cookie 和 X-Auth-Token Header 双通道鉴权，
  * 兼容夸克浏览器等不稳定携带 Cookie 的环境。

@@ -54,7 +54,7 @@ export function MonthPickerSheet({
       footer={
         <button
           onClick={handleGoToThisMonth}
-          className="flex h-[48px] w-full items-center justify-center rounded-[14px] bg-[#22C3A6] text-[14px] font-semibold text-white active:opacity-80"
+          className="flex h-[48px] w-full items-center justify-center rounded-[14px] bg-[#5EBF3F] text-[14px] font-semibold text-white active:opacity-80"
         >
           回到本月
         </button>
@@ -70,7 +70,7 @@ export function MonthPickerSheet({
                 onClick={() => setYear(y)}
                 className={cn(
                   "rounded-[10px] px-4 py-2 text-[14px] font-medium transition-colors",
-                  year === y ? "bg-[#22C3A6] text-white" : "bg-[#F3F7F6] text-[#6B7A7A]",
+                  year === y ? "bg-[#5EBF3F] text-white" : "bg-[#F4F9F1] text-[#6B7A7A]",
                 )}
               >
                 {y}
@@ -93,9 +93,9 @@ export function MonthPickerSheet({
                   disabled={isFuture}
                   className={cn(
                     "rounded-[10px] py-3 text-[14px] font-medium transition-colors",
-                    isFuture && "cursor-not-allowed bg-[#F3F7F6] text-[#C0C9C7]",
-                    !isFuture && isCurrent && "bg-[#22C3A6] text-white",
-                    !isFuture && !isCurrent && "bg-[#F3F7F6] text-[#6B7A7A] active:bg-[#E8EFEC]",
+                    isFuture && "cursor-not-allowed bg-[#F4F9F1] text-[#C2CCC0]",
+                    !isFuture && isCurrent && "bg-[#5EBF3F] text-white",
+                    !isFuture && !isCurrent && "bg-[#F4F9F1] text-[#6B7A7A] active:bg-[#E4EDDF]",
                   )}
                 >
                   {m}月

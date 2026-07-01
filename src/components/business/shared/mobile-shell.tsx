@@ -56,7 +56,7 @@ export function ScreenHeader({
         {backHref ? (
           <Link
             href={backHref}
-            className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#DCE7E4] bg-white/92 text-[#1F2A2A] shadow-[0_10px_24px_rgba(31,42,42,0.06)]"
+            className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#DCEAD2] bg-white/92 text-[#1F2A2A] shadow-[0_10px_24px_rgba(31,42,42,0.06)]"
           >
             <ArrowLeft size={18} weight="bold" />
           </Link>

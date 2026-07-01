@@ -64,13 +64,13 @@ export function SearchFilterSheet({
         <div className="flex gap-3">
           <button
             onClick={handleReset}
-            className="flex h-[48px] flex-1 items-center justify-center rounded-[14px] border border-[#DCE7E4] text-[14px] font-medium text-[#6B7A7A] active:bg-[#F3F7F6]"
+            className="flex h-[48px] flex-1 items-center justify-center rounded-[14px] border border-[#DCEAD2] text-[14px] font-medium text-[#6B7A7A] active:bg-[#F4F9F1]"
           >
             重置
           </button>
           <button
             onClick={handleApply}
-            className="flex h-[48px] flex-1 items-center justify-center rounded-[14px] bg-[#22C3A6] text-[14px] font-semibold text-white active:opacity-80"
+            className="flex h-[48px] flex-1 items-center justify-center rounded-[14px] bg-[#5EBF3F] text-[14px] font-semibold text-white active:opacity-80"
           >
             应用筛选
           </button>
@@ -87,7 +87,7 @@ export function SearchFilterSheet({
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             placeholder="搜索标题或备注…"
-            className="w-full rounded-[14px] border border-[#DCE7E4] px-4 py-3 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none focus:border-[#22C3A6]"
+            className="w-full rounded-[14px] border border-[#DCEAD2] px-4 py-3 text-[14px] text-[#1F2A2A] placeholder-[#9BAE97] outline-none focus:border-[#5EBF3F]"
           />
         </div>
 
@@ -127,15 +127,15 @@ export function SearchFilterSheet({
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="flex-1 rounded-[14px] border border-[#DCE7E4] px-3 py-3 text-[14px] text-[#1F2A2A] outline-none focus:border-[#22C3A6]"
+              className="flex-1 rounded-[14px] border border-[#DCEAD2] px-3 py-3 text-[14px] text-[#1F2A2A] outline-none focus:border-[#5EBF3F]"
               placeholder="开始日期"
             />
-            <span className="text-[#A8B8B0]">至</span>
+            <span className="text-[#9BAE97]">至</span>
             <input
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="flex-1 rounded-[14px] border border-[#DCE7E4] px-3 py-3 text-[14px] text-[#1F2A2A] outline-none focus:border-[#22C3A6]"
+              className="flex-1 rounded-[14px] border border-[#DCEAD2] px-3 py-3 text-[14px] text-[#1F2A2A] outline-none focus:border-[#5EBF3F]"
               placeholder="结束日期"
             />
           </div>
@@ -146,7 +146,7 @@ export function SearchFilterSheet({
             type="checkbox"
             checked={includeUncategorized}
             onChange={(e) => setIncludeUncategorized(e.target.checked)}
-            className="h-5 w-5 rounded accent-[#22C3A6]"
+            className="h-5 w-5 rounded accent-[#5EBF3F]"
           />
           <span className="text-[14px] text-[#1F2A2A]">包含未分类记录</span>
         </label>

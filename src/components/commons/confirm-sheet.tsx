@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 /**
  * @component ConfirmSheet
@@ -39,7 +39,7 @@ export function ConfirmSheet({
           <button
             type="button"
             onClick={onClose}
-            className="flex h-[48px] flex-1 items-center justify-center rounded-[14px] border border-[#DCE7E4] text-[14px] font-medium text-[#60716E]"
+            className="flex h-[48px] flex-1 items-center justify-center rounded-[14px] border border-[#DCEAD2] text-[14px] font-medium text-[#60716E]"
           >
             {cancelText}
           </button>

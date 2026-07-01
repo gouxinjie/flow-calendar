@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @description 注册 API
  * @route POST /api/auth/register
  * @author gouxinjie

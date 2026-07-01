@@ -222,11 +222,11 @@ export default function DateDetailPage() {
                 {displayDate}
               </h1>
               {dateBadge.festivalName ? (
-                <span className="text-[14px] font-semibold text-[#22C3A6]">
+                <span className="text-[14px] font-semibold text-[#5EBF3F]">
                   {dateBadge.festivalName}
                 </span>
               ) : dateBadge.jieQi ? (
-                <span className="text-[14px] font-semibold text-[#22C3A6]">
+                <span className="text-[14px] font-semibold text-[#5EBF3F]">
                   {dateBadge.jieQi}
                 </span>
               ) : null}
@@ -278,7 +278,7 @@ export default function DateDetailPage() {
           <h2 className="text-[16px] font-semibold tracking-[-0.02em] text-[#1F2A2A]">
             当天记录
           </h2>
-          <span className="text-[14px] font-medium text-[#8EA09B]">
+          <span className="text-[14px] font-medium text-[#8EA094]">
             {sortedRecords.length}
           </span>
         </div>
@@ -295,7 +295,7 @@ export default function DateDetailPage() {
               <button
                 type="button"
                 onClick={handleCreate}
-                className="rounded-full bg-[#22C3A6] px-4 py-2 text-[13px] font-semibold text-white"
+                className="rounded-full bg-[#5EBF3F] px-4 py-2 text-[13px] font-semibold text-white"
               >
                 新增记录
               </button>
@@ -323,7 +323,7 @@ export default function DateDetailPage() {
                         <div className="flex items-center gap-2">
                           <span
                             className="inline-block h-2 w-2 shrink-0 rounded-full"
-                            style={{ backgroundColor: record.tag?.color ?? "#A8B8B0" }}
+                            style={{ backgroundColor: record.tag?.color ?? "#9BAE97" }}
                             aria-hidden="true"
                           />
                           <h3 className="truncate text-[16px] font-semibold tracking-[-0.01em] text-[#1F2A2A]">
@@ -349,7 +349,7 @@ export default function DateDetailPage() {
                         <button
                           type="button"
                           onClick={() => handleEdit(record)}
-                          className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA09B] active:bg-[#F3F7F6]"
+                          className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA094] active:bg-[#F4F9F1]"
                           aria-label="编辑记录"
                         >
                           <PencilSimple size={16} />
@@ -357,7 +357,7 @@ export default function DateDetailPage() {
                         <button
                           type="button"
                           onClick={() => handleCopy(record)}
-                          className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA09B] active:bg-[#F3F7F6]"
+                          className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA094] active:bg-[#F4F9F1]"
                           aria-label="复制记录"
                         >
                           <Copy size={16} />
@@ -366,13 +366,13 @@ export default function DateDetailPage() {
                           <button
                             type="button"
                             onClick={() => setMenuRecordId(menuRecordId === record.id ? null : record.id)}
-                            className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA09B] active:bg-[#F3F7F6]"
+                            className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA094] active:bg-[#F4F9F1]"
                             aria-label="更多操作"
                           >
                             <DotsThree size={18} weight="bold" />
                           </button>
                           {menuRecordId === record.id ? (
-                            <div className="absolute right-0 top-full z-30 mt-1 w-36 rounded-[14px] border border-[#DCE7E4] bg-white py-1 shadow-[0_8px_24px_rgba(18,46,40,0.12)]">
+                            <div className="absolute right-0 top-full z-30 mt-1 w-36 rounded-[14px] border border-[#DCEAD2] bg-white py-1 shadow-[0_8px_24px_rgba(18,46,40,0.12)]">
                               <button
                                 type="button"
                                 onClick={() => handleMenuDelete(record)}
@@ -403,7 +403,7 @@ export default function DateDetailPage() {
             "flex h-[48px] w-full items-center justify-center rounded-[14px] text-[14px] font-semibold text-white shadow-[0_18px_30px_rgba(34,195,166,0.24)] transition-colors",
             isFull
               ? "cursor-not-allowed bg-[#B5C9C4] shadow-none"
-              : "bg-[#22C3A6]",
+              : "bg-[#5EBF3F]",
           )}
         >
           {isFull ? "当日记录已满（3条）" : "+  新增记录"}

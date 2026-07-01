@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @description 简易 classnames 工具 - 合并条件类名
  * @author gouxinjie
  * @created 2026-06-22

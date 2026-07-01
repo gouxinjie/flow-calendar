@@ -24,14 +24,14 @@ function truncateLabel(text: string, maxLen = 3): string {
 
 export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
   return (
-    <div className="flex flex-col rounded-[8px] border border-[#DCE7E4] bg-white px-3 pb-3 pt-2 shadow-[0_14px_30px_rgba(18,46,40,0.04)]">
+    <div className="flex flex-col rounded-[8px] border border-[#DCEAD2] bg-white px-3 pb-3 pt-2 shadow-[0_14px_30px_rgba(18,46,40,0.04)]">
       <div className="mb-2 grid grid-cols-7 text-center text-[11px] font-semibold">
         {weekdays.map((day, idx) => (
           <span
             key={day}
             className={cn(
               "py-1.5",
-              (idx === 0 || idx === 6) ? "text-[#22C3A6]" : "text-[#1F2A2A]",
+              (idx === 0 || idx === 6) ? "text-[#5EBF3F]" : "text-[#1F2A2A]",
             )}
           >
             {day}
@@ -44,10 +44,10 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
           const visibleSummaries = cell.recordSummaries.slice(0, 2);
           const cellSurfaceClass = cell.isToday
             ? cell.isSelected
-              ? "border-2 border-[#16967F] bg-[#F5FDFB] shadow-[inset_0_0_0_1px_rgba(22,150,127,0.16)]"
-              : "border-2 border-[#5DD1B8] bg-white"
+              ? "border-2 border-[#3D9428] bg-[#F3FCF6] shadow-[inset_0_0_0_1px_rgba(61,148,40,0.16)]"
+              : "border-2 border-[#74CC50] bg-white"
             : cell.isSelected
-              ? "border-[#5DD1B8] bg-[#F5FDFB] shadow-[inset_0_0_0_1px_rgba(93,209,184,0.08)]"
+              ? "border-[#74CC50] bg-[#F3FCF6] shadow-[inset_0_0_0_1px_rgba(116,204,80,0.08)]"
               : "bg-white";
 
           return (
@@ -66,8 +66,8 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
                   className={cn(
                     "font-numeric text-[15px] font-semibold leading-none",
                     cell.isToday &&
-                      "inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-[#22C3A6] px-1 text-white",
-                    !cell.isToday && cell.isSelected && "text-[#16967F]",
+                      "inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-[#5EBF3F] px-1 text-white",
+                    !cell.isToday && cell.isSelected && "text-[#3D9428]",
                     !cell.isToday && cell.isCurrentMonth && "text-[#1F2A2A]",
                     !cell.isCurrentMonth && "text-[#afaeb1]",
                   )}
@@ -83,7 +83,7 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
                     cell.isToday
                       ? "font-medium text-[#54C1AC]"
                       : cell.isCurrentMonth
-                        ? "text-[#A8B8B0]"
+                        ? "text-[#9BAE97]"
                         : "text-[#afaeb1]",
                   )}
                 >

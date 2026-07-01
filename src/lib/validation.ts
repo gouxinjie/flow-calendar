@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @description 共享校验工具函数
  * @author gouxinjie
  * @created 2026-06-27

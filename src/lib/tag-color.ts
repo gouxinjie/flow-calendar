@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @description 标签颜色工具 — 渐变生成、亮度计算
  * @author gouxinjie
  * @created 2026-06-30

@@ -93,7 +93,7 @@ export default function TagsPage() {
         rightSlot={
           <Link
             href="/tags/new"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-[#22C3A6] text-white shadow-[0_12px_24px_rgba(34,195,166,0.25)]"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-[#5EBF3F] text-white shadow-[0_12px_24px_rgba(34,195,166,0.25)]"
           >
             <Plus size={18} weight="bold" />
           </Link>
@@ -112,7 +112,7 @@ export default function TagsPage() {
             action={
               <Link
                 href="/tags/new"
-                className="rounded-full bg-[#22C3A6] px-4 py-2 text-[13px] font-semibold text-white"
+                className="rounded-full bg-[#5EBF3F] px-4 py-2 text-[13px] font-semibold text-white"
               >
                 新建标签
               </Link>
@@ -123,17 +123,17 @@ export default function TagsPage() {
             <div className="divide-y divide-[#F0F5F3]">
               {tags.map((tag) => (
                 <div key={tag.id} className="flex items-center gap-3 py-3 first:pt-0 last:pb-0">
-                  <DotsSixVertical size={16} className="shrink-0 text-[#C0C9C7]" />
+                  <DotsSixVertical size={16} className="shrink-0 text-[#C2CCC0]" />
                   <span
                     className="h-9 w-9 shrink-0 rounded-[12px]"
                     style={{ backgroundColor: tag.color }}
                   />
 
                   <div className="min-w-0 flex-1">
-                    <p className={`text-[15px] font-medium ${tag.enabled ? "text-[#1F2A2A]" : "text-[#A8B8B0]"}`}>
+                    <p className={`text-[15px] font-medium ${tag.enabled ? "text-[#1F2A2A]" : "text-[#9BAE97]"}`}>
                       {tag.name}
                     </p>
-                    <p className="mt-0.5 text-[12px] text-[#8EA09B]">
+                    <p className="mt-0.5 text-[12px] text-[#8EA094]">
                       排序 {tag.sortOrder} · {tag.category ?? "未分类"}
                     </p>
                   </div>
@@ -146,7 +146,7 @@ export default function TagsPage() {
 
                   <Link
                     href={`/tags/${tag.id}`}
-                    className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA09B] active:bg-[#F3F7F6]"
+                    className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA094] active:bg-[#F4F9F1]"
                   >
                     <PencilSimple size={16} />
                   </Link>

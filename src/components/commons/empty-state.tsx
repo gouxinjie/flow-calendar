@@ -20,9 +20,9 @@ export function EmptyState({
   action,
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-[24px] border border-dashed border-[#DCE7E4] bg-white/70 px-6 py-12 text-center">
+    <div className="flex flex-col items-center justify-center rounded-[24px] border border-dashed border-[#DCEAD2] bg-white/70 px-6 py-12 text-center">
       {icon ? (
-        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#F0F8F6] text-[#8BA09B]">
+        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#EEF5E9] text-[#8BA09B]">
           {icon}
         </div>
       ) : null}

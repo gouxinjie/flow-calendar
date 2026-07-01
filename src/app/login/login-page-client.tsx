@@ -113,20 +113,20 @@ export function LoginPageClient() {
   };
 
   return (
-    <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-[#f1f9f6] px-6">
+    <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-[#F3FAF7] px-6">
       {/* Logo / 品牌区 */}
       <div className="animate-page-enter w-full max-w-[380px]">
         <div className="mb-8 text-center">
           <h1 className="text-[28px] font-semibold tracking-[-0.03em] text-[#1F2A2A]">
             青柠日历
           </h1>
-          <p className="mt-2 text-[14px] text-[#A8B8B0]">
+          <p className="mt-2 text-[14px] text-[#9BAE97]">
             记录已发生的生活，留在月历上
           </p>
         </div>
 
         {/* 登录/注册切换 */}
-        <div className="mb-6 grid grid-cols-2 rounded-[10px] bg-[#EDF3F1] p-1">
+        <div className="mb-6 grid grid-cols-2 rounded-[10px] bg-[#EDF5E9] p-1">
           <button
             type="button"
             onClick={() => setMode("login")}
@@ -155,7 +155,7 @@ export function LoginPageClient() {
         <form onSubmit={handleSubmit}>
           {mode === "register" ? (
             <div className="mb-3">
-              <div className="flex items-center gap-2 rounded-[10px] border border-[#DCE7E4] bg-white px-4 py-3 focus-within:border-[#22C3A6]">
+              <div className="flex items-center gap-2 rounded-[10px] border border-[#DCEAD2] bg-white px-4 py-3 focus-within:border-[#5EBF3F]">
                 <input
                   type="text"
                   name="username"
@@ -163,7 +163,7 @@ export function LoginPageClient() {
                   onChange={(event) => setName(event.target.value)}
                   placeholder="用户名"
                   autoComplete="username"
-                  className="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none"
+                  className="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#9BAE97] outline-none"
                 />
               </div>
             </div>
@@ -171,8 +171,8 @@ export function LoginPageClient() {
 
           {/* 手机号 */}
           <div className="mb-3">
-            <div className="flex items-center gap-2 rounded-[10px] border border-[#DCE7E4] bg-white px-4 py-3 focus-within:border-[#22C3A6]">
-              <DeviceMobile size={18} className="text-[#A8B8B0]" />
+            <div className="flex items-center gap-2 rounded-[10px] border border-[#DCEAD2] bg-white px-4 py-3 focus-within:border-[#5EBF3F]">
+              <DeviceMobile size={18} className="text-[#9BAE97]" />
               <input
                 type="tel"
                 name="phone"
@@ -180,15 +180,15 @@ export function LoginPageClient() {
                 onChange={(event) => setPhone(event.target.value)}
                 placeholder="手机号"
                 autoComplete="tel"
-                className="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none"
+                className="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#9BAE97] outline-none"
               />
             </div>
           </div>
 
           {/* 密码 */}
           <div className="mb-6">
-            <div className="flex items-center gap-2 rounded-[10px] border border-[#DCE7E4] bg-white px-4 py-3 focus-within:border-[#22C3A6]">
-              <Lock size={18} className="text-[#A8B8B0]" />
+            <div className="flex items-center gap-2 rounded-[10px] border border-[#DCEAD2] bg-white px-4 py-3 focus-within:border-[#5EBF3F]">
+              <Lock size={18} className="text-[#9BAE97]" />
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
@@ -196,12 +196,12 @@ export function LoginPageClient() {
                 onChange={(event) => setPassword(event.target.value)}
                 placeholder="密码"
                 autoComplete={mode === "login" ? "current-password" : "new-password"}
-                className="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none"
+                className="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#9BAE97] outline-none"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="text-[#A8B8B0]"
+                className="text-[#9BAE97]"
               >
                 {showPassword ? <EyeSlash size={18} /> : <Eye size={18} />}
               </button>
@@ -212,21 +212,21 @@ export function LoginPageClient() {
           <button
             type="submit"
             disabled={loading}
-            className="flex h-[48px] w-full items-center justify-center rounded-[10px] bg-[#22C3A6] text-[14px] font-semibold text-white active:opacity-80 disabled:opacity-60"
+            className="flex h-[48px] w-full items-center justify-center rounded-[10px] bg-[#5EBF3F] text-[14px] font-semibold text-white active:opacity-80 disabled:opacity-60"
           >
             {loading ? "处理中..." : mode === "login" ? "登录" : "注册并进入"}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-[13px] text-[#A8B8B0]">
+        <p className="mt-6 text-center text-[13px] text-[#9BAE97]">
           记录已发生的生活，从这一刻开始
         </p>
-        <p className="mt-3 text-center text-[13px] text-[#A8B8B0]">
+        <p className="mt-3 text-center text-[13px] text-[#9BAE97]">
           {mode === "login" ? "还没有账号？" : "已有账号？"}{" "}
           <button
             type="button"
             onClick={() => setMode(mode === "login" ? "register" : "login")}
-            className="font-medium text-[#22C3A6]"
+            className="font-medium text-[#5EBF3F]"
           >
             {mode === "login" ? "去注册" : "去登录"}
           </button>
