@@ -21,6 +21,13 @@ export function middleware(request: NextRequest) {
   const headerToken = request.headers.get("x-auth-token");
   const hasAuth = Boolean(cookieSession || headerToken);
 
+  // 根路由：服务端直跳，不依赖客户端 JS
+  // 有 token → /calendar，无 token → /login
+  if (pathname === "/") {
+    const target = hasAuth ? "/calendar" : "/login";
+    return NextResponse.redirect(new URL(target, request.url));
+  }
+
   // 未登录用户访问受保护路由 → 302 到登录页
   const isProtected = PROTECTED_PATHS.some(
     (p) => pathname === p || pathname.startsWith(`${p}/`),

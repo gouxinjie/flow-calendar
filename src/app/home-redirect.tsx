@@ -27,8 +27,16 @@ export function HomeRedirect() {
 
   // 渲染加载提示，防止 JS 加载失败时完全空白
   return (
-    <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-[#f1f9f6]">
+    <div className="flex min-h-[100dvh] flex-col items-center justify-center gap-3 bg-[#f1f9f6]">
       <p className="text-[#A8B8B0] text-[14px] animate-pulse">正在进入...</p>
+      <noscript>
+        <p className="text-[#6B7A7A] text-[13px]">
+          请启用 JavaScript 后
+          <a href="/login" className="ml-1 text-[#16967F] underline">
+            手动进入
+          </a>
+        </p>
+      </noscript>
     </div>
   );
 }
