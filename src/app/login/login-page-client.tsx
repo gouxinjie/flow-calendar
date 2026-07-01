@@ -3,18 +3,18 @@
 /**
  * @component LoginPageClient
  * @description 登录页客户端表单与交互逻辑
- * 客户端启动时检查 Cookie，若已有 session 则直接跳转到月历页，
- * 避免依赖服务端 RSC 请求携带 Cookie（夸克浏览器不携带）。
+ * 不再自动跳转（避免夸克浏览器 Cookie 缺失导致 middleware 循环），
+ * 仅渲染登录/注册表单，登录成功后跳转至月历页。
  * @author gouxinjie
  * @created 2026-06-22
  * @updated 2026-07-01
  */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { DeviceMobile, Lock, Eye, EyeSlash } from "@phosphor-icons/react";
 
 import { StateBanner } from "@/components/commons/state-banner";
 
-import { saveSessionToken, getSessionToken } from "@/services/api-client";
+import { saveSessionToken } from "@/services/api-client";
 import type { ApiResponse } from "@/types/models";
 
 /** 会话 Cookie 名称，与服务端保持一致 */
@@ -49,17 +49,6 @@ export function LoginPageClient() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [notice, setNotice] = useState<{ tone: "error" | "success"; message: string } | null>(null);
-
-  // 后台静默检查登录状态，已登录则直接跳转月历页
-  // 不阻塞表单渲染，避免 JS 加载慢时一直显示"加载中..."
-  // 使用 window.location.replace 而非 router.replace，
-  // 避免 Next.js 路由尚未初始化完成时抛出 "Router action dispatched before initialization" 错误
-  useEffect(() => {
-    const sessionToken = getSessionToken();
-    if (sessionToken) {
-      window.location.replace("/calendar");
-    }
-  }, []);
 
   const handleSubmit = async () => {
     if (mode === "register" && !name.trim()) {

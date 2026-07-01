@@ -1,11 +1,9 @@
 ﻿/**
  * @description 主应用布局，包含底部导航。
  *
- * 鉴权架构（从外到内）：
- * 1. middleware.ts — HTTP 层面 302 拦截（对无认证的受保护路由跳转 /login）
- * 2. AuthGuard 客户端组件 — 检查 localStorage，未登录则跳转 /login（兜底）
- *
- * 不再使用服务端 requireUserId()，避免夸克浏览器 RSC Cookie 缺失导致的循环。
+ * 鉴权架构：
+ * 1. AuthGuard 客户端组件 — 检查 localStorage/Cookie，未登录则跳转 /login
+ * 2. 不再使用服务端 requireUserId() 和 middleware 页面拦截，避免夸克浏览器 Cookie 缺失导致的循环
  */
 import type { ReactNode } from "react";
 

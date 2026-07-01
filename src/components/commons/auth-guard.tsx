@@ -2,19 +2,16 @@
 
 /**
  * @component AuthGuard
- * @description 客户端鉴权守卫组件，替代服务端 requireUserId()
+ * @description 客户端鉴权守卫组件，负责所有受保护路由的鉴权
  *
- * 夸克浏览器在 RSC 请求中不稳定携带 Cookie，导致服务端鉴权不可靠。
- * 此组件在客户端检查 localStorage 和 Cookie 中的 session token：
+ * 夸克浏览器在页面导航中不携带 Cookie，因此 middleware 不做页面级拦截，
+ * 改由此组件在客户端检查 localStorage 和 Cookie 中的 session token：
  * - 有 token：正常渲染子组件（页面内容）
  * - 无 token：跳转到登录页
  *
- * 必须配合 middleware.ts 使用，middleware 负责第一道拦截（HTTP 302），
- * 此组件负责兜底保护。
- *
  * @author gouxinjie
  * @created 2026-06-26
- * @updated 2026-06-27
+ * @updated 2026-07-01
  */
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
