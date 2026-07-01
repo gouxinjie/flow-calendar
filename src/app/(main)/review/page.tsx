@@ -481,9 +481,12 @@ export default function ReviewPage() {
                   {summary.topTags.map((tag) => (
                     <div
                       key={tag.tagId}
-                      className="grid grid-cols-[3.5rem_1fr_1rem] items-center gap-2"
+                      className="grid grid-cols-[1fr_1rem] items-center gap-2"
                     >
-                      <span className="truncate text-[13px] font-medium text-[#1F2A2A]">
+                      <span
+                        className="truncate text-[13px] font-medium"
+                        style={{ color: tag.tagColor }}
+                      >
                         {tag.tagName}
                       </span>
                       <div className="h-2 rounded-full bg-[#EEF4F2]">
