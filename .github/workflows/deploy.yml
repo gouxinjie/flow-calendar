@@ -31,11 +31,13 @@ jobs:
 
       - name: 打包部署产物
         run: |
-          mkdir -p deploy-package/.next/static
-          # standalone 自包含产物（含精简 node_modules）
+          # 启用 dotglob，使 * 通配符匹配 .next 等点开头的目录
+          shopt -s dotglob
+          # standalone 自包含产物（含精简 node_modules + .next 构建元数据）
           cp -r .next/standalone/* deploy-package/
-          # 静态资源
-          cp -r .next/static/* deploy-package/.next/static/
+          shopt -u dotglob
+          # 静态资源（JS/CSS chunks，覆盖到 standalone 的 .next/static 中）
+          cp -r .next/static deploy-package/.next/
           # Prisma schema（ECS 上需运行 prisma generate / db push）
           cp -r prisma deploy-package/
           # PM2 配置（部署到 app 目录内，相对路径即可）
