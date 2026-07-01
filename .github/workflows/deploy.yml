@@ -45,7 +45,7 @@ jobs:
           echo "打包完成 — $(du -sh deploy-package | cut -f1)"
 
       - name: 同步文件到 ECS
-        uses: easingthemes/ssh-deploy@v5
+        uses: easingthemes/ssh-deploy@v6
         with:
           SSH_PRIVATE_KEY: ${{ secrets.ECS_SSH_KEY }}
           REMOTE_HOST: ${{ secrets.ECS_HOST }}
