@@ -15,18 +15,10 @@ import { DeviceMobile, Lock, Eye, EyeSlash } from "@phosphor-icons/react";
 import { StateBanner } from "@/components/commons/state-banner";
 
 import { saveSessionToken } from "@/services/api-client";
-import type { ApiResponse } from "@/types/models";
+import type { ApiResponse, AuthSessionData } from "@/types/models";
 
 /** 会话 Cookie 名称，与服务端保持一致 */
 const SESSION_COOKIE = "lime_calendar_session";
-
-/** 登录响应 data 类型 */
-interface LoginData {
-  id: string;
-  name: string;
-  phone: string;
-  sessionToken: string;
-}
 
 /**
  * @description 夸克浏览器兜底：客户端手动设置 session cookie
@@ -68,6 +60,12 @@ export function LoginPageClient() {
       return;
     }
 
+    // 注册模式：前端校验密码最小长度
+    if (mode === "register" && password.length < 6) {
+      setNotice({ tone: "error", message: "密码至少 6 位" });
+      return;
+    }
+
     setNotice(null);
     setLoading(true);
 
@@ -84,7 +82,7 @@ export function LoginPageClient() {
         }),
       });
 
-      const payload: ApiResponse<LoginData> = await response.json();
+      const payload: ApiResponse<AuthSessionData> = await response.json();
 
       if (!payload.success) {
         throw new Error(payload.message);

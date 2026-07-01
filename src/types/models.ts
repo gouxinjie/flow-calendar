@@ -159,6 +159,14 @@ export interface ApiError {
 /** 通用响应 */
 export type ApiResponse<T> = ApiSuccess<T> | ApiError;
 
+/** 登录/注册成功返回的会话数据 */
+export interface AuthSessionData {
+  id: string;
+  name: string;
+  phone: string;
+  sessionToken: string;
+}
+
 /** 新建/编辑记录表单 */
 export interface RecordFormData {
   title: string;
