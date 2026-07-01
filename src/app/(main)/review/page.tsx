@@ -239,7 +239,7 @@ export default function ReviewPage() {
 
   /** 月份选择器 */
   const MonthSelector = () => (
-    <div className="mb-4 flex items-center justify-center gap-6 py-2 text-[#6B7A7A]">
+    <div className="mb-3 flex items-center justify-center gap-6 py-1 text-[#6B7A7A]">
       <button
         type="button"
         onClick={() => moveMonth("prev")}
@@ -265,7 +265,7 @@ export default function ReviewPage() {
 
   /** 顶部三栏 Tabs */
   const TabSwitcher = () => (
-    <div className="mb-4 flex items-center gap-6 border-b border-[#EEF4F2]">
+    <div className="mt-3 mb-2 flex items-center gap-6 border-b border-[#EEF4F2]">
       {([
         { key: "summary" as const, label: "月度回顾" },
         { key: "records" as const, label: "全部记录" },
@@ -481,7 +481,7 @@ export default function ReviewPage() {
                   {summary.topTags.map((tag) => (
                     <div
                       key={tag.tagId}
-                      className="grid grid-cols-[1fr_1rem] items-center gap-2"
+                      className="grid grid-cols-[2.5rem_1fr_1rem] items-center gap-2"
                     >
                       <span
                         className="truncate text-[13px] font-medium"

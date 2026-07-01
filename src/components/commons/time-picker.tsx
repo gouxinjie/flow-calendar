@@ -38,7 +38,7 @@ function PickerColumn({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isScrolling = useRef(false);
-  const scrollTimer = useRef<ReturnType<typeof setTimeout>>();
+  const scrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // 顶部占位高度（与渲染中的 spacer 保持一致）
   const topPadding = itemHeight * 2;
