@@ -64,7 +64,7 @@ export default function MePage() {
         body: JSON.stringify({}),
       });
       // 清除客户端兜底 cookie
-      document.cookie = "flow_calendar_session=; path=/; max-age=0; SameSite=Lax";
+      document.cookie = "lime_calendar_session=; path=/; max-age=0; SameSite=Lax";
       // 清除 localStorage 中的 session token
       clearSessionToken();
       window.location.href = "/login";
@@ -153,7 +153,7 @@ export default function MePage() {
               <Info size={20} className="text-[#22C3A6]" />
             </div>
             <div className="min-w-0 flex-1">
-              <h3 className="text-[15px] font-medium text-[#1F2A2A]">关于 Flow Calendar</h3>
+              <h3 className="text-[15px] font-medium text-[#1F2A2A]">关于 青柠日历</h3>
               <p className="mt-1 text-[13px] leading-6 text-[#6B7A7A]">
                 这是一个以月历为核心的轻量记录工具，重点不是规划未来，而是回看已经发生过的生活。
               </p>

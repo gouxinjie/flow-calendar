@@ -18,7 +18,7 @@ import { saveSessionToken } from "@/services/api-client";
 import type { ApiResponse } from "@/types/models";
 
 /** 会话 Cookie 名称，与服务端保持一致 */
-const SESSION_COOKIE = "flow_calendar_session";
+const SESSION_COOKIE = "lime_calendar_session";
 
 /** 登录响应 data 类型 */
 interface LoginData {
@@ -118,7 +118,7 @@ export function LoginPageClient() {
       <div className="animate-page-enter w-full max-w-[380px]">
         <div className="mb-8 text-center">
           <h1 className="text-[28px] font-semibold tracking-[-0.03em] text-[#1F2A2A]">
-            Flow Calendar
+            青柠日历
           </h1>
           <p className="mt-2 text-[14px] text-[#A8B8B0]">
             记录已发生的生活，留在月历上

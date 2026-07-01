@@ -9,10 +9,10 @@
 import type { ApiResponse } from "@/types/models";
 
 /** 会话 token 在 localStorage 中的 key */
-const LOCALSTORAGE_SESSION_KEY = "flow_calendar_token";
+const LOCALSTORAGE_SESSION_KEY = "lime_calendar_token";
 
 /** 会话 Cookie 名称，与服务端保持一致 */
-const SESSION_COOKIE = "flow_calendar_session";
+const SESSION_COOKIE = "lime_calendar_session";
 
 /**
  * @description 从 localStorage 获取 session token

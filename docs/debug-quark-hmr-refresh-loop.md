@@ -2,7 +2,7 @@
 
 ## 背景
 
-最近在用 **Next.js 16** 开发一个移动端 H5 项目「**律动日历（Flow Calendar）**」，技术栈为 Next.js App Router + React 19 + TypeScript + Prisma + SQLite。目标用户主要在手机浏览器上使用，因此我们需要在主流国产浏览器中验证兼容性。
+最近在用 **Next.js 16** 开发一个移动端 H5 项目「**青柠日历（Lime Calendar）**」，技术栈为 Next.js App Router + React 19 + TypeScript + Prisma + SQLite。目标用户主要在手机浏览器上使用，因此我们需要在主流国产浏览器中验证兼容性。
 
 就在用**夸克浏览器**（Quark Browser）打开开发服务器时，遇到了一个诡异的问题——`/login` 页面**无限刷新**，页面内容一闪而过就开始重新加载，完全无法正常使用。但 Chrome、Edge、Safari 下一切正常。
 
@@ -180,6 +180,6 @@ npx next build && npx next start
 
 ---
 
-> 项目地址：Flow Calendar（律动日历）
+> 项目地址：Lime Calendar（青柠日历）
 > 技术栈：Next.js 16 · React 19 · TypeScript · Prisma · SQLite
 > 日期：2026-07-01

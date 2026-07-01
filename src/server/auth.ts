@@ -10,7 +10,7 @@ import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 /** 模拟会话 Cookie 名称 */
-const SESSION_COOKIE = "flow_calendar_session";
+const SESSION_COOKIE = "lime_calendar_session";
 
 /**
  * @description 开发环境输出鉴权重定向上下文，便于定位是谁反复打回登录页

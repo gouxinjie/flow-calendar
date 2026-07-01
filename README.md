@@ -1,4 +1,4 @@
-# Flow Calendar | 律动日历
+# Lime Calendar | 青柠日历
 
 一个通过月历记录"我做过什么"的轻量生活记录工具。
 

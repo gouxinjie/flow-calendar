@@ -14,7 +14,7 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Flow Calendar | 律动日历",
+  title: "Lime Calendar | 青柠日历",
   description: "面向手机浏览器的月历式生活记录产品，用月历留住已经发生的事。",
 };
 
@@ -33,7 +33,7 @@ export default function RootLayout({
         <noscript>
           <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-[#f1f9f6] px-6">
             <p className="text-[#1F2A2A] text-[16px] font-medium">请启用 JavaScript</p>
-            <p className="mt-2 text-[#6B7A7A] text-[14px]">Flow Calendar 需要 JavaScript 才能运行</p>
+            <p className="mt-2 text-[#6B7A7A] text-[14px]">青柠日历 需要 JavaScript 才能运行</p>
           </div>
         </noscript>
       </body>

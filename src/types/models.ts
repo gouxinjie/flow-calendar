@@ -1,5 +1,5 @@
 ﻿/**
- * @description 律动日历 Web 移动端共享类型定义
+ * @description 青柠日历 Web 移动端共享类型定义
  * 基于 PRD v2 的记录型月历模型
  */
 
