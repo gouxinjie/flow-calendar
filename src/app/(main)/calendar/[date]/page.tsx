@@ -5,11 +5,11 @@
  * @description 日期详情页
  * @author gouxinjie
  * @created 2026-06-22
- * @updated 2026-06-30
+ * @updated 2026-07-01
  */
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useParams } from "next/navigation";
-import { CopyIcon, DotsThreeIcon, PencilSimpleIcon, TrashIcon } from "@phosphor-icons/react";
+import { useParams, useRouter } from "next/navigation";
+import { CaretLeftIcon, CopyIcon, DotsThreeIcon, PencilSimpleIcon, TrashIcon } from "@phosphor-icons/react";
 import dayjs from "dayjs";
 
 import { ConfirmSheet } from "@/components/commons/confirm-sheet";
@@ -28,6 +28,7 @@ const MAX_RECORDS_PER_DAY = 3;
 
 export default function DateDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const date = (params.date as string) ?? dayjs().format("YYYY-MM-DD");
 
   const [records, setRecords] = useState<ActivityLog[]>([]);
@@ -169,6 +170,10 @@ export default function DateDetailPage() {
       setEditingRecord(null);
       setDraftRecord(undefined);
       setNotice({ tone: "success", message: editingRecord ? "记录已更新" : "记录已新增" });
+      // 新增记录成功后跳转回日历页面
+      if (!editingRecord) {
+        router.push("/calendar");
+      }
     } catch (requestError) {
       setNotice({
         tone: "error",
@@ -213,11 +218,19 @@ export default function DateDetailPage() {
 
   return (
     <div className="flex h-full flex-col">
-      {/* 顶部：日期 + 节日 + 干支日 + 装饰植物 */}
+      {/* 顶部：返回按钮 + 日期 + 节日 + 干支日 + 装饰植物 */}
       <div className="relative shrink-0 px-4 pb-2 pt-3">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
-            <div className="flex items-baseline gap-2">
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => router.push("/calendar")}
+                className="-ml-1.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[#6B7A7A] active:bg-[#F4F9F1]"
+                aria-label="返回日历"
+              >
+                <CaretLeftIcon size={20} weight="bold" />
+              </button>
               <h1 className="text-[26px] font-semibold tracking-[-0.03em] text-[#1F2A2A]">
                 {displayDate}
               </h1>
@@ -305,47 +318,45 @@ export default function DateDetailPage() {
           <div className="flex flex-col gap-3">
             {sortedRecords.map((record) => (
               <SectionCard key={record.id} className="!p-0">
-                <div className="flex items-stretch">
-                  {/* 左侧时间列 — 无 startTime 时不渲染 */}
-                  {record.startTime ? (
-                    <div className="flex w-[72px] shrink-0 flex-col items-start justify-start bg-white/0 px-4 pb-4 pt-4">
-                      <span className="font-numeric text-[16px] font-semibold tracking-[-0.02em] text-[#1F2A2A]">
-                        {record.startTime}
-                      </span>
-                    </div>
-                  ) : null}
-
-                  {/* 右侧内容列 */}
-                  <div className="min-w-0 flex-1 px-3 pb-4 pt-4">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0 flex-1">
-                        {/* 标题行：色点 + 标题 + 标签 */}
-                        <div className="flex items-center gap-2">
-                          <span
-                            className="inline-block h-2 w-2 shrink-0 rounded-full"
-                            style={{ backgroundColor: record.tag?.color ?? "#9BAE97" }}
-                            aria-hidden="true"
-                          />
-                          <h3 className="truncate text-[16px] font-semibold tracking-[-0.01em] text-[#1F2A2A]">
-                            {record.title}
-                          </h3>
-                        </div>
-                        {/* 标签徽章 */}
-                        {record.tag ? (
-                          <div className="mt-1.5">
-                            <TagBadge label={record.tag.name} color={record.tag.color} compact />
+                  {/* 内容列 */}
+                  <div className="px-3 pb-4 pt-4">
+                    <div className="relative">
+                      {/* 标题行：色点 + 时间 + 标题 + 操作按钮 */}
+                      <div className="flex items-start justify-between gap-2 pr-[104px]">
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <span
+                              className="inline-block h-2 w-2 shrink-0 rounded-full"
+                              style={{ backgroundColor: record.tag?.color ?? "#9BAE97" }}
+                              aria-hidden="true"
+                            />
+                            {record.startTime ? (
+                              <span className="shrink-0 font-numeric text-[16px] font-semibold tracking-[-0.02em] text-[#1F2A2A]">
+                                {record.startTime}
+                              </span>
+                            ) : null}
+                            <h3 className="truncate text-[16px] font-semibold tracking-[-0.01em] text-[#1F2A2A]">
+                              {record.title}
+                            </h3>
                           </div>
-                        ) : null}
-                        {/* 备注 */}
-                        {record.note ? (
-                          <p className="mt-1.5 text-[13px] leading-6 text-[#5C6E6B]">
-                            {record.note}
-                          </p>
-                        ) : null}
+                          {/* 标签徽章 */}
+                          {record.tag ? (
+                            <div className="mt-1.5">
+                              <TagBadge label={record.tag.name} color={record.tag.color} compact />
+                            </div>
+                          ) : null}
+                        </div>
                       </div>
 
+                      {/* 备注 — 占满整行宽度 */}
+                      {record.note ? (
+                        <p className="mt-1.5 text-[13px] leading-6 text-[#5C6E6B]">
+                          {record.note}
+                        </p>
+                      ) : null}
+
                       {/* 右侧操作按钮（编辑 + 复制 + 更多） */}
-                      <div className="flex items-center">
+                      <div className="absolute right-0 top-0 flex items-center">
                         <button
                           type="button"
                           onClick={() => handleEdit(record)}
@@ -387,7 +398,6 @@ export default function DateDetailPage() {
                       </div>
                     </div>
                   </div>
-                </div>
               </SectionCard>
             ))}
           </div>
