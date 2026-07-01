@@ -9,7 +9,7 @@
  */
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import { Copy, DotsThree, PencilSimple, Trash } from "@phosphor-icons/react";
+import { CopyIcon, DotsThreeIcon, PencilSimpleIcon, TrashIcon } from "@phosphor-icons/react";
 import dayjs from "dayjs";
 
 import { ConfirmSheet } from "@/components/commons/confirm-sheet";
@@ -352,7 +352,7 @@ export default function DateDetailPage() {
                           className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA094] active:bg-[#F4F9F1]"
                           aria-label="编辑记录"
                         >
-                          <PencilSimple size={16} />
+                          <PencilSimpleIcon size={16} />
                         </button>
                         <button
                           type="button"
@@ -360,7 +360,7 @@ export default function DateDetailPage() {
                           className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA094] active:bg-[#F4F9F1]"
                           aria-label="复制记录"
                         >
-                          <Copy size={16} />
+                          <CopyIcon size={16} />
                         </button>
                         <div className="relative" ref={menuRecordId === record.id ? menuRef : undefined}>
                           <button
@@ -369,7 +369,7 @@ export default function DateDetailPage() {
                             className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA094] active:bg-[#F4F9F1]"
                             aria-label="更多操作"
                           >
-                            <DotsThree size={18} weight="bold" />
+                            <DotsThreeIcon size={18} weight="bold" />
                           </button>
                           {menuRecordId === record.id ? (
                             <div className="absolute right-0 top-full z-30 mt-1 w-36 rounded-[14px] border border-[#DCEAD2] bg-white py-1 shadow-[0_8px_24px_rgba(18,46,40,0.12)]">
@@ -378,7 +378,7 @@ export default function DateDetailPage() {
                                 onClick={() => handleMenuDelete(record)}
                                 className="flex w-full items-center gap-2.5 px-4 py-2.5 text-[13px] font-medium text-[#E06060] active:bg-[#FFF5F5]"
                               >
-                                <Trash size={15} />
+                                <TrashIcon size={15} />
                                 删除记录
                               </button>
                             </div>

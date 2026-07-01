@@ -70,6 +70,21 @@ export async function PUT(request: NextRequest) {
       return error("INVALID_PARAMS", "用户名不能超过 20 个字符", 400);
     }
 
+    // 校验手机号格式
+    if (nextPhone && !/^1\d{10}$/.test(nextPhone)) {
+      return error("INVALID_PARAMS", "请输入 11 位手机号", 400);
+    }
+
+    // 检查手机号是否已被其他用户使用
+    if (nextPhone) {
+      const existingUser = await prisma.user.findFirst({
+        where: { phone: nextPhone, id: { not: userId } },
+      });
+      if (existingUser) {
+        return error("CONFLICT", "该手机号已被其他账号使用", 409);
+      }
+    }
+
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: {

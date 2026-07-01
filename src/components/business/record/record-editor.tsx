@@ -12,7 +12,7 @@ import { useState } from "react";
 import type { ActivityTag, RecordFormData } from "@/types/models";
 import { BottomSheet } from "@/components/business/shared/bottom-sheet";
 import { TimePicker } from "@/components/commons/time-picker";
-import { Trash } from "@phosphor-icons/react";
+import { TrashIcon } from "@phosphor-icons/react";
 
 import { cn } from "@/lib/cn";
 import { getTagButtonStyle } from "@/lib/tag-color";
@@ -99,7 +99,7 @@ export function RecordEditor({
               onClick={onDelete}
               className="flex h-[48px] shrink-0 items-center justify-center gap-1.5 rounded-[16px] border border-[#E06060] px-5 text-[14px] font-medium text-[#E06060] transition-colors duration-200 active:border-[#D85A5A] active:bg-[#FFF5F5] active:text-[#D85A5A]"
             >
-              <Trash size={18} weight="regular" />
+              <TrashIcon size={18} weight="regular" />
               删除
             </button>
           ) : null}

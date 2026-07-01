@@ -36,7 +36,7 @@ function setClientSessionCookie(token: string): void {
 export function LoginPageClient() {
   const [mode, setMode] = useState<"login" | "register">("login");
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("13113183859");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);

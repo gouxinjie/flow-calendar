@@ -10,7 +10,7 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { DotsSixVertical, PencilSimple, Plus } from "@phosphor-icons/react";
+import { DotsSixVerticalIcon, PencilSimpleIcon, Plus } from "@phosphor-icons/react";
 
 import { EmptyState } from "@/components/commons/empty-state";
 import { StateBanner } from "@/components/commons/state-banner";
@@ -123,7 +123,7 @@ export default function TagsPage() {
             <div className="divide-y divide-[#F0F5F3]">
               {tags.map((tag) => (
                 <div key={tag.id} className="flex items-center gap-3 py-3 first:pt-0 last:pb-0">
-                  <DotsSixVertical size={16} className="shrink-0 text-[#C2CCC0]" />
+                  <DotsSixVerticalIcon size={16} className="shrink-0 text-[#C2CCC0]" />
                   <span
                     className="h-9 w-9 shrink-0 rounded-[12px]"
                     style={{ backgroundColor: tag.color }}
@@ -148,7 +148,7 @@ export default function TagsPage() {
                     href={`/tags/${tag.id}`}
                     className="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA094] active:bg-[#F4F9F1]"
                   >
-                    <PencilSimple size={16} />
+                    <PencilSimpleIcon size={16} />
                   </Link>
                 </div>
               ))}
