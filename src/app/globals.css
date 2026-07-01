@@ -71,20 +71,32 @@
   border-radius: 999px;
 }
 
+/* 主内容区始终预留滚动条空间，但默认隐藏滑块，避免页面切换时宽度抖动 */
+main::-webkit-scrollbar-track {
+  background: transparent;
+}
+main::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 999px;
+  transition: background 200ms ease;
+}
+main:hover::-webkit-scrollbar-thumb {
+  background: rgba(107, 122, 122, 0.18);
+}
+
 /* ========== 页面切换动效 ========== */
+/* 仅使用 opacity 淡入，避免 translateY 导致容器溢出触发滚动条/宽度抖动 */
 @keyframes pageEnter {
   from {
     opacity: 0;
-    transform: translateY(6px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
 .animate-page-enter {
-  animation: pageEnter 220ms ease-out both;
+  animation: pageEnter 200ms ease-out both;
 }
 
 /* ========== 通用工具类 ========== */

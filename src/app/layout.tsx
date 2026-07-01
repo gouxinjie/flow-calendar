@@ -26,9 +26,9 @@ export default function RootLayout({
   return (
     <html
       lang="zh-CN"
-      className={`${notoSansSc.variable} ${manrope.variable} h-full antialiased`}
+      className={`${notoSansSc.variable} ${manrope.variable} h-full overflow-hidden antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full w-full flex flex-col overflow-x-hidden">
         {children}
         <noscript>
           <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-[#F3FAF7] px-6">

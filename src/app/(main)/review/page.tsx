@@ -276,7 +276,7 @@ export default function ReviewPage() {
           type="button"
           onClick={() => setViewMode(key)}
           className={cn(
-            "relative pb-3 text-[15px] font-medium transition-colors",
+            "relative pb-3 text-[15px] transition-colors",
             viewMode === key ? "text-[#1F2A2A]" : "text-[#9BAE97]",
           )}
         >

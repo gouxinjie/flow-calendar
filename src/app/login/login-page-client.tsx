@@ -117,10 +117,10 @@ export function LoginPageClient() {
       {/* Logo / 品牌区 */}
       <div className="animate-page-enter w-full max-w-[380px]">
         <div className="mb-8 text-center">
-          <h1 className="text-[28px] font-semibold tracking-[-0.03em] text-[#1F2A2A]">
+          <h1 className="text-[28px] font-semibold tracking-[-0.03em] text-[#5EBF3F]">
             青柠日历
           </h1>
-          <p className="mt-2 text-[14px] text-[#9BAE97]">
+          <p className="mt-2 text-[14px] text-[#6B7A7A]">
             记录已发生的生活，留在月历上
           </p>
         </div>

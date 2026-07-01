@@ -24,12 +24,12 @@ async function main() {
     where: { id: "user_demo_001" },
     create: {
       id: "user_demo_001",
-      name: "小律",
+      name: "小柠",
       phone: demoPhone,
       passwordHash,
     },
     update: {
-      name: "小律",
+      name: "小柠",
       phone: demoPhone,
       passwordHash: existing && isHashedPassword(existing.passwordHash)
         ? hashPassword(demoPassword)
