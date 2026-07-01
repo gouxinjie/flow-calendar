@@ -50,7 +50,8 @@ export function LoginPageClient() {
   const [loading, setLoading] = useState(false);
   const [notice, setNotice] = useState<{ tone: "error" | "success"; message: string } | null>(null);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event?: React.FormEvent) => {
+    event?.preventDefault();
     if (mode === "register" && !name.trim()) {
       setNotice({ tone: "error", message: "请输入用户名" });
       return;
@@ -150,67 +151,72 @@ export function LoginPageClient() {
           <StateBanner tone={notice.tone} message={notice.message} className="mb-4" />
         ) : null}
 
-        {mode === "register" ? (
+        {/* 使用 <form> 让浏览器密码管理器识别并自动填充 */}
+        <form onSubmit={handleSubmit}>
+          {mode === "register" ? (
+            <div className="mb-3">
+              <div className="flex items-center gap-2 rounded-[10px] border border-[#DCE7E4] bg-white px-4 py-3 focus-within:border-[#22C3A6]">
+                <input
+                  type="text"
+                  name="username"
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                  placeholder="用户名"
+                  autoComplete="username"
+                  className="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none"
+                />
+              </div>
+            </div>
+          ) : null}
+
+          {/* 手机号 */}
           <div className="mb-3">
             <div className="flex items-center gap-2 rounded-[10px] border border-[#DCE7E4] bg-white px-4 py-3 focus-within:border-[#22C3A6]">
+              <DeviceMobile size={18} className="text-[#A8B8B0]" />
               <input
-                type="text"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-                placeholder="用户名"
+                type="tel"
+                name="phone"
+                value={phone}
+                onChange={(event) => setPhone(event.target.value)}
+                placeholder="手机号"
+                autoComplete="tel"
                 className="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none"
               />
             </div>
           </div>
-        ) : null}
 
-        {/* 手机号 */}
-        <div className="mb-3">
-          <div className="flex items-center gap-2 rounded-[10px] border border-[#DCE7E4] bg-white px-4 py-3 focus-within:border-[#22C3A6]">
-            <DeviceMobile size={18} className="text-[#A8B8B0]" />
-            <input
-              type="tel"
-              value={phone}
-              onChange={(event) => setPhone(event.target.value)}
-              placeholder="手机号"
-              autoComplete="tel"
-              className="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none"
-            />
+          {/* 密码 */}
+          <div className="mb-6">
+            <div className="flex items-center gap-2 rounded-[10px] border border-[#DCE7E4] bg-white px-4 py-3 focus-within:border-[#22C3A6]">
+              <Lock size={18} className="text-[#A8B8B0]" />
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder="密码"
+                autoComplete={mode === "login" ? "current-password" : "new-password"}
+                className="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="text-[#A8B8B0]"
+              >
+                {showPassword ? <EyeSlash size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
-        </div>
 
-        {/* 密码 */}
-        <div className="mb-6">
-          <div className="flex items-center gap-2 rounded-[10px] border border-[#DCE7E4] bg-white px-4 py-3 focus-within:border-[#22C3A6]">
-            <Lock size={18} className="text-[#A8B8B0]" />
-            <input
-              type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="密码"
-              autoComplete={mode === "login" ? "current-password" : "new-password"}
-              className="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none"
-              onKeyDown={(event) => event.key === "Enter" && handleSubmit()}
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="text-[#A8B8B0]"
-            >
-              {showPassword ? <EyeSlash size={18} /> : <Eye size={18} />}
-            </button>
-          </div>
-        </div>
-
-        {/* 提交按钮 */}
-        <button
-          type="button"
-          onClick={handleSubmit}
-          disabled={loading}
-          className="flex h-[48px] w-full items-center justify-center rounded-[10px] bg-[#22C3A6] text-[14px] font-semibold text-white active:opacity-80 disabled:opacity-60"
-        >
-          {loading ? "处理中..." : mode === "login" ? "登录" : "注册并进入"}
-        </button>
+          {/* 提交按钮：type="submit" 触发浏览器密码管理器保存 */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="flex h-[48px] w-full items-center justify-center rounded-[10px] bg-[#22C3A6] text-[14px] font-semibold text-white active:opacity-80 disabled:opacity-60"
+          >
+            {loading ? "处理中..." : mode === "login" ? "登录" : "注册并进入"}
+          </button>
+        </form>
 
         <p className="mt-6 text-center text-[13px] text-[#A8B8B0]">
           记录已发生的生活，从这一刻开始
