@@ -7,7 +7,7 @@
  * 避免依赖服务端 RSC 请求携带 Cookie（夸克浏览器不携带）。
  * @author gouxinjie
  * @created 2026-06-22
- * @updated 2026-06-28
+ * @updated 2026-07-01
  */
 import { useEffect, useState } from "react";
 import { DeviceMobile, Lock, Eye, EyeSlash } from "@phosphor-icons/react";
@@ -33,9 +33,9 @@ interface LoginData {
  * 夸克浏览器可能不处理 fetch 响应中的 httpOnly Set-Cookie，
  * 这里用非 httpOnly cookie 做兜底写入
  */
-function setClientSessionCookie(userId: string): void {
+function setClientSessionCookie(token: string): void {
   try {
-    document.cookie = `${SESSION_COOKIE}=${userId}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
+    document.cookie = `${SESSION_COOKIE}=${token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
   } catch {
     // 静默失败，不影响主流程
   }
@@ -45,7 +45,7 @@ export function LoginPageClient() {
   const [mode, setMode] = useState<"login" | "register">("login");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("13113183859");
-  const [password, setPassword] = useState("xinjie123");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [notice, setNotice] = useState<{ tone: "error" | "success"; message: string } | null>(null);
@@ -125,31 +125,18 @@ export function LoginPageClient() {
   return (
     <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-[#f1f9f6] px-6">
       {/* Logo / 品牌区 */}
-      <div className="animate-page-enter">
-          <div className="mb-10 text-center">
-        <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-[12px] border border-[#D6ECE6] bg-white shadow-[0_24px_50px_rgba(34,195,166,0.12)]">
-          <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-            <rect x="4" y="8" width="28" height="24" rx="4" stroke="#22C3A6" strokeWidth="2" fill="white" />
-            <line x1="4" y1="16" x2="32" y2="16" stroke="#22C3A6" strokeWidth="2" />
-            <line x1="12" y1="8" x2="12" y2="12" stroke="#22C3A6" strokeWidth="2" />
-            <line x1="24" y1="8" x2="24" y2="12" stroke="#22C3A6" strokeWidth="2" />
-            <circle cx="12" cy="21" r="2" fill="#22C3A6" />
-            <circle cx="20" cy="21" r="2" fill="#FF9F43" />
-            <circle cx="16" cy="26" r="1.5" fill="#5DA9E9" />
-            <circle cx="22" cy="26" r="1.5" fill="#8B8AEF" />
-          </svg>
+      <div className="animate-page-enter w-full max-w-[380px]">
+        <div className="mb-8 text-center">
+          <h1 className="text-[28px] font-semibold tracking-[-0.03em] text-[#1F2A2A]">
+            Flow Calendar
+          </h1>
+          <p className="mt-2 text-[14px] text-[#A8B8B0]">
+            记录已发生的生活，留在月历上
+          </p>
         </div>
-        <h1 className="text-[28px] font-semibold tracking-[-0.03em] text-[#1F2A2A]">
-          Flow Calendar
-        </h1>
-        <p className="mt-2 text-[14px] text-[#A8B8B0]">
-          记录已发生的生活，留在月历上
-        </p>
-      </div>
 
-      {/* 登录表单 */}
-      <div className="surface-card w-full max-w-[360px] rounded-[8px] p-5">
-        <div className="mb-5 grid grid-cols-2 rounded-[10px] bg-[#F2F7F5] p-1">
+        {/* 登录/注册切换 */}
+        <div className="mb-6 grid grid-cols-2 rounded-[10px] bg-[#EDF3F1] p-1">
           <button
             type="button"
             onClick={() => setMode("login")}
@@ -197,6 +184,7 @@ export function LoginPageClient() {
               value={phone}
               onChange={(event) => setPhone(event.target.value)}
               placeholder="手机号"
+              autoComplete="tel"
               className="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none"
             />
           </div>
@@ -211,6 +199,7 @@ export function LoginPageClient() {
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               placeholder="密码"
+              autoComplete={mode === "login" ? "current-password" : "new-password"}
               className="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#A8B8B0] outline-none"
               onKeyDown={(event) => event.key === "Enter" && handleSubmit()}
             />
@@ -247,8 +236,7 @@ export function LoginPageClient() {
             {mode === "login" ? "去注册" : "去登录"}
           </button>
         </p>
-          </div>
-          </div>
+      </div>
     </div>
   );
 }
