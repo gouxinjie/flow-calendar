@@ -1,5 +1,8 @@
 # Lime Calendar | 青柠日历
 
+[![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/gouxinjie/flow-calendar.svg)](https://github.com/gouxinjie/flow-calendar)
+
 一个以月历为核心的轻量生活记录工具。重点不是规划未来，而是回看已经发生过的生活。
 
 ## 核心功能
