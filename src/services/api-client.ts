@@ -66,6 +66,8 @@ export async function requestApi<T>(
 
   const response = await fetch(input, {
     ...init,
+    // 禁用浏览器 HTTP 缓存，防止 GET 请求返回旧数据（如删除记录后列表仍显示旧数据）
+    cache: "no-store",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",

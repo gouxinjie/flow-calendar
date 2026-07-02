@@ -7,8 +7,9 @@
  * @created 2026-06-22
  * @updated 2026-06-24
  */
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { CalendarBlank, CaretDown, MagnifyingGlass, Plus } from "@phosphor-icons/react";
 import dayjs from "dayjs";
 
@@ -23,7 +24,10 @@ import { useCalendarStore } from "@/stores/calendar-store";
 import type { ActivityLog, ActivityTag, RecordFormData } from "@/types/models";
 
 export default function CalendarPage() {
+  const router = useRouter();
   const { currentMonth, selectedDate, today, refreshKey, setCurrentMonth } = useCalendarStore();
+  /** 上一次 refreshKey，用于检测是否由其他页面触发刷新 */
+  const prevRefreshKeyRef = useRef(refreshKey);
 
   const [records, setRecords] = useState<ActivityLog[]>([]);
   const [tags, setTags] = useState<ActivityTag[]>([]);
@@ -37,6 +41,18 @@ export default function CalendarPage() {
 
   useEffect(() => {
     let active = true;
+    const isFromRefresh = prevRefreshKeyRef.current !== refreshKey;
+
+    // 通过 refreshKey 增量触发的刷新，需要先清除 Next.js 客户端路由缓存
+    if (isFromRefresh) {
+      // eslint-disable-next-line no-console
+      console.log(
+        `[CalendarPage] refreshKey 变更: ${prevRefreshKeyRef.current} → ${refreshKey}, ` +
+        `build: ${process.env.NEXT_PUBLIC_BUILD_TIME ?? "unknown"}`,
+      );
+      router.refresh();
+    }
+    prevRefreshKeyRef.current = refreshKey;
 
     async function loadCalendarData() {
       setLoading(true);

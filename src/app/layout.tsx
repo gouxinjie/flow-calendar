@@ -36,6 +36,12 @@ export default function RootLayout({
             <p className="mt-2 text-[#6B7A7A] text-[14px]">青柠日历 需要 JavaScript 才能运行</p>
           </div>
         </noscript>
+        {/* 构建时间打印，用于验证生产环境部署是否生效 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `console.log("[Lime Calendar] 构建时间: ${process.env.NEXT_PUBLIC_BUILD_TIME ?? "未知"}");`,
+          }}
+        />
       </body>
     </html>
   );
