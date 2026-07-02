@@ -7,9 +7,8 @@
  * @created 2026-06-22
  * @updated 2026-06-24
  */
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { CalendarBlank, CaretDown, MagnifyingGlass, Plus } from "@phosphor-icons/react";
 import dayjs from "dayjs";
 
@@ -24,10 +23,7 @@ import { useCalendarStore } from "@/stores/calendar-store";
 import type { ActivityLog, ActivityTag, RecordFormData } from "@/types/models";
 
 export default function CalendarPage() {
-  const router = useRouter();
   const { currentMonth, selectedDate, today, refreshKey, setCurrentMonth } = useCalendarStore();
-  /** 上一次 refreshKey，用于检测是否由其他页面触发刷新 */
-  const prevRefreshKeyRef = useRef(refreshKey);
 
   const [records, setRecords] = useState<ActivityLog[]>([]);
   const [tags, setTags] = useState<ActivityTag[]>([]);
@@ -41,18 +37,12 @@ export default function CalendarPage() {
 
   useEffect(() => {
     let active = true;
-    const isFromRefresh = prevRefreshKeyRef.current !== refreshKey;
 
-    // 通过 refreshKey 增量触发的刷新，需要先清除 Next.js 客户端路由缓存
-    if (isFromRefresh) {
-      // eslint-disable-next-line no-console
-      console.log(
-        `[CalendarPage] refreshKey 变更: ${prevRefreshKeyRef.current} → ${refreshKey}, ` +
-        `build: ${process.env.NEXT_PUBLIC_BUILD_TIME ?? "unknown"}`,
-      );
-      router.refresh();
-    }
-    prevRefreshKeyRef.current = refreshKey;
+    // eslint-disable-next-line no-console
+    console.log(
+      `[CalendarPage] 加载数据 — month: ${currentMonth}, refreshKey: ${refreshKey}, ` +
+      `build: ${process.env.NEXT_PUBLIC_BUILD_TIME ?? "unknown"}`,
+    );
 
     async function loadCalendarData() {
       setLoading(true);
@@ -61,12 +51,16 @@ export default function CalendarPage() {
       try {
         const [nextTags, nextRecords] = await Promise.all([
           requestApi<ActivityTag[]>("/api/tags"),
-          requestApi<ActivityLog[]>(`/api/records?month=${currentMonth}`),
+          // 添加 _t 时间戳彻底破坏浏览器缓存（兜底 cache: "no-store"）
+          requestApi<ActivityLog[]>(`/api/records?month=${currentMonth}&_t=${Date.now()}`),
         ]);
 
         if (!active) {
           return;
         }
+
+        // eslint-disable-next-line no-console
+        console.log(`[CalendarPage] 数据加载完成 — 标签: ${nextTags.length}, 记录: ${nextRecords.length}`);
 
         setTags(nextTags);
         setRecords(nextRecords);
@@ -75,6 +69,8 @@ export default function CalendarPage() {
           return;
         }
 
+        // eslint-disable-next-line no-console
+        console.error(`[CalendarPage] 数据加载失败:`, requestError);
         setPageError(requestError instanceof Error ? requestError.message : "读取月历失败");
       } finally {
         if (active) {
@@ -121,7 +117,7 @@ export default function CalendarPage() {
         body: JSON.stringify(data),
       });
 
-      const nextRecords = await requestApi<ActivityLog[]>(`/api/records?month=${currentMonth}`);
+      const nextRecords = await requestApi<ActivityLog[]>(`/api/records?month=${currentMonth}&_t=${Date.now()}`);
       setRecords(nextRecords);
       setFeedback("记录已保存");
       setShowRecordEditor(false);

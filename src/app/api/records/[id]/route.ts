@@ -105,13 +105,21 @@ export async function DELETE(
 
     const { id } = await params;
 
+    // eslint-disable-next-line no-console
+    console.log(`[DELETE /api/records/${id}] 收到删除请求, userId: ${userId}`);
+
     // 校验记录归属
     const existing = await prisma.activityLog.findUnique({ where: { id } });
     if (!existing || existing.userId !== userId) {
+      // eslint-disable-next-line no-console
+      console.warn(`[DELETE /api/records/${id}] 记录不存在或不属于该用户`);
       return error("NOT_FOUND", "记录不存在", 404);
     }
 
     await prisma.activityLog.delete({ where: { id } });
+
+    // eslint-disable-next-line no-console
+    console.log(`[DELETE /api/records/${id}] 删除成功 — title: "${existing.title}", date: ${existing.date}`);
 
     return success(null, "记录已删除");
   } catch (err) {

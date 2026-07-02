@@ -197,10 +197,15 @@ export default function DateDetailPage() {
     setNotice(null);
 
     try {
+      // eslint-disable-next-line no-console
+      console.log(`[DateDetail] 开始删除记录 ${editingRecord.id}`);
+
       await requestApi<null>(`/api/records/${editingRecord.id}`, {
         method: "DELETE",
-        body: JSON.stringify({}),
       });
+
+      // eslint-disable-next-line no-console
+      console.log(`[DateDetail] 删除 API 返回成功，重新拉取当日数据`);
 
       const nextRecords = await requestApi<ActivityLog[]>(`/api/records?date=${date}&sort=asc`);
       setRecords(sortRecordsByTimeline(nextRecords));
@@ -209,11 +214,18 @@ export default function DateDetailPage() {
       setEditingRecord(null);
       setDraftRecord(undefined);
       setNotice({ tone: "success", message: "记录已删除" });
-      // 通知日历首页刷新数据
+
+      // 通知日历首页刷新数据（必须在 router.push 之前调用，确保 store 更新先于组件挂载）
       triggerRefresh();
+
+      // eslint-disable-next-line no-console
+      console.log(`[DateDetail] triggerRefresh 完成，即将跳转回日历`);
+
       // 删除后自动跳转回日历首页，确保日历页重新挂载、拉取最新数据
       router.push("/calendar");
     } catch (requestError) {
+      // eslint-disable-next-line no-console
+      console.error(`[DateDetail] 删除记录失败:`, requestError);
       setNotice({
         tone: "error",
         message: requestError instanceof Error ? requestError.message : "删除记录失败",
