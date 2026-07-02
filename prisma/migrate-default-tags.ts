@@ -1,11 +1,26 @@
 /**
  * @description 一次性数据修复脚本 - 为已有注册用户补齐默认标签
  * @description 仅对没有任何标签的用户补标签，已有标签的用户不处理
+ * @description 注意：数据直接内联，不依赖 src/ 源码（部署包不含 src 目录）
  * @author gouxinjie
  * @created 2026-07-02
  */
 import { PrismaClient } from "@prisma/client";
-import { DEFAULT_TAGS } from "../src/server/default-tags";
+
+// 默认标签数据直接内联（与 src/server/default-tags.ts 保持一致）
+// 不能 import src/ 源码，因为部署产物中不包含 src/ 目录
+const DEFAULT_TAGS = [
+  { name: "工作", color: "#5DA9E9", icon: "briefcase", category: "work", sortOrder: 1 },
+  { name: "学习", color: "#5F6EF3", icon: "book", category: "work", sortOrder: 2 },
+  { name: "运动", color: "#FF9F43", icon: "barbell", category: "health", sortOrder: 3 },
+  { name: "外出", color: "#F46D5E", icon: "compass", category: "leisure", sortOrder: 4 },
+  { name: "聚会", color: "#8B8AEF", icon: "users", category: "social", sortOrder: 5 },
+  { name: "观影", color: "#C27BFF", icon: "film", category: "leisure", sortOrder: 6 },
+  { name: "休息", color: "#22C3A6", icon: "moon", category: "rest", sortOrder: 7 },
+  { name: "旅游", color: "#06B6D4", icon: "globe", category: "leisure", sortOrder: 8 },
+  { name: "开心", color: "#F6AD55", icon: "smiley", category: "mood", sortOrder: 9 },
+  { name: "低落", color: "#A8B8B0", icon: "smiley-sad", category: "mood", sortOrder: 10 },
+];
 
 const prisma = new PrismaClient();
 
