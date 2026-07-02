@@ -2,11 +2,13 @@
  * @description 数据库种子脚本 - 初始化 demo 用户和示例数据
  * @author gouxinjie
  * @created 2026-06-22
+ * @updated 2026-07-02
  */
 import { PrismaClient } from "@prisma/client";
 import dayjs from "dayjs";
 
 import { hashPassword, isHashedPassword } from "../src/server/password";
+import { DEFAULT_TAGS } from "../src/server/default-tags";
 
 const prisma = new PrismaClient();
 
@@ -41,19 +43,25 @@ async function main() {
     `${existing ? "Demo 用户已更新" : "Demo 用户已创建"}: ${demoPhone} / xinjie123`,
   );
 
-  // 创建默认标签
-  const defaultTags = [
-    { id: "tag_work", name: "工作", color: "#5DA9E9", icon: "briefcase", category: "work", sortOrder: 1 },
-    { id: "tag_study", name: "学习", color: "#5F6EF3", icon: "book", category: "work", sortOrder: 2 },
-    { id: "tag_sport", name: "运动", color: "#FF9F43", icon: "barbell", category: "health", sortOrder: 3 },
-    { id: "tag_outdoor", name: "外出", color: "#F46D5E", icon: "compass", category: "leisure", sortOrder: 4 },
-    { id: "tag_social", name: "聚会", color: "#8B8AEF", icon: "users", category: "social", sortOrder: 5 },
-    { id: "tag_movie", name: "观影", color: "#C27BFF", icon: "film", category: "leisure", sortOrder: 6 },
-    { id: "tag_rest", name: "休息", color: "#22C3A6", icon: "moon", category: "rest", sortOrder: 7 },
-    { id: "tag_read", name: "旅游", color: "#06B6D4", icon: "globe", category: "leisure", sortOrder: 8 },
-    { id: "tag_mood_good", name: "开心", color: "#F6AD55", icon: "smiley", category: "mood", sortOrder: 9 },
-    { id: "tag_mood_bad", name: "低落", color: "#A8B8B0", icon: "smiley-sad", category: "mood", sortOrder: 10 },
-  ];
+  // Demo 用户标签固定 ID 映射（用于已有 demo 记录引用）
+  const demoTagIdMap: Record<string, string> = {
+    "工作": "tag_work",
+    "学习": "tag_study",
+    "运动": "tag_sport",
+    "外出": "tag_outdoor",
+    "聚会": "tag_social",
+    "观影": "tag_movie",
+    "休息": "tag_rest",
+    "旅游": "tag_read",
+    "开心": "tag_mood_good",
+    "低落": "tag_mood_bad",
+  };
+
+  // 创建默认标签（数据来源于共享标签定义）
+  const defaultTags = DEFAULT_TAGS.map((tag) => ({
+    ...tag,
+    id: demoTagIdMap[tag.name] ?? `tag_${tag.name}`,
+  }));
 
   for (const tag of defaultTags) {
     await prisma.activityTag.upsert({

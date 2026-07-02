@@ -3,13 +3,14 @@
  * @route POST /api/auth/register
  * @author gouxinjie
  * @created 2026-06-22
- * @updated 2026-06-26
+ * @updated 2026-07-02 - 注册后自动初始化默认标签
  */
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/server/db";
 import { setSession } from "@/server/auth";
 import { isTrustedMutationRequest } from "@/server/request";
 import { hashPassword } from "@/server/password";
+import { DEFAULT_TAGS } from "@/server/default-tags";
 
 export async function POST(request: NextRequest) {
   try {
@@ -54,12 +55,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const user = await prisma.user.create({
-      data: {
-        name: String(name).trim(),
-        phone: String(phone).trim(),
-        passwordHash: hashPassword(password),
-      },
+    // 事务：原子性创建用户和默认标签
+    const user = await prisma.$transaction(async (tx) => {
+      const newUser = await tx.user.create({
+        data: {
+          name: String(name).trim(),
+          phone: String(phone).trim(),
+          passwordHash: hashPassword(password),
+        },
+      });
+
+      // 新用户注册后自动初始化默认标签
+      await tx.activityTag.createMany({
+        data: DEFAULT_TAGS.map((tag) => ({
+          ...tag,
+          userId: newUser.id,
+        })),
+      });
+
+      return newUser;
     });
 
     // 自动登录
