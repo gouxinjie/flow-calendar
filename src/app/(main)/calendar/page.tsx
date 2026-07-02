@@ -23,7 +23,7 @@ import { useCalendarStore } from "@/stores/calendar-store";
 import type { ActivityLog, ActivityTag, RecordFormData } from "@/types/models";
 
 export default function CalendarPage() {
-  const { currentMonth, selectedDate, today, setCurrentMonth } = useCalendarStore();
+  const { currentMonth, selectedDate, today, refreshKey, setCurrentMonth } = useCalendarStore();
 
   const [records, setRecords] = useState<ActivityLog[]>([]);
   const [tags, setTags] = useState<ActivityTag[]>([]);
@@ -72,7 +72,7 @@ export default function CalendarPage() {
     return () => {
       active = false;
     };
-  }, [currentMonth]);
+  }, [currentMonth, refreshKey]);
 
   const cells = useMemo(
     () => buildMonthCells(currentMonth, records, tags, selectedDate, today),

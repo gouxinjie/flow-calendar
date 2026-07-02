@@ -54,6 +54,7 @@ export function CalendarMonth({ cells, weekdays }: CalendarMonthProps) {
             <Link
               key={cell.date}
               href={`/calendar/${cell.date}`}
+              prefetch={false}
               className={cn(
                 "relative flex min-h-0 flex-col rounded-[8px] border border-transparent px-1.5 pb-1.5 pt-2 transition-transform active:scale-[0.98]",
                 cellSurfaceClass,

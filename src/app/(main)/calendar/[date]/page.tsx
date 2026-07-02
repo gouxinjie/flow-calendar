@@ -21,6 +21,7 @@ import { SectionCard, TagBadge } from "@/components/business/shared/mobile-shell
 import { getDateBadgeInfo } from "@/lib/calendar";
 import { sortRecordsByTimeline } from "@/lib/record";
 import { requestApi } from "@/services/api-client";
+import { useCalendarStore } from "@/stores/calendar-store";
 import type { ActivityLog, ActivityTag, RecordFormData } from "@/types/models";
 
 /** 每天最多记录条数 */
@@ -29,6 +30,7 @@ const MAX_RECORDS_PER_DAY = 3;
 export default function DateDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const triggerRefresh = useCalendarStore((s) => s.triggerRefresh);
   const date = (params.date as string) ?? dayjs().format("YYYY-MM-DD");
 
   const [records, setRecords] = useState<ActivityLog[]>([]);
@@ -170,6 +172,8 @@ export default function DateDetailPage() {
       setEditingRecord(null);
       setDraftRecord(undefined);
       setNotice({ tone: "success", message: editingRecord ? "记录已更新" : "记录已新增" });
+      // 通知日历首页刷新数据
+      triggerRefresh();
       // 新增记录成功后跳转回日历页面
       if (!editingRecord) {
         router.push("/calendar");
@@ -205,6 +209,8 @@ export default function DateDetailPage() {
       setEditingRecord(null);
       setDraftRecord(undefined);
       setNotice({ tone: "success", message: "记录已删除" });
+      // 通知日历首页刷新数据，确保返回后不再显示已删除的记录
+      triggerRefresh();
     } catch (requestError) {
       setNotice({
         tone: "error",

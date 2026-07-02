@@ -13,6 +13,8 @@ interface CalendarState {
   selectedDate: string;
   /** 今天的日期 YYYY-MM-DD */
   today: string;
+  /** 数据刷新计数器，变更后触发依赖页面重新拉取数据 */
+  refreshKey: number;
 
   /** 设置当前月份 */
   setCurrentMonth: (month: string) => void;
@@ -24,6 +26,8 @@ interface CalendarState {
   goToNextMonth: () => void;
   /** 回到今天 */
   goToToday: () => void;
+  /** 触发数据刷新（自增 refreshKey） */
+  triggerRefresh: () => void;
 }
 
 export const useCalendarStore = create<CalendarState>((set, get) => {
@@ -34,9 +38,11 @@ export const useCalendarStore = create<CalendarState>((set, get) => {
     currentMonth,
     selectedDate: today,
     today,
+    refreshKey: 0,
 
     setCurrentMonth: (month) => set({ currentMonth: month }),
     setSelectedDate: (date) => set({ selectedDate: date }),
+    triggerRefresh: () => set((state) => ({ refreshKey: state.refreshKey + 1 })),
 
     goToPrevMonth: () => {
       const prev = dayjs(`${get().currentMonth}-01`).subtract(1, "month");
