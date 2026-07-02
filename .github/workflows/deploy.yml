@@ -69,6 +69,7 @@ jobs:
             # 写入生产环境变量
             cat > ${{ secrets.ECS_DEPLOY_PATH }}/.env << 'DOTENV'
             DATABASE_URL="file:/var/www/flow-calendar/data/prod.db"
+            ALLOWED_ORIGINS="flow-calendar.gouxinjie.com"
             DOTENV
 
             # 安装依赖 & 同步数据库
