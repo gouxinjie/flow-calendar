@@ -11,7 +11,8 @@
     "db:push": "prisma db push",
     "db:deploy": "prisma migrate deploy",
     "db:seed": "npx tsx prisma/seed.ts",
-    "db:migrate-tags": "npx tsx prisma/migrate-default-tags.ts"
+    "db:migrate-tags": "npx tsx prisma/migrate-default-tags.ts",
+    "db:delete-users": "npx tsx prisma/delete-all-users.ts"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
