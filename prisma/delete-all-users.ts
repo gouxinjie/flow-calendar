@@ -4,8 +4,38 @@
  * @description 注意：数据直接内联，不依赖 src/ 源码（部署包不含 src 目录）
  * @author gouxinjie
  * @created 2026-07-02
+ * @updated 2026-07-02 - 修复独立运行时 DATABASE_URL 未加载的问题
  */
+import { readFileSync } from "fs";
+import { resolve } from "path";
 import { PrismaClient } from "@prisma/client";
+
+// 独立脚本不会自动加载 .env，手动读取设置环境变量
+function loadEnv() {
+  try {
+    const envPath = resolve(process.cwd(), ".env");
+    const content = readFileSync(envPath, "utf-8");
+    for (const line of content.split("\n")) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith("#")) continue;
+      const eqIdx = trimmed.indexOf("=");
+      if (eqIdx === -1) continue;
+      const key = trimmed.slice(0, eqIdx).trim();
+      let value = trimmed.slice(eqIdx + 1).trim();
+      // 去除引号
+      if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+        value = value.slice(1, -1);
+      }
+      if (!process.env[key]) {
+        process.env[key] = value;
+      }
+    }
+  } catch {
+    // .env 文件不存在时使用当前环境变量
+  }
+}
+
+loadEnv();
 
 const prisma = new PrismaClient();
 
