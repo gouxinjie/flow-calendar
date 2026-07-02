@@ -31,6 +31,7 @@ jobs:
 
       - name: 打包部署产物
         run: |
+          mkdir -p deploy-package
           # 启用 dotglob，使 * 通配符匹配 .next 等点开头的目录
           shopt -s dotglob
           # standalone 自包含产物（含精简 node_modules + .next 构建元数据）
