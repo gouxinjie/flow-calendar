@@ -10,6 +10,7 @@
 import { useState } from "react";
 
 import { BottomSheet } from "@/components/business/shared/bottom-sheet";
+import { DateRangePicker } from "@/components/commons/date-range-picker";
 import { getNeutralButtonStyle, getTagButtonStyle } from "@/lib/tag-color";
 import type { ActivityTag, SearchFilters } from "@/types/models";
 
@@ -122,32 +123,38 @@ export function SearchFilterSheet({
           <label className="mb-1.5 block text-[13px] font-medium text-[#6B7A7A]">
             日期范围
           </label>
-          <div className="flex items-center gap-2">
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="flex-1 rounded-[14px] border border-[#DCEAD2] px-3 py-3 text-[14px] text-[#1F2A2A] outline-none focus:border-[#5EBF3F]"
-              placeholder="开始日期"
-            />
-            <span className="text-[#9BAE97]">至</span>
-            <input
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className="flex-1 rounded-[14px] border border-[#DCEAD2] px-3 py-3 text-[14px] text-[#1F2A2A] outline-none focus:border-[#5EBF3F]"
-              placeholder="结束日期"
-            />
-          </div>
+          <DateRangePicker
+            startDate={startDate}
+            endDate={endDate}
+            onStartDateChange={setStartDate}
+            onEndDateChange={setEndDate}
+          />
         </div>
 
-        <label className="flex items-center gap-3">
-          <input
-            type="checkbox"
-            checked={includeUncategorized}
-            onChange={(e) => setIncludeUncategorized(e.target.checked)}
-            className="h-5 w-5 rounded accent-[#5EBF3F]"
-          />
+        <label className="flex cursor-pointer items-center gap-3 active:opacity-80">
+          <div className="relative h-5 w-5 shrink-0">
+            <input
+              type="checkbox"
+              checked={includeUncategorized}
+              onChange={(e) => setIncludeUncategorized(e.target.checked)}
+              className="peer sr-only"
+            />
+            <span className="absolute inset-0 rounded-[6px] border border-[#DCEAD2] bg-white transition-all duration-200 peer-checked:border-[#5EBF3F] peer-checked:bg-[#5EBF3F]"></span>
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 scale-0 text-white transition-transform duration-200 peer-checked:scale-100"
+            >
+              <path d="M2 6L5 9L10 3" />
+            </svg>
+          </div>
           <span className="text-[14px] text-[#1F2A2A]">包含未分类记录</span>
         </label>
       </div>

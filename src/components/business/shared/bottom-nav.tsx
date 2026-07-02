@@ -35,7 +35,7 @@ export function BottomNav() {
               href={item.href}
               className={cn(
                 "flex min-h-[62px] flex-col items-center justify-center gap-1 px-2 py-2 text-[12px] transition-colors active:scale-[0.98]",
-                isActive ? "text-[#3D9428]" : "text-[#A3AEAB]",
+                isActive ? "!text-[#3D9428]" : "!text-[#A3AEAB]",
               )}
               aria-current={isActive ? "page" : undefined}
             >

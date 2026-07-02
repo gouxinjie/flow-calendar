@@ -62,7 +62,10 @@ export default function ReviewPage() {
 
       try {
         const query = new URLSearchParams();
-        query.set("month", reviewMonth);
+        // 只有当没有日期范围筛选时，才使用 month 参数
+        if (!filters.startDate && !filters.endDate) {
+          query.set("month", reviewMonth);
+        }
         if (filters.keyword) query.set("keyword", filters.keyword);
         if (filters.tagId) query.set("tagId", filters.tagId);
         if (filters.startDate) query.set("startDate", filters.startDate);

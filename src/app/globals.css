@@ -16,6 +16,18 @@
   --border-color: #DCEAD2;
   --error: #e06060;
   --success: #5EBF3F;
+
+  /* ========== antd-mobile 主题变量 ========== */
+  /* 在 :root 定义，确保优先级最高，覆盖 antd-mobile 默认蓝色 */
+  --adm-color-primary: #5EBF3F;
+  --adm-color-primary-hover: #3D9428;
+  --adm-color-border: #DCEAD2;
+  --adm-color-box: #F3FAF7;
+  --adm-color-light: #9BAE97;
+  --adm-color-text: #1F2A2A;
+  --adm-color-weak: #6B7A7A;
+  --adm-color-white: #FFFFFF;
+  --adm-calendar-mark-bg: #E3F5DA;
 }
 
 @theme inline {
@@ -49,9 +61,15 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  a {
+  a,
+  a:link,
+  a:visited,
+  a:hover,
+  a:active,
+  a:focus {
     color: inherit;
     text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
   }
 
   button {
@@ -153,4 +171,45 @@ main:hover::-webkit-scrollbar-thumb {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* ========== antd-mobile 主题已通过 :root CSS 变量统一配置 ========== */
+/* 无需额外覆盖，所有 antd-mobile 组件会自动使用项目品牌色 */
+
+/* ========== antd-mobile CalendarPicker 强制颜色覆盖 ========== */
+/* :root CSS 变量在 Turbopack 下可能不生效，直接覆盖类名 */
+
+/* 今日标记 → 品牌绿色 */
+.adm-calendar-picker-cell-today,
+.adm-calendar-picker-view-cell-today {
+  color: #5EBF3F !important;
+}
+
+/* 选中日期 → 品牌绿色背景 + 白色文字 */
+.adm-calendar-picker-cell-selected,
+.adm-calendar-picker-view-cell-selected {
+  background-color: #5EBF3F !important;
+  color: #FFFFFF !important;
+}
+
+/* 范围起始/结束 → 品牌绿色 */
+.adm-calendar-picker-cell-selected-begin,
+.adm-calendar-picker-view-cell-selected-begin,
+.adm-calendar-picker-cell-selected-end,
+.adm-calendar-picker-view-cell-selected-end {
+  background-color: #5EBF3F !important;
+  color: #FFFFFF !important;
+}
+
+/* 范围中间日期 → 浅绿色背景 */
+.adm-calendar-picker-cell-in-range,
+.adm-calendar-picker-view-cell-in-range {
+  background-color: #E3F5DA !important;
+}
+
+/* 确认按钮 → 品牌绿色 */
+.adm-calendar-picker-popup .adm-button-primary,
+.adm-calendar-picker .adm-button-primary {
+  background-color: #5EBF3F !important;
+  border-color: #5EBF3F !important;
 }
