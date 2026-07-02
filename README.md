@@ -13,16 +13,23 @@
 
 ## 界面预览
 
-| 页面 | 截图 |
-|------|------|
-| 登录 | ![登录](imgs/1-登录.png) |
-| 日历页面 | ![日历页面](imgs/2-日历页面.png) |
-| 选择月份 | ![选择月份](imgs/3-选择月份.png) |
-| 记录 | ![记录](imgs/4-记录.png) |
-| 编辑记录 | ![编辑记录](imgs/5-编辑记录.png) |
-| 回顾 | ![回顾](imgs/6-回顾.png) |
-| 筛选与回顾 | ![筛选与回顾](imgs/7-筛选与回顾.png) |
-| 我的 | ![我的](imgs/8-我的.png) |
+<div align="center">
+  <img src="imgs/1-登录.png" width="200" alt="登录" />
+  <img src="imgs/2-日历页面.png" width="200" alt="日历页面" />
+  <img src="imgs/3-选择月份.png" width="200" alt="选择月份" />
+  <img src="imgs/4-记录.png" width="200" alt="记录" />
+</div>
+
+<div align="center">
+  <img src="imgs/5-编辑记录.png" width="200" alt="编辑记录" />
+  <img src="imgs/6-回顾.png" width="200" alt="回顾" />
+  <img src="imgs/7-筛选与回顾.png" width="200" alt="筛选与回顾" />
+  <img src="imgs/8-我的.png" width="200" alt="我的" />
+</div>
+
+| 1. 登录 | 2. 日历页面 | 3. 选择月份 | 4. 记录 |
+|----------|-------------|-------------|----------|
+| 5. 编辑记录 | 6. 回顾 | 7. 筛选与回顾 | 8. 我的 |
 
 ## 快速开始
 
