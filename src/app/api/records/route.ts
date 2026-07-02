@@ -70,8 +70,10 @@ export async function GET(request: NextRequest) {
       orderBy: [{ date: sort }, { createdAt: sort }],
     });
 
-    // 自动为当前月份及之前的周末（周六/周日）创建"休息"记录
-    if (month) {
+    // 自动为当月及之前的周末补"休息"记录
+    // 仅在当月完全无任何记录时触发（首次访问空月），
+    // 防止用户手动删除周末记录后重新拉取时被自动补回
+    if (month && records.length === 0) {
       const today = dayjs().format("YYYY-MM-DD");
       const monthStart = dayjs(`${month}-01`);
       const monthEnd = monthStart.endOf("month");
