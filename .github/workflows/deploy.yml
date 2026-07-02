@@ -74,6 +74,8 @@ jobs:
 
             # 安装依赖 & 同步数据库
             cd ${{ secrets.ECS_DEPLOY_PATH }}
+            # standalone 不含 prisma CLI（devDependency），需先安装再生成 Client
+            npm install prisma --no-save
             npx prisma generate
             npx prisma db push
 

@@ -1,5 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  /** 在 ECS 上生成时自动选择正确的引擎（rhel-openssl-1.1.x） */
+  binaryTargets = ["native"]
 }
 
 datasource db {
