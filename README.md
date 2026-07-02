@@ -59,6 +59,57 @@ npm run start
 
 夸克浏览器对 WebSocket（HMR）连接不稳定，Next.js 开发模式的 HMR 客户端会不断断连重连导致页面刷新循环。在夸克中调试时请使用 `npm run start` 以生产模式运行。详情见 [docs/debug-quark-hmr-refresh-loop.md](docs/debug-quark-hmr-refresh-loop.md)。
 
+## 数据库说明
+
+本项目使用 **Prisma + SQLite** 作为数据库方案，具有以下特点：
+
+### 数据库配置
+
+1. **开发环境**：使用 SQLite，无需额外安装数据库服务
+   - 数据库文件位置：`prisma/dev.db`
+   - 连接字符串：在 `.env` 文件中配置 `DATABASE_URL="file:./dev.db"`
+
+2. **生产环境**：可平滑迁移至 PostgreSQL
+   - 修改 `.env` 中的 `DATABASE_URL` 即可切换
+   - Prisma schema 已设计为兼容两种数据库
+
+### 数据库初始化
+
+```bash
+# 同步 Prisma schema 到数据库（创建表结构）
+npm run db:push
+
+# 填充种子数据（含演示账号）
+npm run db:seed
+
+# 生成 Prisma Client（通常在 db:push 后自动执行）
+npm run db:generate
+```
+
+### 数据库管理
+
+```bash
+# 使用 Prisma Studio 可视化查看和编辑数据
+npx prisma studio
+
+# 重置数据库（谨慎使用，会删除所有数据）
+npx prisma db push --force-reset
+```
+
+### 数据模型
+
+核心数据表包括：
+
+- **users** - 用户账号
+- **calendars** - 日历
+- **event_tags** - 活动标签
+- **schedule_events** - 日程事件
+- **repeat_rules** - 重复规则
+- **daily_checkins** - 每日打卡
+- **template_plans** - 模板计划
+
+详细字段定义见 [prisma/schema.prisma](prisma/schema.prisma)。
+
 ## 可用脚本
 
 | 命令 | 说明 |
