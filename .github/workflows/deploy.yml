@@ -39,6 +39,8 @@ jobs:
           shopt -u dotglob
           # 静态资源（JS/CSS chunks，覆盖到 standalone 的 .next/static 中）
           cp -r .next/static deploy-package/.next/
+          # public 目录（favicon、SVG 等静态文件）
+          cp -r public deploy-package/
           # Prisma schema（ECS 上需运行 prisma generate / db push）
           cp -r prisma deploy-package/
           # PM2 配置（部署到 app 目录内，相对路径即可）
