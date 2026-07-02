@@ -14,22 +14,27 @@
 ## 界面预览
 
 <div align="center">
-  <img src="imgs/1-登录.png" width="200" alt="登录" />
-  <img src="imgs/2-日历页面.png" width="200" alt="日历页面" />
-  <img src="imgs/3-选择月份.png" width="200" alt="选择月份" />
-  <img src="imgs/4-记录.png" width="200" alt="记录" />
+  <img src="imgs/1-登录.png" width="250" alt="登录" />
+  <img src="imgs/2-日历页面.png" width="250" alt="日历页面" />
+  <img src="imgs/3-选择月份.png" width="250" alt="选择月份" />
 </div>
 
 <div align="center">
-  <img src="imgs/5-编辑记录.png" width="200" alt="编辑记录" />
-  <img src="imgs/6-回顾.png" width="200" alt="回顾" />
-  <img src="imgs/7-筛选与回顾.png" width="200" alt="筛选与回顾" />
-  <img src="imgs/8-我的.png" width="200" alt="我的" />
+  <img src="imgs/4-记录.png" width="250" alt="记录" />
+  <img src="imgs/5-编辑记录.png" width="250" alt="编辑记录" />
+  <img src="imgs/6-回顾.png" width="250" alt="回顾" />
 </div>
 
-| 1. 登录 | 2. 日历页面 | 3. 选择月份 | 4. 记录 |
-|----------|-------------|-------------|----------|
-| 5. 编辑记录 | 6. 回顾 | 7. 筛选与回顾 | 8. 我的 |
+<div align="center">
+  <img src="imgs/7-筛选与回顾.png" width="250" alt="筛选与回顾" />
+  <img src="imgs/8-我的.png" width="250" alt="我的" />
+</div>
+
+<br/>
+
+<div align="center">
+  1. 登录 &nbsp;&nbsp; 2. 日历页面 &nbsp;&nbsp; 3. 选择月份 &nbsp;&nbsp; 4. 记录 &nbsp;&nbsp; 5. 编辑记录 &nbsp;&nbsp; 6. 回顾 &nbsp;&nbsp; 7. 筛选与回顾 &nbsp;&nbsp; 8. 我的
+</div>
 
 ## 快速开始
 
