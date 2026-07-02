@@ -2,6 +2,16 @@
 
 一个以月历为核心的轻量生活记录工具。重点不是规划未来，而是回看已经发生过的生活。
 
+## 核心功能
+
+- **月历浏览** — 默认按月展示，日期格显示公历、农历/节气、记录摘要，支持查看历史月份
+- **快速记录** — 10 秒内完成一条当天记录，支持标题、标签、时间、备注
+- **记录管理** — 新增、编辑、删除记录，支持记录到过去日期，同一天可记录多条
+- **标签管理** — 自定义标签（名称、颜色、图标、排序），提升月历可读性和搜索效率
+- **历史搜索** — 按关键词、标签、日期范围筛选，默认按日期倒序展示
+- **月度回顾** — 统计当月记录总数、记录天数、高频标签 Top N、最近记录摘要
+- **登录同步** — 手机号登录，数据以服务端为主，本地 IndexedDB 仅做缓存
+
 ## 技术栈
 
 - **Next.js 16** (App Router)
@@ -54,6 +64,20 @@ npm run start
 ```
 
 启动后访问 `http://localhost:3400`。
+
+### 环境变量
+
+复制 `.env.example` 为 `.env` 并配置：
+
+```bash
+cp .env.example .env
+```
+
+| 变量 | 说明 | 默认值 |
+|------|------|--------|
+| `DATABASE_URL` | 数据库连接字符串 | `file:./dev.db` |
+
+> 生产环境部署时，`DATABASE_URL` 应指向生产数据库路径，例如 `file:/var/www/flow-calendar/data/prod.db`。
 
 ### 为什么提供生产模式启动？
 
@@ -109,6 +133,57 @@ npx prisma db push --force-reset
 - **template_plans** - 模板计划
 
 详细字段定义见 [prisma/schema.prisma](prisma/schema.prisma)。
+
+## 部署指南
+
+项目支持通过 **GitHub Actions** 自动部署到阿里云 ECS，架构为：`Nginx → PM2 → Next.js Standalone (SQLite)`。
+
+### 部署架构
+
+```
+本地开发机 → git push main → GitHub Actions 构建打包 → rsync 同步到 ECS → PM2 热重载
+```
+
+### ECS 环境要求
+
+```bash
+# Node.js 20
+curl -fsSL https://rpm.nodesource.com/setup_20.x | bash -
+yum install -y nodejs
+
+# PM2 进程守护
+npm install -g pm2
+
+# Nginx 反向代理
+yum install -y nginx
+systemctl enable nginx && systemctl start nginx
+
+# 创建部署目录
+mkdir -p /var/www/flow-calendar/{app,data,logs}
+```
+
+### 自动部署
+
+推送代码到 `main` 分支即可触发自动部署：
+
+1. GitHub Actions 自动构建 Next.js 生产产物（standalone 模式）
+2. 通过 rsync 同步到 ECS 的 `/var/www/flow-calendar/app` 目录
+3. PM2 热重载服务（零停机）
+
+### 手动部署
+
+```bash
+# 构建生产产物
+npm run build
+
+# 同步到 ECS（需要配置 SSH 密钥）
+rsync -avz --delete --exclude='data/' --exclude='.env' .next/standalone/ user@ecs:/var/www/flow-calendar/app/
+
+# ECS 上重启服务
+pm2 reload ecosystem.config.js
+```
+
+> 完整部署文档见 [docs/部署文档与问题排查.md](docs/部署文档与问题排查.md)。
 
 ## 可用脚本
 
