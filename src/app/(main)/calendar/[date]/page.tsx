@@ -209,8 +209,10 @@ export default function DateDetailPage() {
       setEditingRecord(null);
       setDraftRecord(undefined);
       setNotice({ tone: "success", message: "记录已删除" });
-      // 通知日历首页刷新数据，确保返回后不再显示已删除的记录
+      // 通知日历首页刷新数据
       triggerRefresh();
+      // 删除后自动跳转回日历首页，确保日历页重新挂载、拉取最新数据
+      router.push("/calendar");
     } catch (requestError) {
       setNotice({
         tone: "error",
