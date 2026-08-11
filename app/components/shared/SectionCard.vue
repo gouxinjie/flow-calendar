@@ -12,7 +12,7 @@ defineProps<{
 </script>
 
 <template>
-  <section :class="['surface-card !rounded-[16px] p-4', className]">
+  <section :class="['surface-card p-4', className]">
     <slot />
   </section>
 </template>

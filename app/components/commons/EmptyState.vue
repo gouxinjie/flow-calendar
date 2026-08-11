@@ -15,16 +15,16 @@ defineProps<{
 
 <template>
   <div
-    class="flex flex-col items-center justify-center rounded-[24px] border border-dashed border-[#DCEAD2] bg-white/70 px-6 py-12 text-center"
+    class="flex flex-col items-center justify-center rounded-[20px] border border-dashed border-[#DDE7D4] bg-white/70 px-6 py-12 text-center"
   >
     <div
       v-if="iconName"
-      class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#EEF5E9] text-[#8BA09B]"
+      class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#F0F3EE] text-[#82918B]"
     >
       <BaseIcon :name="iconName" :size="26" />
     </div>
-    <h3 class="text-[16px] font-semibold text-[#243332]">{{ title }}</h3>
-    <p class="mt-2 max-w-[18rem] text-[13px] leading-6 text-[#70807D]">{{ description }}</p>
+    <h3 class="text-[16px] font-semibold text-[#1F2A2A]">{{ title }}</h3>
+    <p class="mt-2 max-w-[18rem] text-[13px] leading-6 text-[#82918B]">{{ description }}</p>
     <div v-if="$slots.action" class="mt-5">
       <slot name="action" />
     </div>

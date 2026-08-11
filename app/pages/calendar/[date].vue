@@ -208,51 +208,53 @@ async function handleDelete() {
   <div class="flex h-full flex-col">
     <!-- 顶部：返回按钮 + 日期 + 节日 + 干支日 + 装饰植物 -->
     <div class="relative shrink-0 px-4 pb-2 pt-3">
-      <div class="flex items-start justify-between gap-3">
-        <div class="min-w-0 flex-1">
-          <div class="flex items-center gap-1">
-            <button
-              type="button"
-              class="-ml-1.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[#6B7A7A] active:bg-[#F4F9F1]"
-              aria-label="返回日历"
-              @click="router.push('/calendar')"
-            >
-              <BaseIcon name="caret-left" :size="20" />
-            </button>
-            <h1 class="text-[26px] font-semibold tracking-[-0.03em] text-[#1F2A2A]">
-              {{ displayDate }}
-            </h1>
-            <span v-if="dateBadge.festivalName" class="text-[14px] font-semibold text-[#5EBF3F]">
-              {{ dateBadge.festivalName }}
-            </span>
-            <span v-else-if="dateBadge.jieQi" class="text-[14px] font-semibold text-[#5EBF3F]">
-              {{ dateBadge.jieQi }}
-            </span>
+      <div class="flex items-center justify-between gap-3">
+        <div class="flex min-w-0 items-center gap-2">
+          <button
+            type="button"
+            class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[#5C6B66] active:bg-[#EEF2EC] transition-colors"
+            aria-label="返回日历"
+            @click="router.push('/calendar')"
+          >
+            <BaseIcon name="caret-left" :size="20" />
+          </button>
+          <div class="min-w-0">
+            <div class="flex items-baseline gap-1.5">
+              <h1 class="text-[24px] font-semibold tracking-[-0.03em] text-[#1F2A2A]">
+                {{ displayDate }}
+              </h1>
+              <span v-if="dateBadge.festivalName" class="shrink-0 text-[13px] font-semibold text-[#55B936]">
+                {{ dateBadge.festivalName }}
+              </span>
+              <span v-else-if="dateBadge.jieQi" class="shrink-0 text-[13px] font-semibold text-[#55B936]">
+                {{ dateBadge.jieQi }}
+              </span>
+            </div>
+            <p class="mt-1 truncate text-[12px] text-[#82918B]">
+              {{ dateBadge.lunarText }} · {{ displayWeekday }}
+            </p>
           </div>
-          <p class="mt-1.5 text-[12px] text-[#7A8A88]">
-            {{ dateBadge.lunarText }} · {{ displayWeekday }}
-          </p>
         </div>
-        <!-- 右上角植物装饰 -->
-        <div class="pointer-events-none relative -mr-2 -mt-1 h-16 w-20 shrink-0">
+        <!-- 右上角植物装饰：更轻、更透 -->
+        <div class="pointer-events-none relative -mr-1 -mt-1 h-14 w-16 shrink-0">
           <svg viewBox="0 0 100 80" class="h-full w-full" aria-hidden="true">
             <defs>
               <radialGradient id="leafA" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#B5E8C8" stop-opacity="0.9" />
-                <stop offset="100%" stop-color="#7CC9A0" stop-opacity="0.7" />
+                <stop offset="0%" stop-color="#CBE8CE" stop-opacity="0.6" />
+                <stop offset="100%" stop-color="#9CD3AE" stop-opacity="0.45" />
               </radialGradient>
               <radialGradient id="leafB" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#C8EBD0" stop-opacity="0.8" />
-                <stop offset="100%" stop-color="#8FD3AC" stop-opacity="0.6" />
+                <stop offset="0%" stop-color="#D8EED9" stop-opacity="0.55" />
+                <stop offset="100%" stop-color="#A9DDBB" stop-opacity="0.4" />
               </radialGradient>
             </defs>
             <path
               d="M48 80 Q 52 50 58 20"
-              stroke="#7CC9A0"
-              stroke-width="1.4"
+              stroke="#9CD3AE"
+              stroke-width="1.2"
               fill="none"
               stroke-linecap="round"
-              opacity="0.7"
+              opacity="0.5"
             />
             <ellipse cx="42" cy="58" rx="10" ry="5" fill="url(#leafA)" transform="rotate(-30 42 58)" />
             <ellipse cx="62" cy="40" rx="11" ry="5.5" fill="url(#leafB)" transform="rotate(25 62 40)" />
@@ -264,10 +266,12 @@ async function handleDelete() {
       </div>
     </div>
 
-    <div class="flex-1 overflow-y-auto px-4 pb-4 pt-2">
+    <div class="flex-1 overflow-y-auto px-5 pb-5 pt-3">
       <div class="mb-3 flex items-center gap-2">
         <h2 class="text-[16px] font-semibold tracking-[-0.02em] text-[#1F2A2A]">当天记录</h2>
-        <span class="text-[14px] font-medium text-[#8EA094]">{{ sortedRecords.length }}</span>
+        <span class="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#EEF2EC] px-1.5 font-numeric text-[11px] font-semibold text-[#5C6B66]">
+          {{ sortedRecords.length }}
+        </span>
       </div>
 
       <StateBanner v-if="notice" :tone="notice.tone" :message="notice.message" class="mb-3" />
@@ -281,7 +285,7 @@ async function handleDelete() {
         <template #action>
           <button
             type="button"
-            class="rounded-full bg-[#5EBF3F] px-4 py-2 text-[13px] font-semibold text-white"
+            class="rounded-full bg-[#55B936] px-4 py-2 text-[13px] font-semibold text-white"
             @click="handleCreate"
           >
             新增记录
@@ -289,39 +293,35 @@ async function handleDelete() {
         </template>
       </EmptyState>
       <div v-else class="flex flex-col gap-3">
-        <SectionCard v-for="record in sortedRecords" :key="record.id" class="!p-0">
-          <div class="px-3 pb-4 pt-4">
-            <div class="relative">
-              <div class="flex items-start justify-between gap-2 pr-[104px]">
-                <div class="min-w-0 flex-1">
-                  <div class="flex items-center gap-2">
-                    <span
-                      class="inline-block h-2 w-2 shrink-0 rounded-full"
-                      :style="{ backgroundColor: record.tag?.color ?? '#9BAE97' }"
-                      aria-hidden="true"
-                    />
-                    <span v-if="record.startTime" class="shrink-0 font-numeric text-[16px] font-semibold tracking-[-0.02em] text-[#1F2A2A]">
-                      {{ record.startTime }}
-                    </span>
-                    <h3 class="truncate text-[16px] font-semibold tracking-[-0.01em] text-[#1F2A2A]">
-                      {{ record.title }}
-                    </h3>
-                  </div>
-                  <div v-if="record.tag" class="mt-1.5">
-                    <TagBadge :label="record.tag.name" :color="record.tag.color" compact />
-                  </div>
+        <SectionCard v-for="record in sortedRecords" :key="record.id" class="!rounded-[16px] !p-0">
+          <div class="px-4 py-4">
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2">
+                  <span
+                    class="inline-block h-2 w-2 shrink-0 rounded-full"
+                    :style="{ backgroundColor: record.tag?.color ?? '#AAB5B0' }"
+                    aria-hidden="true"
+                  />
+                  <span v-if="record.startTime" class="shrink-0 font-numeric text-[15px] font-semibold tracking-[-0.02em] text-[#1F2A2A]">
+                    {{ record.startTime }}
+                  </span>
+                  <h3 class="truncate text-[15px] font-semibold tracking-[-0.01em] text-[#1F2A2A]">
+                    {{ record.title }}
+                  </h3>
                 </div>
+                <div v-if="record.tag" class="mt-2">
+                  <TagBadge :label="record.tag.name" :color="record.tag.color" compact />
+                </div>
+                <p v-if="record.note" class="mt-2 text-[13px] leading-6 text-[#5C6B66]">
+                  {{ record.note }}
+                </p>
               </div>
-
-              <p v-if="record.note" class="mt-1.5 text-[13px] leading-6 text-[#5C6E6B]">
-                {{ record.note }}
-              </p>
-
               <!-- 右侧操作按钮 -->
-              <div class="absolute right-0 top-0 flex items-center">
+              <div class="flex shrink-0 items-center">
                 <button
                   type="button"
-                  class="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA094] active:bg-[#F4F9F1]"
+                  class="flex h-8 w-8 items-center justify-center rounded-full text-[#82918B] active:bg-[#EEF2EC] transition-colors"
                   aria-label="编辑记录"
                   @click="handleEdit(record)"
                 >
@@ -329,7 +329,7 @@ async function handleDelete() {
                 </button>
                 <button
                   type="button"
-                  class="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA094] active:bg-[#F4F9F1]"
+                  class="flex h-8 w-8 items-center justify-center rounded-full text-[#82918B] active:bg-[#EEF2EC] transition-colors"
                   aria-label="复制记录"
                   @click="handleCopy(record)"
                 >
@@ -338,7 +338,7 @@ async function handleDelete() {
                 <div ref="menuRecordId === record.id ? menuRef : undefined" class="relative">
                   <button
                     type="button"
-                    class="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA094] active:bg-[#F4F9F1]"
+                    class="flex h-8 w-8 items-center justify-center rounded-full text-[#82918B] active:bg-[#EEF2EC] transition-colors"
                     aria-label="更多操作"
                     @click="menuRecordId = menuRecordId === record.id ? null : record.id"
                   >
@@ -346,11 +346,11 @@ async function handleDelete() {
                   </button>
                   <div
                     v-if="menuRecordId === record.id"
-                    class="absolute right-0 top-full z-30 mt-1 w-36 rounded-[14px] border border-[#DCEAD2] bg-white py-1 shadow-[0_8px_24px_rgba(18,46,40,0.12)]"
+                    class="absolute right-0 top-full z-30 mt-1 w-36 rounded-[12px] border border-[#E5F0DB] bg-white py-1 shadow-[0_8px_24px_rgba(47,94,34,0.12)]"
                   >
                     <button
                       type="button"
-                      class="flex w-full items-center gap-2.5 px-4 py-2.5 text-[13px] font-medium text-[#E06060] active:bg-[#FFF5F5]"
+                      class="flex w-full items-center gap-2.5 px-4 py-2.5 text-[13px] font-medium text-[#D85A5A] active:bg-[#FFF5F5]"
                       @click="handleMenuDelete(record)"
                     >
                       <BaseIcon name="trash" :size="15" />
@@ -365,13 +365,13 @@ async function handleDelete() {
       </div>
     </div>
 
-    <div class="safe-pb shrink-0 px-4 pb-4">
+    <div class="safe-pb shrink-0 px-5 pb-4">
       <button
         type="button"
         :disabled="isFull"
         :class="[
-          'flex h-[48px] w-full items-center justify-center rounded-[14px] text-[14px] font-semibold text-white shadow-[0_18px_30px_rgba(34,195,166,0.24)] transition-colors',
-          isFull ? 'cursor-not-allowed bg-[#B5C9C4] shadow-none' : 'bg-[#5EBF3F]',
+          'flex h-[50px] w-full items-center justify-center rounded-full text-[14px] font-semibold text-white shadow-[0_12px_24px_rgba(63,150,40,0.22)] transition-all',
+          isFull ? 'cursor-not-allowed bg-[#C3CEC8] shadow-none' : 'bg-[#55B936] active:scale-[0.98]',
         ]"
         @click="handleCreate"
       >

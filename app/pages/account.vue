@@ -76,15 +76,15 @@ async function handleSave() {
   <div class="flex h-full flex-col">
     <ScreenHeader title="账号与安全" back-href="/me" />
 
-    <div class="flex-1 overflow-y-auto px-4 pb-4 pt-2">
+    <div class="flex-1 overflow-y-auto px-5 pb-5 pt-1">
       <StateBanner v-if="notice" :tone="notice.tone" :message="notice.message" class="mb-4" />
 
       <SectionCard class="mb-4">
-        <h3 class="mb-4 text-[13px] font-semibold text-[#9BAE97]">基本资料</h3>
+        <h3 class="mb-4 text-[13px] font-semibold text-[#82918B]">基本资料</h3>
 
         <div class="mb-5 flex items-center gap-3">
           <div
-            class="flex h-[52px] w-[52px] items-center justify-center rounded-full bg-[#E3F5DA] text-[20px] font-semibold text-[#5EBF3F] shadow-[0_2px_8px_rgba(94,191,63,0.15)]"
+            class="flex h-[52px] w-[52px] items-center justify-center rounded-full bg-gradient-to-br from-[#55B936] to-[#2F8E2E] text-[20px] font-semibold text-white shadow-[0_6px_16px_rgba(63,150,40,0.25)]"
           >
             {{ profile?.name?.charAt(0) ?? "F" }}
           </div>
@@ -92,44 +92,44 @@ async function handleSave() {
             <p class="text-[15px] text-[#1F2A2A]">
               {{ loading ? "读取中…" : profile?.name ?? "未命名用户" }}
             </p>
-            <p class="mt-0.5 text-[12px] text-[#9BAE97]">暂不支持自定义头像</p>
+            <p class="mt-0.5 text-[12px] text-[#82918B]">暂不支持自定义头像</p>
           </div>
         </div>
 
-        <label class="mb-2 block text-[13px] text-[#6B7A7A]">用户名</label>
+        <label class="mb-2 block text-[13px] text-[#5C6B66]">用户名</label>
         <input
           v-model="name"
           type="text"
           placeholder="请输入用户名"
-          class="mb-4 w-full rounded-[16px] border border-[#DCEAD2] bg-white px-4 py-3 text-[14px] text-[#1F2A2A] outline-none transition-colors placeholder:text-[#BFC7C3] focus:border-[#5EBF3F] focus:ring-1 focus:ring-[#5EBF3F]/20"
+          class="mb-4 w-full rounded-[12px] border border-[#E5F0DB] bg-white px-4 py-3 text-[14px] text-[#1F2A2A] outline-none transition-colors placeholder:text-[#AAB5B0] focus:border-[#55B936]/70 focus:ring-2 focus:ring-[#55B936]/10"
         />
 
-        <label class="mb-2 block text-[13px] text-[#6B7A7A]">手机号</label>
+        <label class="mb-2 block text-[13px] text-[#5C6B66]">手机号</label>
         <input
           v-model="phone"
           type="tel"
           readonly
           placeholder="暂不可修改"
-          class="w-full rounded-[16px] border border-[#DCEAD2] bg-[#F3FAF7] px-4 py-3 text-[14px] text-[#7C8A87] outline-none"
+          class="w-full rounded-[12px] border border-[#E5F0DB] bg-[#F0F3EE] px-4 py-3 text-[14px] text-[#82918B] outline-none"
         />
       </SectionCard>
 
       <SectionCard class="mb-4">
-        <h3 class="mb-3 text-[13px] font-semibold text-[#9BAE97]">联系信息</h3>
+        <h3 class="mb-3 text-[13px] font-semibold text-[#82918B]">联系信息</h3>
 
-        <div class="flex items-center gap-3 rounded-[16px] bg-[#F3FAF7] px-4 py-3">
-          <BaseIcon name="phone" :size="16" class="shrink-0 text-[#9BAE97]" />
+        <div class="flex items-center gap-3 rounded-[12px] bg-[#F0F3EE] px-4 py-3">
+          <BaseIcon name="phone" :size="16" class="shrink-0 text-[#82918B]" />
           <div class="min-w-0 flex-1">
-            <p class="text-[12px] text-[#8EA094]">手机号</p>
+            <p class="text-[12px] text-[#82918B]">手机号</p>
             <p class="text-[14px] text-[#1F2A2A]">{{ profile?.phone ?? "—" }}</p>
           </div>
         </div>
 
-        <div class="mt-3 flex items-center gap-3 rounded-[16px] bg-[#F3FAF7] px-4 py-3">
-          <BaseIcon name="envelope" :size="16" class="shrink-0 text-[#9BAE97]" />
+        <div class="mt-3 flex items-center gap-3 rounded-[12px] bg-[#F0F3EE] px-4 py-3">
+          <BaseIcon name="envelope" :size="16" class="shrink-0 text-[#82918B]" />
           <div class="min-w-0 flex-1">
-            <p class="text-[12px] text-[#8EA094]">邮箱</p>
-            <p class="text-[14px] text-[#7C8A87]">{{ profile?.email ?? "未填写" }}</p>
+            <p class="text-[12px] text-[#82918B]">邮箱</p>
+            <p class="text-[14px] text-[#82918B]">{{ profile?.email ?? "未填写" }}</p>
           </div>
         </div>
       </SectionCard>
@@ -137,7 +137,7 @@ async function handleSave() {
       <button
         type="button"
         :disabled="saving || loading"
-        class="w-full rounded-[16px] bg-[#5EBF3F] py-3.5 text-[14px] font-semibold text-white transition-colors active:bg-[#4DAB30] disabled:opacity-50"
+        class="w-full rounded-full bg-[#55B936] py-3.5 text-[14px] font-semibold text-white transition-all active:scale-[0.98] active:bg-[#48A02F] disabled:opacity-50"
         @click="handleSave"
       >
         {{ saving ? "保存中…" : "保存修改" }}

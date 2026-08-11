@@ -100,13 +100,13 @@ function handleScroll() {
 
 <template>
   <div class="relative flex-1">
-    <div v-if="label" class="mb-2 text-center text-[11px] font-medium uppercase tracking-wider text-[#9BAE97]">
+    <div v-if="label" class="mb-2 text-center text-[11px] font-medium uppercase tracking-wider text-[#AAB5B0]">
       {{ label }}
     </div>
     <div class="relative">
       <!-- 选中行高亮背景 -->
       <div
-        class="pointer-events-none absolute left-1 right-1 z-0 rounded-[10px] bg-[#F3FAF7]/60"
+        class="pointer-events-none absolute left-1 right-1 z-0 rounded-[10px] bg-[#EEF2EC]/60"
         :style="{ top: 'calc(50% - ' + itemHeight / 2 + 'px)', height: itemHeight + 'px' }"
       />
       <div
@@ -128,7 +128,7 @@ function handleScroll() {
           <span
             :class="[
               'text-[17px] transition-all duration-200',
-              item === selectedValue ? 'scale-110 font-semibold text-[#1F2A2A]' : 'font-medium text-[#9BAE97]',
+              item === selectedValue ? 'scale-110 font-semibold text-[#1F2A2A]' : 'font-medium text-[#AAB5B0]',
             ]"
           >
             {{ item }}

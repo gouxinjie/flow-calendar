@@ -87,16 +87,16 @@ const displayText = computed(() => props.value || "选择时间");
     <!-- 触发器：点击展开 -->
     <button
       type="button"
-      class="flex w-full items-center gap-2.5 rounded-[14px] border border-[#DCEAD2] px-4 py-3 text-left transition-colors duration-200"
+      class="flex w-full items-center gap-2.5 rounded-[12px] border border-[#E5F0DB] px-4 py-3 text-left transition-colors duration-200"
       @click="handleOpen"
     >
-      <BaseIcon name="clock" :size="18" :weight="props.value ? 'fill' : 'regular'" :class="props.value ? 'text-[#5EBF3F]' : 'text-[#9BAE97]'" />
-      <span :class="['flex-1 text-[14px]', props.value ? 'text-[#1F2A2A]' : 'text-[#9BAE97]']">
+      <BaseIcon name="clock" :size="18" :weight="props.value ? 'fill' : 'regular'" :class="props.value ? 'text-[#55B936]' : 'text-[#AAB5B0]'" />
+      <span :class="['flex-1 text-[14px]', props.value ? 'text-[#1F2A2A]' : 'text-[#AAB5B0]']">
         {{ displayText }}
       </span>
       <span
         v-if="props.value && props.clearable"
-        class="flex h-6 w-6 items-center justify-center rounded-full text-[#9BAE97] hover:text-[#6B7A7A] active:bg-[#F4F9F1]"
+        class="flex h-6 w-6 items-center justify-center rounded-full text-[#AAB5B0] hover:text-[#5C6B66] active:bg-[#EEF2EC]"
         @click.stop="handleClear"
       >
         <BaseIcon name="x" :size="14" />
@@ -115,12 +115,12 @@ const displayText = computed(() => props.value || "选择时间");
         />
         <div
           :class="[
-            'relative w-full max-w-[480px] rounded-t-[20px] bg-white px-4 pb-8 pt-4 transition-transform duration-[240ms] ease-out shadow-[0_-8px_32px_rgba(18,46,40,0.12)]',
+            'relative w-full max-w-[480px] rounded-t-[20px] bg-white px-4 pb-8 pt-4 transition-transform duration-[240ms] ease-out shadow-[0_-12px_32px_rgba(47,94,34,0.12)]',
             visible ? 'translate-y-0' : 'translate-y-full',
           ]"
           @click.stop
         >
-          <div class="mx-auto mb-3 h-1 w-10 rounded-full bg-[#DCEAD2]" />
+          <div class="mx-auto mb-3 h-1 w-9 rounded-full bg-[#DDE7D4]" />
           <p class="mb-4 text-center text-[15px] font-semibold text-[#1F2A2A]">选择时间</p>
           <div class="relative flex gap-3">
             <PickerColumn :items="HOURS" :selected-value="currentHour" label="时" @select="handleHourChange" />
@@ -132,14 +132,14 @@ const displayText = computed(() => props.value || "选择时间");
           <div class="mt-4 flex gap-3">
             <button
               type="button"
-              class="flex-1 rounded-[14px] border border-[#DCEAD2] py-3 text-[14px] font-medium text-[#9BAE97] active:bg-[#F3FAF7]"
+              class="flex-1 rounded-full border border-[#E5F0DB] py-3 text-[14px] font-medium text-[#AAB5B0] transition-colors active:bg-[#F6FBF3]"
               @click="handleClear"
             >
               清除
             </button>
             <button
               type="button"
-              class="flex-1 rounded-[14px] bg-[#5EBF3F] py-3 text-[14px] font-semibold text-white active:opacity-80"
+              class="flex-1 rounded-full bg-[#55B936] py-3 text-[14px] font-semibold text-white transition-all active:scale-[0.98]"
               @click="handleConfirm"
             >
               确定

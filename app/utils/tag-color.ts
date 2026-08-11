@@ -44,8 +44,8 @@ export function getTagButtonStyle(
 ): { background: string; color: string } {
   if (!/^#[0-9A-Fa-f]{6}$/.test(color)) {
     return selected
-      ? { background: "linear-gradient(135deg, #9CA0A8, #6B7A7A)", color: "#FFFFFF" }
-      : { background: "linear-gradient(135deg, rgba(107,122,122,0.08), rgba(107,122,122,0.15))", color: "#6B7A7A" };
+      ? { background: "linear-gradient(135deg, #9BA4A0, #5C6B66)", color: "#FFFFFF" }
+      : { background: "linear-gradient(135deg, rgba(92,107,102,0.08), rgba(92,107,102,0.15))", color: "#5C6B66" };
   }
 
   const base = hexToRgb(color);
@@ -69,8 +69,8 @@ export function getTagButtonStyle(
  */
 export function getNeutralButtonStyle(selected: boolean): { background: string; color: string } {
   return selected
-    ? { background: "linear-gradient(135deg, #9CA0A8, #6B7A7A)", color: "#FFFFFF" }
-    : { background: "linear-gradient(135deg, rgba(107,122,122,0.06), rgba(107,122,122,0.12))", color: "#6B7A7A" };
+    ? { background: "linear-gradient(135deg, #9BA4A0, #5C6B66)", color: "#FFFFFF" }
+    : { background: "linear-gradient(135deg, rgba(92,107,102,0.06), rgba(92,107,102,0.12))", color: "#5C6B66" };
 }
 
 /**
@@ -79,7 +79,7 @@ export function getNeutralButtonStyle(selected: boolean): { background: string; 
 export function getCalendarTagStyle(tagColor?: string): { background: string; color: string } {
   if (!tagColor || !/^#[0-9A-Fa-f]{6}$/.test(tagColor)) {
     return {
-      background: "linear-gradient(90deg, #C8C5C5, #A8A8A8)",
+      background: "linear-gradient(90deg, #C3CCC7, #AAB5B0)",
       color: "#FFFFFF",
     };
   }

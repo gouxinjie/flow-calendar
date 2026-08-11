@@ -15,84 +15,76 @@ defineProps<{
 }>();
 
 /** 截断标签文本 */
-function truncateLabel(text: string, maxLen = 3): string {
+function truncateLabel(text: string, maxLen = 2): string {
   return text.slice(0, maxLen);
 }
 
-/** 计算单元格表面样式类 */
-function cellSurfaceClass(cell: CalendarCell): string {
-  if (cell.isToday) {
-    return cell.isSelected
-      ? "border-2 border-[#3D9428] bg-[#F3FCF6] shadow-[inset_0_0_0_1px_rgba(61,148,40,0.16)]"
-      : "border-2 border-[#74CC50] bg-white";
-  }
-  if (cell.isSelected) {
-    return "border-[#74CC50] bg-[#F3FCF6] shadow-[inset_0_0_0_1px_rgba(116,204,80,0.08)]";
-  }
-  return "bg-white";
-}
-
-/** 计算日期数字样式 */
+/** 计算日期数字样式：今天套实心圆，选中品牌色，避免整格背景块 */
 function dayNumberClass(cell: CalendarCell): string {
   if (cell.isToday) {
-    return "inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-[#5EBF3F] px-1 text-white";
+    return "inline-flex h-7 min-w-7 items-center justify-center rounded-full bg-[#55B936] px-1 text-white font-semibold";
   }
-  if (!cell.isToday && cell.isSelected) return "text-[#3D9428]";
-  if (!cell.isToday && cell.isCurrentMonth) return "text-[#1F2A2A]";
-  return "text-[#afaeb1]";
+  if (cell.isSelected) return "text-[#2F8E2E] font-semibold";
+  if (cell.isCurrentMonth) return "text-[#1F2A2A]";
+  return "text-[#C0C9C4]";
 }
 
-/** 计算农历标签样式 */
+/** 计算农历标签样式：更淡，减少视觉噪音 */
 function lunarClass(cell: CalendarCell): string {
-  if (cell.isToday) return "font-medium text-[#54C1AC]";
-  if (cell.isCurrentMonth) return "text-[#9BAE97]";
-  return "text-[#afaeb1]";
+  if (cell.isToday) return "font-medium text-[#4A9E8C]";
+  if (cell.isCurrentMonth) return "text-[#AAB5B0]";
+  return "text-[#C0C9C4]";
+}
+
+/** 记录标签色块类：占满格子宽度的小色块，圆角更小更利落 */
+function recordPillClass(): string {
+  return "inline-flex h-[20px] w-full items-center justify-center whitespace-nowrap rounded-[4px] px-1.5 text-[10px] font-medium leading-none tracking-[-0.01em] text-white";
 }
 </script>
 
 <template>
   <div
-    class="flex flex-col rounded-[8px] border border-[#DCEAD2] bg-white px-3 pb-3 pt-2 shadow-[0_14px_30px_rgba(18,46,40,0.04)]"
+    class="flex flex-col rounded-[14px] border border-[#E5F0DB] bg-white px-2.5 pb-3 pt-2 shadow-[0_1px_2px_rgba(47,94,34,0.04),0_8px_24px_rgba(47,94,34,0.06)]"
   >
-    <div class="mb-2 grid grid-cols-7 text-center text-[11px] font-semibold">
+    <div class="mb-2 grid grid-cols-7 border-b border-[#EEF2EC] pb-2 text-center text-[11px] font-semibold">
       <span
         v-for="(day, idx) in weekdays"
         :key="day"
-        :class="['py-1.5', idx === 0 || idx === 6 ? 'text-[#5EBF3F]' : 'text-[#1F2A2A]']"
+        :class="['py-1.5', idx === 0 || idx === 6 ? 'text-[#55B936]' : 'text-[#82918B]']"
       >
         {{ day }}
       </span>
     </div>
 
-    <div class="grid min-h-0 grid-cols-7 gap-y-3">
+    <div class="grid min-h-0 grid-cols-7 gap-y-2">
       <NuxtLink
         v-for="cell in cells"
         :key="cell.date"
         :to="`/calendar/${cell.date}`"
         :class="[
-          'relative flex min-h-0 flex-col rounded-[8px] border border-transparent px-1.5 pb-1.5 pt-2 transition-transform active:scale-[0.98]',
-          cellSurfaceClass(cell),
-          !cell.isCurrentMonth && 'opacity-50',
+          'relative flex flex-col items-center rounded-[8px] px-1 pb-2 pt-2.5 transition-all active:scale-[0.95] active:bg-[#F0F3EE]',
+          !cell.isCurrentMonth && 'opacity-40',
         ]"
       >
-        <div class="flex justify-center">
-          <span :class="['font-numeric text-[15px] font-semibold leading-none', dayNumberClass(cell)]">
-            {{ cell.dayNumber }}
-          </span>
-        </div>
+        <span :class="['font-numeric text-[16px] leading-none', dayNumberClass(cell)]">
+          {{ cell.dayNumber }}
+        </span>
 
-        <p v-if="cell.lunarLabel" :class="['mt-1 self-center truncate text-center text-[10px] leading-none', lunarClass(cell)]">
+        <span
+          v-if="cell.isSelected && !cell.isToday"
+          class="mt-1 h-[3px] w-4 rounded-full bg-[#55B936]"
+          aria-hidden="true"
+        />
+
+        <p v-if="cell.lunarLabel" :class="['mt-1.5 truncate text-center text-[10px] leading-none', lunarClass(cell)]">
           {{ cell.lunarLabel }}
         </p>
 
-        <div class="mt-[6px] flex min-h-0 flex-col items-center gap-1">
+        <div class="mt-1.5 flex w-full flex-col items-center gap-1">
           <span
             v-for="summary in cell.recordSummaries.slice(0, 2)"
             :key="summary.id"
-            :class="[
-              'inline-flex h-6 w-[4em] items-center justify-center self-center whitespace-nowrap rounded-[4px] px-1.5 text-[11px] font-normal leading-none tracking-[-0.02em] text-white',
-              !cell.isCurrentMonth && 'opacity-70',
-            ]"
+            :class="recordPillClass()"
             :style="getCalendarTagStyle(summary.tagColor)"
           >
             {{ truncateLabel(summary.title) }}

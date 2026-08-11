@@ -102,23 +102,21 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <div class="flex min-h-[100dvh] flex-col items-center justify-center bg-[#F3FAF7] px-6">
+  <div class="flex min-h-[100dvh] flex-col items-center justify-center bg-[#FFFFFF] px-6">
     <div class="animate-page-enter w-full max-w-[380px]">
       <div class="mb-8 text-center">
-        <h1 class="flex items-center justify-center gap-2 text-[28px] font-semibold tracking-[-0.03em] text-[#5EBF3F]">
-          <img src="/qingning.svg" alt="" class="h-[32px] w-[32px]" />
-          青柠日历
-        </h1>
-        <p class="mt-2 text-[14px] text-[#6B7A7A]">记录已发生的生活，留在月历上</p>
+        <img src="/qingning.svg" alt="青柠日历" class="mx-auto mb-4 h-14 w-14" />
+        <h1 class="text-[24px] font-semibold tracking-[-0.03em] text-[#1F2A2A]">青柠日历</h1>
+        <p class="mt-1.5 text-[14px] text-[#82918B]">记录已发生的生活，留在月历上</p>
       </div>
 
       <!-- 登录/注册切换 -->
-      <div class="mb-6 grid grid-cols-2 rounded-[10px] bg-[#EDF5E9] p-1">
+      <div class="mb-6 grid grid-cols-2 rounded-full bg-[#EEF2EC] p-1">
         <button
           type="button"
           :class="[
-            'rounded-[8px] px-3 py-2 text-[14px] font-medium',
-            mode === 'login' ? 'bg-white text-[#1F2A2A] shadow-sm' : 'text-[#6B7A7A]',
+            'rounded-full px-3 py-2 text-[14px] font-medium transition-colors',
+            mode === 'login' ? 'bg-white text-[#1F2A2A] shadow-sm' : 'text-[#5C6B66]',
           ]"
           @click="mode = 'login'"
         >
@@ -127,8 +125,8 @@ async function handleSubmit() {
         <button
           type="button"
           :class="[
-            'rounded-[8px] px-3 py-2 text-[14px] font-medium',
-            mode === 'register' ? 'bg-white text-[#1F2A2A] shadow-sm' : 'text-[#6B7A7A]',
+            'rounded-full px-3 py-2 text-[14px] font-medium transition-colors',
+            mode === 'register' ? 'bg-white text-[#1F2A2A] shadow-sm' : 'text-[#5C6B66]',
           ]"
           @click="mode = 'register'"
         >
@@ -141,48 +139,48 @@ async function handleSubmit() {
       <!-- 使用 <form> 让浏览器密码管理器识别并自动填充 -->
       <form @submit.prevent="handleSubmit">
         <div v-if="mode === 'register'" class="mb-3">
-          <div class="flex items-center gap-2 rounded-[10px] border border-[#DCEAD2] bg-white px-4 py-3 focus-within:border-[#5EBF3F]">
+          <div class="flex items-center gap-2.5 rounded-[14px] border border-[#E5F0DB] bg-white px-4 py-3 transition-colors focus-within:border-[#55B936]/70 focus-within:ring-2 focus-within:ring-[#55B936]/10">
             <input
               v-model="name"
               type="text"
               name="username"
               placeholder="用户名"
               autocomplete="username"
-              class="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#9BAE97] outline-none"
+              class="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#AAB5B0] outline-none"
             />
           </div>
         </div>
 
         <!-- 手机号 -->
         <div class="mb-3">
-          <div class="flex items-center gap-2 rounded-[10px] border border-[#DCEAD2] bg-white px-4 py-3 focus-within:border-[#5EBF3F]">
-            <BaseIcon name="device-mobile" :size="18" class="text-[#9BAE97]" />
+          <div class="flex items-center gap-2.5 rounded-[14px] border border-[#E5F0DB] bg-white px-4 py-3 transition-colors focus-within:border-[#55B936]/70 focus-within:ring-2 focus-within:ring-[#55B936]/10">
+            <BaseIcon name="device-mobile" :size="18" class="text-[#AAB5B0]" />
             <input
               v-model="phone"
               type="tel"
               name="phone"
               placeholder="手机号"
               autocomplete="tel"
-              class="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#9BAE97] outline-none"
+              class="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#AAB5B0] outline-none"
             />
           </div>
         </div>
 
         <!-- 密码 -->
         <div class="mb-6">
-          <div class="flex items-center gap-2 rounded-[10px] border border-[#DCEAD2] bg-white px-4 py-3 focus-within:border-[#5EBF3F]">
-            <BaseIcon name="lock" :size="18" class="text-[#9BAE97]" />
+          <div class="flex items-center gap-2.5 rounded-[14px] border border-[#E5F0DB] bg-white px-4 py-3 transition-colors focus-within:border-[#55B936]/70 focus-within:ring-2 focus-within:ring-[#55B936]/10">
+            <BaseIcon name="lock" :size="18" class="text-[#AAB5B0]" />
             <input
               v-model="password"
               :type="showPassword ? 'text' : 'password'"
               name="password"
               placeholder="密码"
               :autocomplete="mode === 'login' ? 'current-password' : 'new-password'"
-              class="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#9BAE97] outline-none"
+              class="flex-1 text-[14px] text-[#1F2A2A] placeholder-[#AAB5B0] outline-none"
             />
             <button
               type="button"
-              class="text-[#9BAE97]"
+              class="text-[#AAB5B0]"
               @click="showPassword = !showPassword"
             >
               <BaseIcon :name="showPassword ? 'eye-slash' : 'eye'" :size="18" />
@@ -194,18 +192,18 @@ async function handleSubmit() {
         <button
           type="submit"
           :disabled="loading"
-          class="flex h-[48px] w-full items-center justify-center rounded-[10px] bg-[#5EBF3F] text-[14px] font-semibold text-white active:opacity-80 disabled:opacity-60"
+          class="flex h-[50px] w-full items-center justify-center rounded-full bg-[#55B936] text-[14px] font-semibold text-white shadow-[0_10px_20px_rgba(85,185,54,0.2)] transition-all active:scale-[0.98] active:opacity-90 disabled:opacity-60"
         >
           {{ loading ? "处理中..." : mode === "login" ? "登录" : "注册并进入" }}
         </button>
       </form>
 
-      <p class="mt-6 text-center text-[13px] text-[#9BAE97]">记录已发生的生活，从这一刻开始</p>
-      <p class="mt-3 text-center text-[13px] text-[#9BAE97]">
+      <p class="mt-6 text-center text-[13px] text-[#AAB5B0]">记录已发生的生活，从这一刻开始</p>
+      <p class="mt-3 text-center text-[13px] text-[#AAB5B0]">
         {{ mode === "login" ? "还没有账号？" : "已有账号？" }}
         <button
           type="button"
-          class="font-medium text-[#5EBF3F]"
+          class="font-medium text-[#55B936]"
           @click="mode = mode === 'login' ? 'register' : 'login'"
         >
           {{ mode === "login" ? "去注册" : "去登录" }}

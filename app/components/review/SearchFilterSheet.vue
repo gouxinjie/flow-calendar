@@ -52,17 +52,17 @@ function handleReset() {
   <BottomSheet :open="open" title="搜索与筛选" @close="emit('close')">
     <div class="flex flex-col gap-4">
       <div>
-        <label class="mb-1.5 block text-[13px] font-medium text-[#6B7A7A]">关键词</label>
+        <label class="mb-1.5 block text-[13px] font-medium text-[#5C6B66]">关键词</label>
         <input
           v-model="keyword"
           type="text"
           placeholder="搜索标题或备注…"
-          class="w-full rounded-[14px] border border-[#DCEAD2] px-4 py-3 text-[14px] text-[#1F2A2A] placeholder-[#9BAE97] outline-none focus:border-[#5EBF3F]"
+          class="w-full rounded-[12px] border border-[#E5F0DB] px-4 py-3 text-[14px] text-[#1F2A2A] placeholder-[#AAB5B0] outline-none transition-colors focus:border-[#55B936]/70 focus:ring-2 focus:ring-[#55B936]/10"
         />
       </div>
 
       <div>
-        <label class="mb-1.5 block text-[13px] font-medium text-[#6B7A7A]">标签筛选</label>
+        <label class="mb-1.5 block text-[13px] font-medium text-[#5C6B66]">标签筛选</label>
         <div class="flex flex-wrap gap-2">
           <button
             type="button"
@@ -86,7 +86,7 @@ function handleReset() {
       </div>
 
       <div>
-        <label class="mb-1.5 block text-[13px] font-medium text-[#6B7A7A]">日期范围</label>
+        <label class="mb-1.5 block text-[13px] font-medium text-[#5C6B66]">日期范围</label>
         <DateRangePicker
           :start-date="startDate"
           :end-date="endDate"
@@ -98,7 +98,7 @@ function handleReset() {
       <label class="flex cursor-pointer items-center gap-3 active:opacity-80">
         <div class="relative h-5 w-5 shrink-0">
           <input v-model="includeUncategorized" type="checkbox" class="peer sr-only" />
-          <span class="absolute inset-0 rounded-[6px] border border-[#DCEAD2] bg-white transition-all duration-200 peer-checked:border-[#5EBF3F] peer-checked:bg-[#5EBF3F]" />
+          <span class="absolute inset-0 rounded-[6px] border border-[#E5F0DB] bg-white transition-all duration-200 peer-checked:border-[#55B936] peer-checked:bg-[#55B936]" />
           <svg
             class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 scale-0 text-white transition-transform duration-200 peer-checked:scale-100"
             width="12"
@@ -121,14 +121,14 @@ function handleReset() {
       <div class="flex gap-3">
         <button
           type="button"
-          class="flex h-[48px] flex-1 items-center justify-center rounded-[14px] border border-[#DCEAD2] text-[14px] font-medium text-[#6B7A7A] active:bg-[#F4F9F1]"
+          class="flex h-[50px] flex-1 items-center justify-center rounded-full border border-[#E5F0DB] text-[14px] font-medium text-[#5C6B66] transition-colors active:bg-[#F6FBF3]"
           @click="handleReset"
         >
           重置
         </button>
         <button
           type="button"
-          class="flex h-[48px] flex-1 items-center justify-center rounded-[14px] bg-[#5EBF3F] text-[14px] font-semibold text-white active:opacity-80"
+          class="flex h-[50px] flex-1 items-center justify-center rounded-full bg-[#55B936] text-[14px] font-semibold text-white transition-all active:scale-[0.98]"
           @click="handleApply"
         >
           应用筛选

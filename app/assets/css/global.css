@@ -2,20 +2,45 @@
 
 /* ========== CSS 变量 / 设计 Token ========== */
 :root {
-  --brand: #5EBF3F;
-  --brand-deep: #3D9428;
-  --brand-soft: #E3F5DA;
+  /* 品牌绿 —— 统一为一个色阶，避免四处发散 */
+  --brand: #55b936;
+  --brand-deep: #2f8e2e;
+  --brand-soft: #e3f5da;
+  --brand-hover: #48a02f;
+  --brand-ring: rgba(85, 185, 54, 0.16);
+
+  /* 辅助强调色 */
   --accent-blue: #5da9e9;
   --accent-orange: #ff9f43;
   --accent-purple: #8b8aef;
-  --accent-greyGreen: #9BAE97;
-  --bg-page: #F3FAF7;
+  --accent-greyGreen: #9bae97;
+
+  /* 表面色 —— 背景纯白，绿只作为强调色 */
+  --bg-page: #ffffff;
   --bg-card: #ffffff;
+  --bg-subtle: #f7f8f6;
+  --bg-muted: #eef1ee;
+
+  /* 文字灰阶 —— 统一 4 档，消除十几种杂灰 */
   --text-primary: #1f2a2a;
-  --text-secondary: #6b7a7a;
-  --border-color: #DCEAD2;
-  --error: #e06060;
-  --success: #5EBF3F;
+  --text-secondary: #5c6b66;
+  --text-muted: #82918b;
+  --text-faint: #aab5b0;
+
+  /* 边界与分隔 */
+  --border-color: #e5f0db;
+  --border-strong: #d3e6c8;
+  --divider: #eef3ea;
+
+  /* 圆角体系 —— 统一三档：控件 12 / 卡片 18 / 大容器 24 */
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+
+  /* 状态色 */
+  --error: #d85a5a;
+  --error-soft: #fff3f3;
+  --success: #55b936;
 }
 
 @theme inline {
@@ -38,7 +63,7 @@
   }
 
   body {
-    background: #F3FAF7;
+    background: var(--bg-page);
     color: var(--text-primary);
     font-family:
       -apple-system,
@@ -50,6 +75,7 @@
       sans-serif;
     font-size: 14px;
     line-height: 1.5;
+    letter-spacing: 0.01em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -78,7 +104,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(107, 122, 122, 0.18);
+  background: rgba(130, 145, 139, 0.2);
   border-radius: 999px;
 }
 
@@ -91,7 +117,7 @@ main::-webkit-scrollbar-thumb {
   transition: background 200ms ease;
 }
 main:hover::-webkit-scrollbar-thumb {
-  background: rgba(107, 122, 122, 0.18);
+  background: rgba(130, 145, 139, 0.2);
 }
 
 /* ========== 页面切换动效 ========== */
@@ -124,30 +150,36 @@ main:hover::-webkit-scrollbar-thumb {
     display: none;
   }
 
+  /* 卡片 —— 双层包边：外层柔和投影壳 + 内层白卡片，去生硬边框 */
   .surface-card {
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid rgba(220, 234, 210, 0.9);
-    border-radius: 20px;
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
     box-shadow:
-      0 18px 40px rgba(18, 46, 40, 0.05),
-      inset 0 1px 0 rgba(255, 255, 255, 0.65);
+      0 1px 0 rgba(255, 255, 255, 0.7) inset,
+      0 1px 2px rgba(38, 50, 44, 0.05),
+      0 8px 28px rgba(38, 50, 44, 0.08);
   }
 
-  /* 悬浮主按钮 */
+  /* 悬浮主按钮 —— 岛式胶囊，内嵌高光与弹簧反馈 */
   .glass-fab {
-    background: linear-gradient(180deg, #74D14A 0%, #5EBF3F 55%, #49A830 100%);
+    background: linear-gradient(180deg, #5dc23f 0%, var(--brand) 55%, var(--brand-deep) 100%);
     box-shadow:
-      0 8px 18px rgba(94, 191, 63, 0.32),
-      0 2px 6px rgba(14, 42, 10, 0.08),
-      inset 0 1px 0 rgba(255, 255, 255, 0.18);
-    transition: transform 180ms ease, box-shadow 180ms ease;
+      0 6px 16px rgba(63, 150, 40, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.06);
+    transition:
+      transform 240ms cubic-bezier(0.32, 0.72, 0, 1),
+      box-shadow 240ms ease;
   }
 
   .glass-fab:active {
-    transform: scale(0.96);
+    transform: scale(0.92);
     box-shadow:
-      0 4px 10px rgba(94, 191, 63, 0.28),
-      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      0 3px 8px rgba(63, 150, 40, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.08);
   }
 
   .safe-pb {

@@ -103,23 +103,23 @@ watch(
       <!-- 面板底部预留导航栏高度，避免遮挡底部导航 -->
       <div
         ref="panelRef"
-        class="absolute left-0 right-0 z-10 max-h-[85vh] overflow-y-auto rounded-t-[28px] bg-[#FCFEFA]"
+        class="absolute left-0 right-0 z-10 max-h-[85vh] overflow-y-auto rounded-t-[24px] bg-[#FFFFFF]"
         style="
           bottom: calc(72px + env(safe-area-inset-bottom, 0px));
-          box-shadow: 0 -18px 40px rgba(45, 76, 70, 0.14);
+          box-shadow: 0 -12px 32px rgba(47, 94, 34, 0.12);
           transform: translateY(100%);
         "
       >
         <div
-          class="sticky top-0 z-10 rounded-t-[28px] border-b border-[#E0ECD7] bg-[#FCFEFA]/96 px-5 py-4 backdrop-blur"
+          class="sticky top-0 z-10 rounded-t-[24px] border-b border-[#EEF2EC] bg-[#FFFFFF]/96 px-5 pt-3 pb-4 backdrop-blur"
         >
-          <div class="mx-auto mb-3 h-1.5 w-12 rounded-full bg-[#D9E8E3]" />
+          <div class="mx-auto mb-3 h-1 w-9 rounded-full bg-[#E2E7E0]" />
           <div class="flex items-center justify-between">
             <h2 class="text-[18px] font-semibold tracking-[-0.02em] text-[#1F2A2A]">
               {{ title }}
             </h2>
             <button
-              class="flex h-8 w-8 items-center justify-center rounded-full text-[#6B7A7A] active:bg-[#F4F9F1]"
+              class="flex h-8 w-8 items-center justify-center rounded-full text-[#82918B] transition-colors active:bg-[#F0F3EE]"
               aria-label="关闭"
               @click="emit('close')"
             >
@@ -134,7 +134,7 @@ watch(
 
         <div
           v-if="$slots.footer"
-          class="safe-pb sticky bottom-0 border-t border-[#E0ECD7] bg-[#FCFEFA]/96 px-5 py-4 backdrop-blur"
+          class="safe-pb sticky bottom-0 border-t border-[#EEF2EC] bg-[#FFFFFF]/96 px-5 py-4 backdrop-blur"
         >
           <slot name="footer" />
         </div>

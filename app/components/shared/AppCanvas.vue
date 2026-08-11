@@ -20,7 +20,7 @@ defineProps<{
       ]"
     >
       <div
-        class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(34,195,166,0.09),_transparent_34%)]"
+        class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(85,185,54,0.08),_transparent_36%)]"
       />
       <slot />
     </div>

@@ -68,14 +68,14 @@ async function handleToggle(tag: ActivityTag) {
       <template #right>
         <NuxtLink
           to="/tags/new"
-          class="flex h-9 w-9 items-center justify-center rounded-full bg-[#5EBF3F] text-white shadow-[0_12px_24px_rgba(34,195,166,0.25)]"
+          class="flex h-9 w-9 items-center justify-center rounded-full bg-[#55B936] text-white shadow-[0_8px_18px_rgba(85,185,54,0.24)] transition-transform active:scale-[0.94]"
         >
           <BaseIcon name="plus" :size="18" />
         </NuxtLink>
       </template>
     </ScreenHeader>
 
-    <div class="flex-1 overflow-y-auto px-4 pb-4 pt-2">
+    <div class="flex-1 overflow-y-auto px-5 pb-5 pt-1">
       <StateBanner v-if="notice" :tone="notice.tone" :message="notice.message" class="mb-4" />
 
       <SectionCard v-if="loading" class="h-[220px] animate-pulse bg-white/70" />
@@ -87,27 +87,27 @@ async function handleToggle(tag: ActivityTag) {
         <template #action>
           <NuxtLink
             to="/tags/new"
-            class="rounded-full bg-[#5EBF3F] px-4 py-2 text-[13px] font-semibold text-white"
+            class="rounded-full bg-[#55B936] px-4 py-2 text-[13px] font-semibold text-white"
           >
             新建标签
           </NuxtLink>
         </template>
       </EmptyState>
-      <SectionCard v-else>
-        <div class="divide-y divide-[#F0F5F3]">
+      <SectionCard v-else class="p-1.5">
+        <div class="flex flex-col">
           <div
-            v-for="tag in tags"
+            v-for="(tag, index) in tags"
             :key="tag.id"
-            class="flex items-center gap-3 py-3 first:pt-0 last:pb-0"
+            class="flex items-center gap-3 rounded-[14px] px-3 py-3 transition-colors"
+            :class="index > 0 && 'border-t border-[#EEF2EC]'"
           >
-            <BaseIcon name="dots-six-vertical" :size="16" class="shrink-0 text-[#C2CCC0]" />
             <span class="h-9 w-9 shrink-0 rounded-[12px]" :style="{ backgroundColor: tag.color }" />
 
             <div class="min-w-0 flex-1">
-              <p :class="['text-[15px] font-medium', tag.enabled ? 'text-[#1F2A2A]' : 'text-[#9BAE97]']">
+              <p :class="['text-[15px] font-medium', tag.enabled ? 'text-[#1F2A2A]' : 'text-[#AAB5B0]']">
                 {{ tag.name }}
               </p>
-              <p class="mt-0.5 text-[12px] text-[#8EA094]">
+              <p class="mt-0.5 text-[12px] text-[#82918B]">
                 排序 {{ tag.sortOrder }} · {{ tag.category ?? "未分类" }}
               </p>
             </div>
@@ -120,7 +120,7 @@ async function handleToggle(tag: ActivityTag) {
 
             <NuxtLink
               :to="`/tags/${tag.id}`"
-              class="flex h-8 w-8 items-center justify-center rounded-full text-[#8EA094] active:bg-[#F4F9F1]"
+              class="flex h-8 w-8 items-center justify-center rounded-full text-[#82918B] active:bg-[#F0F3EE] transition-colors"
             >
               <BaseIcon name="pencil-simple" :size="16" />
             </NuxtLink>

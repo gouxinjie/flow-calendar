@@ -171,36 +171,26 @@ function formatDelta(delta: number): string {
 
 <template>
   <div class="flex h-full flex-col">
-    <header class="flex items-center justify-between px-4 pb-2 pt-4">
+    <header class="flex items-center justify-between px-5 pb-3 pt-5">
       <div>
-        <h1 class="text-[24px] font-semibold tracking-[-0.03em] text-[#1F2A2A]">回顾</h1>
-        <p class="mt-1 text-[13px] text-[#8C9A97]">回顾过去，遇见成长</p>
+        <h1 class="text-[26px] font-semibold tracking-[-0.03em] text-[#1F2A2A]">回顾</h1>
+        <p class="mt-1 text-[13px] text-[#82918B]">回顾过去，遇见成长</p>
       </div>
-      <div class="flex items-center gap-1">
-        <button
-          type="button"
-          class="flex h-10 w-10 items-center justify-center rounded-full text-[#6B7A7A] active:bg-[#E8F2EF]"
-          aria-label="搜索"
-          @click="showFilters = true"
-        >
-          <BaseIcon name="magnifying-glass" :size="20" />
-        </button>
-        <button
-          type="button"
-          class="flex h-10 w-10 items-center justify-center rounded-full text-[#6B7A7A] active:bg-[#E8F2EF]"
-          aria-label="筛选"
-          @click="showFilters = true"
-        >
-          <BaseIcon name="faders-horizontal" :size="20" />
-        </button>
-      </div>
+      <button
+        type="button"
+        class="flex h-11 w-11 items-center justify-center rounded-full bg-white text-[#5C6B66] shadow-[0_1px_2px_rgba(47,94,34,0.04),0_6px_16px_rgba(47,94,34,0.08)] transition-transform active:scale-[0.94]"
+        aria-label="搜索与筛选"
+        @click="showFilters = true"
+      >
+        <BaseIcon name="faders-horizontal" :size="20" />
+      </button>
     </header>
 
-    <div class="flex-1 overflow-y-auto px-4 pb-4 [scrollbar-gutter:stable]">
+    <div class="flex-1 overflow-y-auto px-5 pb-5 [scrollbar-gutter:stable]">
       <StateBanner v-if="notice" tone="error" :message="notice" class="mb-4" />
 
       <!-- 顶部三栏 Tabs -->
-      <div class="mt-3 mb-2 flex items-center gap-6 border-b border-[#EEF4F2]">
+      <div class="mt-3 mb-2 flex items-center gap-6 border-b border-[#EEF2EC]">
         <button
           v-for="tab in [
             { key: 'summary' as ReviewTab, label: '月度回顾' },
@@ -211,14 +201,14 @@ function formatDelta(delta: number): string {
           type="button"
           :class="[
             'relative pb-3 text-[15px] transition-colors',
-            viewMode === tab.key ? 'text-[#1F2A2A]' : 'text-[#9BAE97]',
+            viewMode === tab.key ? 'text-[#1F2A2A]' : 'text-[#AAB5B0]',
           ]"
           @click="viewMode = tab.key"
         >
           {{ tab.label }}
           <span
             v-if="viewMode === tab.key"
-            class="absolute -bottom-px left-1/2 h-[2px] w-7 -translate-x-1/2 rounded-full bg-[#5EBF3F]"
+            class="absolute -bottom-px left-1/2 h-[2px] w-7 -translate-x-1/2 rounded-full bg-[#55B936]"
           />
         </button>
       </div>
@@ -226,32 +216,33 @@ function formatDelta(delta: number): string {
       <!-- 月份选择器 -->
       <div
         v-if="viewMode === 'summary' || viewMode === 'tags'"
-        class="mb-3 flex items-center justify-center gap-6 py-1 text-[#6B7A7A]"
+        class="mb-4 flex items-center justify-between rounded-[14px] bg-white px-3 py-2 shadow-[0_1px_2px_rgba(47,94,34,0.04),0_6px_16px_rgba(47,94,34,0.06)]"
       >
         <button
           type="button"
-          class="flex h-7 w-7 items-center justify-center rounded-full active:bg-[#E8F2EF]"
+          class="flex h-9 w-9 items-center justify-center rounded-full text-[#5C6B66] transition-colors active:bg-[#F0F3EE]"
           aria-label="上一月"
           @click="moveMonth('prev')"
         >
-          <BaseIcon name="caret-left" :size="16" />
+          <BaseIcon name="caret-left" :size="18" />
         </button>
-        <p class="min-w-[112px] text-center text-[15px] font-medium text-[#1F2A2A]">
+        <p class="flex items-center gap-1.5 text-[15px] font-semibold text-[#1F2A2A]">
+          <BaseIcon name="calendar-blank" :size="16" class="text-[#2F8E2E]" />
           {{ dayjs(`${reviewMonth}-01`).format("YYYY年M月") }}
         </p>
         <button
           type="button"
           :disabled="reviewMonth === currentMonth"
-          class="flex h-7 w-7 items-center justify-center rounded-full active:bg-[#E8F2EF] disabled:opacity-40"
+          class="flex h-9 w-9 items-center justify-center rounded-full text-[#5C6B66] transition-colors active:bg-[#F0F3EE] disabled:opacity-30"
           aria-label="下一月"
           @click="moveMonth('next')"
         >
-          <BaseIcon name="caret-right" :size="16" />
+          <BaseIcon name="caret-right" :size="18" />
         </button>
       </div>
 
       <!-- 全部记录时间范围切换 -->
-      <div v-if="viewMode === 'records'" class="mb-4 flex items-center rounded-[12px] bg-[#E8F2EF] p-1">
+      <div v-if="viewMode === 'records'" class="mb-4 flex items-center rounded-full bg-[#F0F3EE] p-1">
         <button
           v-for="range in [
             { key: 'month' as RecordsTimeRange, label: '按月' },
@@ -262,10 +253,10 @@ function formatDelta(delta: number): string {
           :key="range.key"
           type="button"
           :class="[
-            'flex-1 rounded-[10px] px-2 py-2 text-[13px] font-medium transition-all duration-200',
+            'flex-1 rounded-full px-2 py-2 text-[13px] font-medium transition-all duration-200',
             recordsTimeRange === range.key
-              ? 'bg-white text-[#3D9428] shadow-[0_2px_8px_rgba(18,46,40,0.08)]'
-              : 'text-[#6B7A7A]',
+              ? 'bg-white text-[#2F8E2E] shadow-[0_2px_8px_rgba(47,94,34,0.08)]'
+              : 'text-[#5C6B66]',
           ]"
           @click="recordsTimeRange = range.key"
         >
@@ -276,9 +267,9 @@ function formatDelta(delta: number): string {
       <!-- 当前筛选 -->
       <div
         v-if="hasFilters"
-        class="mb-4 flex flex-wrap items-center gap-2 rounded-[16px] bg-[#F1FAF2] px-3 py-3"
+        class="mb-4 flex flex-wrap items-center gap-2 rounded-[14px] bg-[#F0F3EE] px-3 py-3"
       >
-        <span class="text-[12px] font-medium text-[#3D9428]">当前筛选</span>
+        <span class="text-[12px] font-medium text-[#2F8E2E]">当前筛选</span>
         <span v-if="filters.keyword" class="rounded-full bg-white px-3 py-1 text-[12px] text-[#1F2A2A]">
           {{ filters.keyword }}
         </span>
@@ -293,7 +284,7 @@ function formatDelta(delta: number): string {
         </span>
         <button
           type="button"
-          class="ml-auto text-[12px] font-semibold text-[#3D9428]"
+          class="ml-auto text-[12px] font-semibold text-[#2F8E2E]"
           @click="filters = {}"
         >
           清除
@@ -304,41 +295,46 @@ function formatDelta(delta: number): string {
 
       <!-- 月度回顾 -->
       <div v-else-if="viewMode === 'summary' && summary" class="flex flex-col gap-4">
+        <!-- 统计卡片：大数字 + 柔和色点，呼吸感排版 -->
         <div class="grid grid-cols-2 gap-3">
-          <div class="rounded-[16px] bg-white p-4 shadow-[0_2px_10px_rgba(18,46,40,0.04)]">
-            <p class="text-[13px] text-[#6B7A7A]">记录总数</p>
-            <div class="mt-2 flex items-baseline gap-1">
-              <span class="font-numeric text-[30px] font-semibold leading-none text-[#5EBF3F]">
+          <div class="surface-card relative overflow-hidden p-5">
+            <span class="absolute -right-6 -top-6 h-20 w-20 rounded-full bg-[#EAF6E4]" aria-hidden="true" />
+            <p class="text-[13px] text-[#5C6B66]">记录总数</p>
+            <p class="mt-3 flex items-baseline gap-1.5">
+              <span class="font-numeric text-[34px] font-semibold leading-none tracking-[-0.02em] text-[#1F2A2A]">
                 {{ summary.totalRecords }}
               </span>
-              <span class="text-[14px] text-[#6B7A7A]">条</span>
-            </div>
-            <p class="mt-2 text-[12px] text-[#8EA094]">
+              <span class="text-[13px] text-[#82918B]">条</span>
+            </p>
+            <p class="mt-3 flex items-center gap-1 text-[12px] text-[#82918B]">
+              <span class="inline-block h-1.5 w-1.5 rounded-full" :class="summary.totalRecordsDelta >= 0 ? 'bg-[#55B936]' : 'bg-[#D85A5A]'" />
               较上月
               <span
                 :class="[
                   'font-medium',
-                  summary.totalRecordsDelta > 0 ? 'text-[#3D9428]' : summary.totalRecordsDelta < 0 ? 'text-[#E06060]' : 'text-[#8EA094]',
+                  summary.totalRecordsDelta > 0 ? 'text-[#2F8E2E]' : summary.totalRecordsDelta < 0 ? 'text-[#D85A5A]' : 'text-[#82918B]',
                 ]"
               >
                 {{ formatDelta(summary.totalRecordsDelta) }}
               </span>
             </p>
           </div>
-          <div class="rounded-[16px] bg-white p-4 shadow-[0_2px_10px_rgba(18,46,40,0.04)]">
-            <p class="text-[13px] text-[#6B7A7A]">记录天数</p>
-            <div class="mt-2 flex items-baseline gap-1">
-              <span class="font-numeric text-[30px] font-semibold leading-none text-[#5DA9E9]">
+          <div class="surface-card relative overflow-hidden p-5">
+            <span class="absolute -right-6 -top-6 h-20 w-20 rounded-full bg-[#E6F1FA]" aria-hidden="true" />
+            <p class="text-[13px] text-[#5C6B66]">记录天数</p>
+            <p class="mt-3 flex items-baseline gap-1.5">
+              <span class="font-numeric text-[34px] font-semibold leading-none tracking-[-0.02em] text-[#1F2A2A]">
                 {{ summary.recordDays }}
               </span>
-              <span class="text-[14px] text-[#6B7A7A]">天</span>
-            </div>
-            <p class="mt-2 text-[12px] text-[#8EA094]">
+              <span class="text-[13px] text-[#82918B]">天</span>
+            </p>
+            <p class="mt-3 flex items-center gap-1 text-[12px] text-[#82918B]">
+              <span class="inline-block h-1.5 w-1.5 rounded-full" :class="summary.recordDaysDelta >= 0 ? 'bg-[#55B936]' : 'bg-[#D85A5A]'" />
               较上月
               <span
                 :class="[
                   'font-medium',
-                  summary.recordDaysDelta > 0 ? 'text-[#3D9428]' : summary.recordDaysDelta < 0 ? 'text-[#E06060]' : 'text-[#8EA094]',
+                  summary.recordDaysDelta > 0 ? 'text-[#2F8E2E]' : summary.recordDaysDelta < 0 ? 'text-[#D85A5A]' : 'text-[#82918B]',
                 ]"
               >
                 {{ formatDelta(summary.recordDaysDelta) }}
@@ -350,30 +346,30 @@ function formatDelta(delta: number): string {
         <!-- 高频标签 Top 5 -->
         <SectionCard>
           <h3 class="mb-4 text-[15px] font-semibold text-[#1F2A2A]">
-            高频标签 <span class="text-[#9BAE97]">Top {{ summary.topTags.length || 5 }}</span>
+            高频标签 <span class="ml-1 rounded-full bg-[#F0F3EE] px-2 py-0.5 font-numeric text-[11px] font-medium text-[#5C6B66]">Top {{ summary.topTags.length || 5 }}</span>
           </h3>
-          <p v-if="summary.topTags.length === 0" class="text-[13px] text-[#8EA094]">
+          <p v-if="summary.topTags.length === 0" class="text-[13px] text-[#82918B]">
             本月还没有带标签的记录。
           </p>
-          <div v-else class="flex flex-col gap-3.5">
+          <div v-else class="flex flex-col gap-4">
             <div
               v-for="tag in summary.topTags"
               :key="tag.tagId"
-              class="grid grid-cols-[2.5rem_1fr_1rem] items-center gap-2"
+              class="flex items-center gap-3"
             >
-              <span class="truncate text-[13px] font-medium" :style="{ color: tag.tagColor }">
+              <span class="w-14 shrink-0 truncate text-[13px] font-medium text-[#1F2A2A]">
                 {{ tag.tagName }}
               </span>
-              <div class="h-2 rounded-full bg-[#EEF4F2]">
+              <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-[#EEF2EC]">
                 <div
-                  class="h-2 rounded-full transition-all"
+                  class="h-full rounded-full transition-all duration-500 ease-out"
                   :style="{
-                    width: `${Math.max((tag.count / Math.max(summary.topTags[0]?.count ?? 1, 1)) * 100, 18)}%`,
+                    width: `${Math.max((tag.count / Math.max(summary.topTags[0]?.count ?? 1, 1)) * 100, 12)}%`,
                     backgroundColor: tag.tagColor,
                   }"
                 />
               </div>
-              <span class="text-right font-numeric text-[13px] font-medium text-[#6B7A7A]">
+              <span class="w-8 shrink-0 text-right font-numeric text-[13px] font-semibold text-[#1F2A2A]">
                 {{ tag.count }}
               </span>
             </div>
@@ -382,33 +378,35 @@ function formatDelta(delta: number): string {
 
         <!-- 最近记录 -->
         <SectionCard>
-          <div class="mb-1 flex items-center justify-between">
+          <div class="mb-3 flex items-center justify-between">
             <h3 class="text-[15px] font-semibold text-[#1F2A2A]">最近记录</h3>
             <button
               type="button"
-              class="flex items-center gap-0.5 text-[12px] font-medium text-[#3D9428]"
+              class="flex items-center gap-1 text-[12px] font-medium text-[#2F8E2E] transition-opacity active:opacity-60"
               @click="viewMode = 'records'"
             >
               查看更多
               <BaseIcon name="arrow-right" :size="12" />
             </button>
           </div>
-          <p v-if="summary.recentRecords.length === 0" class="py-6 text-center text-[13px] text-[#8EA094]">
+          <p v-if="summary.recentRecords.length === 0" class="py-6 text-center text-[13px] text-[#82918B]">
             这个月暂时还没有内容。
           </p>
-          <div v-else class="divide-y divide-[#EEF4F2]">
+          <div v-else class="flex flex-col">
             <div
-              v-for="record in summary.recentRecords.slice(0, 5)"
+              v-for="(record, index) in summary.recentRecords.slice(0, 5)"
               :key="record.id"
-              class="flex items-center gap-3 py-3"
+              class="flex items-center gap-3 rounded-[12px] py-3"
+              :class="index > 0 && 'border-t border-[#EEF2EC]'"
             >
-              <div class="w-[78px] shrink-0 text-[12px] text-[#8EA094]">
-                <p>{{ dayjs(record.date).format("M月D日") }}</p>
-                <p class="mt-0.5 font-numeric tabular-nums">{{ record.startTime ?? "—" }}</p>
+              <div class="w-[64px] shrink-0 text-right text-[13px] font-semibold text-[#1F2A2A]">
+                {{ dayjs(record.date).format("D日") }}
               </div>
-              <p class="min-w-0 flex-1 truncate text-[14px] font-medium text-[#1F2A2A]">
-                {{ record.title }}
-              </p>
+              <div class="h-6 w-px shrink-0 bg-[#EEF2EC]" aria-hidden="true" />
+              <div class="min-w-0 flex-1">
+                <p class="truncate text-[14px] font-medium text-[#1F2A2A]">{{ record.title }}</p>
+                <p v-if="record.startTime" class="mt-0.5 font-numeric text-[11px] text-[#82918B]">{{ record.startTime }}</p>
+              </div>
               <TagBadge v-if="record.tag" :label="record.tag.name" :color="record.tag.color" compact />
             </div>
           </div>
@@ -424,11 +422,11 @@ function formatDelta(delta: number): string {
           description="前往「标签」页面创建并启用标签后，会在这里汇总使用情况。"
         />
         <SectionCard v-else>
-          <div class="flex flex-col divide-y divide-[#EEF4F2]">
+          <div class="flex flex-col divide-y divide-[#EEF2EC]">
             <div v-for="item in tagStats" :key="item.tag.id" class="flex items-center gap-2 py-3">
               <div class="min-w-0 flex-1">
                 <p class="truncate text-[14px] font-medium text-[#1F2A2A]">{{ item.tag.name }}</p>
-                <p class="mt-0.5 text-[12px] text-[#8EA094]">
+                <p class="mt-0.5 text-[12px] text-[#82918B]">
                   本月 {{ item.count }} 次 · 累计 {{ item.count }} 次
                 </p>
               </div>
@@ -454,26 +452,29 @@ function formatDelta(delta: number): string {
         <div v-else class="flex flex-col gap-4">
           <SectionCard v-for="group in groupedRangeResults" :key="group.date">
             <h3 class="mb-3 flex items-center gap-2 text-[14px] font-medium text-[#1F2A2A]">
-              <BaseIcon name="calendar-blank" :size="16" class="text-[#5EBF3F]" />
+              <BaseIcon name="calendar-blank" :size="16" class="text-[#55B936]" />
               {{ dayjs(group.date).format("M月D日 dddd") }}
             </h3>
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col">
               <div
-                v-for="record in group.records"
+                v-for="(record, index) in group.records"
                 :key="record.id"
-                class="flex items-center gap-3 rounded-[12px] bg-[#F3FAF7] px-3 py-3"
+                class="flex items-center gap-3 rounded-[12px] py-2.5"
+                :class="index > 0 && 'border-t border-[#EEF2EC]'"
               >
+                <span
+                  class="h-1.5 w-1.5 shrink-0 rounded-full"
+                  :style="{ backgroundColor: record.tag?.color ?? '#C3CCC7' }"
+                  aria-hidden="true"
+                />
                 <div class="min-w-0 flex-1">
-                  <p class="text-[14px] font-medium text-[#1F2A2A]">{{ record.title }}</p>
-                  <p v-if="record.startTime" class="mt-0.5 text-[12px] text-[#8EA094]">
-                    {{ record.startTime }}
-                  </p>
-                  <p v-if="record.note" class="text-[12px] text-[#8EA094]">
-                    {{ record.note }}
+                  <p class="truncate text-[14px] font-medium text-[#1F2A2A]">{{ record.title }}</p>
+                  <p v-if="record.startTime || record.note" class="mt-0.5 truncate text-[12px] text-[#82918B]">
+                    {{ record.startTime ?? "" }}<template v-if="record.startTime && record.note"> · </template>{{ record.note }}
                   </p>
                 </div>
                 <TagBadge v-if="record.tag" :label="record.tag.name" :color="record.tag.color" compact />
-                <span v-else class="text-[11px] text-[#9BAE97]">未分类</span>
+                <span v-else class="text-[11px] text-[#AAB5B0]">未分类</span>
               </div>
             </div>
           </SectionCard>
@@ -491,26 +492,31 @@ function formatDelta(delta: number): string {
       <div v-else class="flex flex-col gap-4">
         <SectionCard v-for="group in groupedResults" :key="group.date">
           <h3 class="mb-3 flex items-center gap-2 text-[14px] font-medium text-[#1F2A2A]">
-            <BaseIcon name="calendar-blank" :size="16" class="text-[#5EBF3F]" />
+            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-[#EAF6E4] text-[#2F8E2E]">
+              <BaseIcon name="calendar-blank" :size="14" />
+            </span>
             {{ dayjs(group.date).format("M月D日 dddd") }}
           </h3>
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-col">
             <div
-              v-for="record in group.records"
+              v-for="(record, index) in group.records"
               :key="record.id"
-              class="flex items-center gap-3 rounded-[12px] bg-[#F3FAF7] px-3 py-3"
+              class="flex items-center gap-3 rounded-[12px] py-2.5"
+              :class="index > 0 && 'border-t border-[#EEF2EC]'"
             >
+              <span
+                class="h-1.5 w-1.5 shrink-0 rounded-full"
+                :style="{ backgroundColor: record.tag?.color ?? '#C3CCC7' }"
+                aria-hidden="true"
+              />
               <div class="min-w-0 flex-1">
-                <p class="text-[14px] font-medium text-[#1F2A2A]">{{ record.title }}</p>
-                <p v-if="record.startTime" class="mt-0.5 text-[12px] text-[#8EA094]">
-                  {{ record.startTime }}
-                </p>
-                <p v-if="record.note" class="text-[12px] text-[#8EA094]">
-                  {{ record.note }}
+                <p class="truncate text-[14px] font-medium text-[#1F2A2A]">{{ record.title }}</p>
+                <p v-if="record.startTime || record.note" class="mt-0.5 truncate text-[12px] text-[#82918B]">
+                  {{ record.startTime ?? "" }}<template v-if="record.startTime && record.note"> · </template>{{ record.note }}
                 </p>
               </div>
               <TagBadge v-if="record.tag" :label="record.tag.name" :color="record.tag.color" compact />
-              <span v-else class="text-[11px] text-[#9BAE97]">未分类</span>
+              <span v-else class="text-[11px] text-[#AAB5B0]">未分类</span>
             </div>
           </div>
         </SectionCard>

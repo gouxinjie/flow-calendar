@@ -21,9 +21,9 @@ const props = withDefaults(
 );
 
 const TONE_CLASS_MAP: Record<BannerTone, string> = {
-  success: "border-[#B5EBDE] bg-[#EDFBF7] text-[#3D9428]",
+  success: "border-[#C6EBD6] bg-[#F0FBF4] text-[#2F8E2E]",
   error: "border-[#F2C0C0] bg-[#FFF5F5] text-[#D85A5A]",
-  info: "border-[#DCEAD2] bg-white text-[#516262]",
+  info: "border-[#E5F0DB] bg-white text-[#5C6B66]",
 };
 </script>
 

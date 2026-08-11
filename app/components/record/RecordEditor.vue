@@ -70,29 +70,29 @@ function handleSave() {
       </div>
 
       <div>
-        <label class="mb-1.5 block text-[13px] font-medium text-[#6B7A7A]">记录标题 *</label>
+        <label class="mb-1.5 block text-[13px] font-medium text-[#5C6B66]">记录标题 *</label>
         <input
           v-model="title"
           type="text"
           placeholder="做了什么？"
           maxlength="50"
-          class="w-full rounded-[14px] border border-[#DCEAD2] px-4 py-3 text-[14px] text-[#1F2A2A] placeholder-[#9BAE97] outline-none focus:border-[#5EBF3F]"
+          class="w-full rounded-[12px] border border-[#E5F0DB] px-4 py-3 text-[14px] text-[#1F2A2A] placeholder-[#AAB5B0] outline-none transition-colors focus:border-[#55B936]/70 focus:ring-2 focus:ring-[#55B936]/10"
         />
       </div>
 
       <div>
-        <label class="mb-1.5 block text-[13px] font-medium text-[#6B7A7A]">开始时间（可选）</label>
+        <label class="mb-1.5 block text-[13px] font-medium text-[#5C6B66]">开始时间（可选）</label>
         <TimePicker v-model:value="startTime" />
       </div>
 
       <div>
-        <label class="mb-1.5 block text-[13px] font-medium text-[#6B7A7A]">标签</label>
+        <label class="mb-1.5 block text-[13px] font-medium text-[#5C6B66]">标签</label>
         <div class="flex flex-wrap gap-2">
           <button
             v-for="tag in tags.filter((t) => t.enabled)"
             :key="tag.id"
             type="button"
-            class="rounded-[6px] px-4 py-1.5 text-[13px] font-medium transition-opacity active:opacity-80"
+            class="rounded-full px-4 py-1.5 text-[13px] font-medium transition-opacity active:opacity-80"
             :style="getTagButtonStyle(tag.color, tagId === tag.id)"
             @click="tagId = tag.id"
           >
@@ -102,13 +102,13 @@ function handleSave() {
       </div>
 
       <div>
-        <label class="mb-1.5 block text-[13px] font-medium text-[#6B7A7A]">备注（可选）</label>
+        <label class="mb-1.5 block text-[13px] font-medium text-[#5C6B66]">备注（可选）</label>
         <textarea
           v-model="note"
           placeholder="补充一些细节…"
           maxlength="200"
           rows="3"
-          class="w-full resize-none rounded-[14px] border border-[#DCEAD2] px-4 py-3 text-[14px] text-[#1F2A2A] placeholder-[#9BAE97] outline-none focus:border-[#5EBF3F]"
+          class="w-full resize-none rounded-[12px] border border-[#E5F0DB] px-4 py-3 text-[14px] text-[#1F2A2A] placeholder-[#AAB5B0] outline-none transition-colors focus:border-[#55B936]/70 focus:ring-2 focus:ring-[#55B936]/10"
         />
       </div>
     </div>
@@ -117,7 +117,7 @@ function handleSave() {
         <button
           v-if="isEdit"
           type="button"
-          class="flex h-[48px] shrink-0 items-center justify-center gap-1.5 rounded-[16px] border border-[#E06060] px-5 text-[14px] font-medium text-[#E06060] transition-colors duration-200 active:border-[#D85A5A] active:bg-[#FFF5F5] active:text-[#D85A5A]"
+          class="flex h-[50px] shrink-0 items-center justify-center gap-1.5 rounded-full border border-[#D85A5A]/40 px-5 text-[14px] font-medium text-[#D85A5A] transition-colors duration-200 active:bg-[#FFF5F5]"
           @click="emit('delete')"
         >
           <BaseIcon name="trash" :size="18" />
@@ -127,8 +127,8 @@ function handleSave() {
           type="button"
           :disabled="!title.trim() || saving"
           :class="[
-            'flex h-[48px] flex-1 items-center justify-center rounded-[14px] text-[14px] font-semibold text-white transition-opacity',
-            title.trim() && !saving ? 'bg-[#5EBF3F] active:opacity-80' : 'cursor-not-allowed bg-[#9BAE97]',
+            'flex h-[50px] flex-1 items-center justify-center rounded-full text-[14px] font-semibold text-white transition-all',
+            title.trim() && !saving ? 'bg-[#55B936] active:scale-[0.98]' : 'cursor-not-allowed bg-[#AAB5B0]',
           ]"
           @click="handleSave"
         >

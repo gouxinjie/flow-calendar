@@ -22,7 +22,7 @@ function isActive(href: string): boolean {
 
 <template>
   <nav
-    class="safe-pb z-20 mt-auto shrink-0 border-t border-[#ECF1EF] bg-white px-4 pt-2 backdrop-blur"
+    class="safe-pb z-20 mt-auto shrink-0 border-t border-[#EEF2EC] bg-white/95 px-4 pt-2 backdrop-blur"
   >
     <div class="grid grid-cols-3 gap-1">
       <NuxtLink
@@ -30,16 +30,23 @@ function isActive(href: string): boolean {
         :key="item.href"
         :to="item.href"
         :class="[
-          'flex min-h-[62px] flex-col items-center justify-center gap-1 px-2 py-2 text-[12px] transition-colors active:scale-[0.98]',
-          isActive(item.href) ? '!text-[#3D9428]' : '!text-[#A3AEAB]',
+          'relative flex min-h-[58px] flex-col items-center justify-center gap-1 px-2 pb-1.5 text-[11px] transition-transform active:scale-[0.95]',
+          isActive(item.href) ? '!text-[#2F8E2E]' : '!text-[#AAB5B0]',
         ]"
         :aria-current="isActive(item.href) ? 'page' : undefined"
       >
-        <BaseIcon
-          :name="item.icon"
-          :size="21"
-          :weight="isActive(item.href) ? 'fill' : 'regular'"
-        />
+        <span
+          :class="[
+            'flex h-7 w-14 items-center justify-center rounded-full transition-colors duration-200',
+            isActive(item.href) ? 'bg-[#EAF6E4]' : 'bg-transparent',
+          ]"
+        >
+          <BaseIcon
+            :name="item.icon"
+            :size="20"
+            :weight="isActive(item.href) ? 'fill' : 'regular'"
+          />
+        </span>
         <span :class="['leading-none', isActive(item.href) && 'font-semibold']">
           {{ item.label }}
         </span>

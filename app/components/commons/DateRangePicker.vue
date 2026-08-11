@@ -50,11 +50,11 @@ function handleEndChange(event: Event) {
     <div class="flex items-center gap-2">
       <label
         :class="[
-          'flex flex-1 cursor-pointer items-center gap-2 rounded-[14px] border border-[#DCEAD2] px-3 py-3 text-left text-[14px] transition-colors duration-200',
-          startDate ? 'text-[#1F2A2A]' : 'text-[#9BAE97]',
+          'flex flex-1 cursor-pointer items-center gap-2 rounded-[12px] border border-[#E5F0DB] px-3 py-3 text-left text-[14px] transition-colors duration-200',
+          startDate ? 'text-[#1F2A2A]' : 'text-[#AAB5B0]',
         ]"
       >
-        <BaseIcon name="calendar-blank" :size="16" :weight="startDate ? 'fill' : 'regular'" :class="startDate ? 'text-[#5EBF3F]' : 'text-[#9BAE97]'" />
+        <BaseIcon name="calendar-blank" :size="16" :weight="startDate ? 'fill' : 'regular'" :class="startDate ? 'text-[#55B936]' : 'text-[#AAB5B0]'" />
         <span class="flex-1 truncate">{{ display(startDate, "开始日期") }}</span>
         <input
           type="date"
@@ -64,15 +64,15 @@ function handleEndChange(event: Event) {
         />
       </label>
 
-      <span class="shrink-0 text-[14px] text-[#9BAE97]">至</span>
+      <span class="shrink-0 text-[14px] text-[#AAB5B0]">至</span>
 
       <label
         :class="[
-          'flex flex-1 cursor-pointer items-center gap-2 rounded-[14px] border border-[#DCEAD2] px-3 py-3 text-left text-[14px] transition-colors duration-200',
-          endDate ? 'text-[#1F2A2A]' : 'text-[#9BAE97]',
+          'flex flex-1 cursor-pointer items-center gap-2 rounded-[12px] border border-[#E5F0DB] px-3 py-3 text-left text-[14px] transition-colors duration-200',
+          endDate ? 'text-[#1F2A2A]' : 'text-[#AAB5B0]',
         ]"
       >
-        <BaseIcon name="calendar-blank" :size="16" :weight="endDate ? 'fill' : 'regular'" :class="endDate ? 'text-[#5EBF3F]' : 'text-[#9BAE97]'" />
+        <BaseIcon name="calendar-blank" :size="16" :weight="endDate ? 'fill' : 'regular'" :class="endDate ? 'text-[#55B936]' : 'text-[#AAB5B0]'" />
         <span class="flex-1 truncate">{{ display(endDate, "结束日期") }}</span>
         <input
           type="date"

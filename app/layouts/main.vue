@@ -10,7 +10,7 @@
 
 <template>
   <AuthGuard>
-    <AppCanvas class="bg-[#F3FAF7]">
+    <AppCanvas class="bg-[#FFFFFF]">
       <main class="min-h-0 flex-1 overflow-y-scroll overscroll-y-contain">
         <NuxtPage />
       </main>

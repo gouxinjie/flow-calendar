@@ -1,19 +1,54 @@
 <script setup lang="ts">
 /**
  * @component BaseIcon
- * @description 通用 SVG 图标组件，替代 @phosphor-icons/react
- * 内置项目所需全部图标路径
+ * @description 通用图标组件，基于官方 @phosphor-icons/vue
+ * 通过 kebab-case 图标名映射到官方 Phosphor 组件，替换早期手写的 SVG 路径
+ * 支持 size / weight（regular、bold、fill），并透传 class 用于控制颜色
  * @author gouxinjie
  * @created 2026-08-10
+ * @updated 2026-08-11
  */
+
+import {
+  PhArrowLeft,
+  PhArrowRight,
+  PhArrowsClockwise,
+  PhCalendarBlank,
+  PhCaretDown,
+  PhCaretLeft,
+  PhCaretRight,
+  PhCaretUp,
+  PhChartBar,
+  PhClock,
+  PhCopy,
+  PhDeviceMobile,
+  PhDotsSixVertical,
+  PhDotsThree,
+  PhEnvelope,
+  PhEye,
+  PhEyeSlash,
+  PhFadersHorizontal,
+  PhInfo,
+  PhLock,
+  PhMagnifyingGlass,
+  PhPencilSimple,
+  PhPhone,
+  PhPlus,
+  PhSignOut,
+  PhTagSimple,
+  PhTrash,
+  PhUser,
+  PhX,
+} from "@phosphor-icons/vue";
+import type { Component } from "vue";
 
 const props = withDefaults(
   defineProps<{
-    /** 图标名称 */
+    /** 图标名称（kebab-case，对应 Phosphor 组件名） */
     name: string;
     /** 尺寸 px */
     size?: number;
-    /** 是否实心 */
+    /** 图标粗细：regular / bold / fill */
     weight?: "regular" | "bold" | "fill";
   }>(),
   {
@@ -22,110 +57,55 @@ const props = withDefaults(
   },
 );
 
-/** 图标 SVG 路径映射（基于 Phosphor Icons） */
-const PATHS: Record<string, { fill?: boolean; d: string }> = {
-  "device-mobile": {
-    d: "M128 24C91.2 24 64 51.2 64 88v144c0 13.3 10.7 24 24 24h80c13.3 0 24-10.7 24-24V88c0-36.8-27.2-64-64-64zm0 208c-11 0-20-9-20-20s9-20 20-20 20 9 20 20-9 20-20 20z",
-  },
-  lock: {
-    d: "M192 96h-8V72a56 56 0 0 0-112 0v24h-8a24 24 0 0 0-24 24v112a24 24 0 0 0 24 24h128a24 24 0 0 0 24-24V120a24 24 0 0 0-24-24zm-96-24a32 32 0 0 1 64 0v24H96z",
-  },
-  eye: {
-    d: "M247 121.6A15.9 15.9 0 0 0 233 113c-27-17.3-55.4-25.3-84.4-25.3s-57.3 8-84.4 25.3a15.9 15.9 0 0 0-14 8.6 16.3 16.3 0 0 0 0 15.7A15.9 15.9 0 0 0 64 143c27 17.3 55.4 25.3 84.4 25.3s57.3-8 84.4-25.3a15.9 15.9 0 0 0 14-8.6 16.3 16.3 0 0 0 .2-15.7zM128 152a24 24 0 1 1 24-24 24 24 0 0 1-24 24z",
-  },
-  "eye-slash": {
-    d: "M53.9 34.6a8 8 0 0 0-11.3 11.3l20.1 20.1C33.8 82.4 20 105.7 18.3 108.4a15.9 15.9 0 0 0 0 15.2 207.4 207.4 0 0 0 30.6 36.5c29 29.3 62.8 45 96.1 45 25.8 0 51.3-9.5 74.8-27.7l19.3 19.3a8 8 0 0 0 11.3-11.3zM204.2 176.5C174.4 204.4 139.6 216 128 216c-25.8 0-53.2-12.4-77.9-36.5A190 190 0 0 1 28.7 145c7.2-9.7 24.9-31 52.4-46.7l19 19a48 48 0 0 0 65.2 65.2l19.9 19.9a87 87 0 0 1-20.7-2.3 8 8 0 0 1 4.2-15.4A55 55 0 0 0 152 184a55.4 55.4 0 0 0 30.5-9.1 8 8 0 0 1 9.9 12.6z",
-  },
-  "calendar-blank": {
-    d: "M208 32h-24V16a8 8 0 0 0-16 0v16H88V16a8 8 0 0 0-16 0v16H48a16 16 0 0 0-16 16v160a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zm0 176H48V48h24v8a8 8 0 0 0 16 0v-8h80v8a8 8 0 0 0 16 0v-8h24z",
-  },
-  "caret-down": {
-    d: "M128 152a8 8 0 0 1-5.7-2.4l-80-80a8 8 0 0 1 11.3-11.3L128 133.7l74.3-75.4a8 8 0 0 1 11.3 11.3l-80 80a8 8 0 0 1-5.6 2.4z",
-  },
-  "magnifying-glass": {
-    d: "M229.7 218.3l-43.2-43.2a92.4 92.4 0 1 0-11.3 11.3l43.2 43.2a8 8 0 0 0 11.3-11.3zM148 196a76 76 0 1 1 76-76 76.1 76.1 0 0 1-76 76z",
-  },
-  plus: {
-    d: "M224 128a8 8 0 0 1-8 8h-80v80a8 8 0 0 1-16 0v-80H40a8 8 0 0 1 0-16h80V40a8 8 0 0 1 16 0v80h80a8 8 0 0 1 8 8z",
-  },
-  "chart-bar": {
-    d: "M224 200h-16V40a8 8 0 0 0-8-8h-56a8 8 0 0 0-8 8v160h-32V88a8 8 0 0 0-8-8H56a8 8 0 0 0-8 8v104H32a8 8 0 0 0 0 16h192a8 8 0 0 0 0-16z",
-  },
-  user: {
-    d: "M230.9 212a8 8 0 0 1-11.8 10.7C205 210.2 181.6 200 160 200h-32c-21.6 0-45 10.2-59.1 22.7A8 8 0 0 1 57.1 212c8.6-20.1 22.6-36.4 41.2-48.3A68 68 0 1 1 165.7 163.7c18.6 11.9 32.6 28.2 41.2 48.3z",
-  },
-  "caret-left": {
-    d: "M165.7 202.3a8 8 0 0 1-11.3 11.3l-80-80a8 8 0 0 1 0-11.3l80-80a8 8 0 0 1 11.3 11.3L91.3 128z",
-  },
-  "caret-right": {
-    d: "M181.7 122.3l-80-80a8 8 0 0 0-11.3 11.3L164.7 128l-74.3 74.3a8 8 0 0 0 11.3 11.3l80-80a8 8 0 0 0 0-11.3z",
-  },
-  "arrow-right": {
-    d: "M221.7 133.7l-72 72a8 8 0 0 1-11.3-11.3L196.7 136H40a8 8 0 0 1 0-16h156.7l-58.3-58.3a8 8 0 0 1 11.3-11.3l72 72a8 8 0 0 1 0 11.3z",
-  },
-  "arrow-left": {
-    d: "M221.7 122.3a8 8 0 0 1 0 11.3l-72 72a8 8 0 0 1-11.3-11.3L196.7 136H40a8 8 0 0 1 0-16h156.7l-58.3-58.3a8 8 0 0 1 11.3-11.3z",
-  },
-  x: {
-    d: "M205.7 194.3a8 8 0 0 1-11.3 11.3L128 139.3l-66.3 66.4a8 8 0 0 1-11.3-11.3L116.7 128 50.3 61.7a8 8 0 0 1 11.3-11.3L128 116.7l66.3-66.4a8 8 0 0 1 11.3 11.3L139.3 128z",
-  },
-  clock: {
-    d: "M128 24a104 104 0 1 0 104 104A104.2 104.2 0 0 0 128 24zm0 192a88 88 0 1 1 88-88 88.1 88.1 0 0 1-88 88zm56-88a8 8 0 0 1-8 8h-48a8 8 0 0 1-8-8V72a8 8 0 0 1 16 0v48h40a8 8 0 0 1 8 8z",
-  },
-  trash: {
-    d: "M216 48h-40l-18.7-18.7a8 8 0 0 0-5.6-2.3H104.3a8 8 0 0 0-5.6 2.3L80 48H40a8 8 0 0 0 0 16h8v144a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16V64h8a8 8 0 0 0 0-16zm-24 160H64V64h128z",
-  },
-  "pencil-simple": {
-    d: "M227.3 28.7a32 32 0 0 0-45.3 0l-144 144a8 8 0 0 0-2.3 4.7l-8 48a8 8 0 0 0 9.9 9.9l48-8a8 8 0 0 0 4.7-2.3l144-144a32 32 0 0 0 0-45.3z",
-  },
-  copy: {
-    d: "M216 32H88a16 16 0 0 0-16 16v40H40a16 16 0 0 0-16 16v112a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16v-40h32a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zm0 144h-32V104a16 16 0 0 0-16-16h-64V48h112z",
-  },
-  "dots-three": {
-    d: "M128 96a32 32 0 1 0 32 32 32 32 0 0 0-32-32zm0 40a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm-72-40a32 32 0 1 0 32 32 32 32 0 0 0-32-32zm0 40a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm144-40a32 32 0 1 0 32 32 32 32 0 0 0-32-32zm0 40a8 8 0 1 1 8-8 8 8 0 0 1-8 8z",
-  },
-  "faders-horizontal": {
-    d: "M248 64a8 8 0 0 1-8 8h-64a8 8 0 0 1 0-16h64a8 8 0 0 1 8 8zm-112 8h-96a8 8 0 0 1 0-16h96a8 8 0 0 1 0 16zM128 40v56a8 8 0 0 1-16 0V40a8 8 0 0 1 16 0zM40 96h48a8 8 0 0 1 0 16H40a8 8 0 0 1 0-16zm120 0h48a8 8 0 0 1 0 16h-48a8 8 0 0 1 0-16zM184 128a8 8 0 0 1-8-8V72a8 8 0 0 1 16 0v48a8 8 0 0 1-8 8zM88 216h-48a8 8 0 0 1 0-16h48a8 8 0 0 1 0 16zm112-16h-48a8 8 0 0 1 0-16h48a8 8 0 0 1 0 16zM40 192h8a8 8 0 0 1 0 16h-8a8 8 0 0 1 0-16zm48-16v-32a8 8 0 0 1 16 0v32a8 8 0 0 1-16 0zm32-72H40a8 8 0 0 1 0-16h80a8 8 0 0 1 0 16z",
-  },
-  "sign-out": {
-    d: "M168 104a8 8 0 0 0 8-8V80a8 8 0 0 0-8-8H88V40a8 8 0 0 0-13.7-5.6l-64 64a8 8 0 0 0 0 11.3l64 64A8 8 0 0 0 88 168v-32h80a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H88V104z",
-  },
-  "tag-simple": {
-    d: "M200.7 35.3a8 8 0 0 0-4.7-1.9L136 26a16 16 0 0 0-15.7 6.5L24 144a16 16 0 0 0 0 20l60 60a16 16 0 0 0 20 0l111.5-96.3A16 16 0 0 0 222 112l7.4-60a8 8 0 0 0-1.9-4.7z",
-  },
-  "arrows-clockwise": {
-    d: "M197.6 58.3A96 96 0 0 0 61.7 97.6 8 8 0 1 0 78.9 110a80 80 0 0 1 113.1-32.7L224 100.4V72a8 8 0 0 1 16 0v48a8 8 0 0 1-8 8h-48a8 8 0 0 1 0-16h28.7l-32.1-23.9A95 95 0 0 1 240 128a96 96 0 0 1-15.2 51.1 8 8 0 1 1-13.4-8.7A79.9 79.9 0 0 0 96 140.7l-5.7 6.4 33 33a8 8 0 0 1-11.3 11.3L71.9 150.7a8 8 0 0 1 .1-11.4 8 8 0 0 1 .4-.4A79.6 79.6 0 0 1 128 48c.4 0 21.3.6 37.8 10.7L160 52.5V88a8 8 0 0 1-16 0v-20.5l-13.7 6.7A95.6 95.6 0 0 1 128 48c-.2 0-.4 0-.6 0A96 96 0 0 0 197.6 58.3z",
-  },
-  info: {
-    d: "M128 24a104 104 0 1 0 104 104A104.2 104.2 0 0 0 128 24zm8 56a12 12 0 1 1-12-12 12 12 0 0 1 12 12zm-12 32a8 8 0 0 1 8 8v56a8 8 0 0 1-16 0v-56a8 8 0 0 1 8-8z",
-  },
-  "dots-six-vertical": {
-    d: "M104 60a12 12 0 1 1-12-12 12 12 0 0 1 12 12zm-12 44a12 12 0 1 0 12 12 12 12 0 0 0-12-12zm0 68a12 12 0 1 0 12 12 12 12 0 0 0-12-12zm72-136a12 12 0 1 0 12 12 12 12 0 0 0-12-12zm0 68a12 12 0 1 0 12 12 12 12 0 0 0-12-12zm0 68a12 12 0 1 0 12 12 12 12 0 0 0-12-12z",
-  },
-  envelope: {
-    d: "M224 48H32a16 16 0 0 0-16 16v128a16 16 0 0 0 16 16h192a16 16 0 0 0 16-16V64a16 16 0 0 0-16-16zm-2.7 16L128 133.4 34.7 64zM32 192v-103l93.7 71.3a8 8 0 0 0 10.6 0L224 89v103z",
-  },
-  phone: {
-    d: "M222.4 169.7l-34.1-23.4a16 16 0 0 0-21.6 2.1l-17.5 19.8a112 112 0 0 1-58.3-58.3l19.8-17.5a16 16 0 0 0 2.1-21.6L89.7 36.6a16 16 0 0 0-24.6-3.3L54.4 43.9A32 32 0 0 0 45 68.6C60.6 149.8 138.8 228 220.6 243.3a32 32 0 0 0 24.7-9.4l10.6-10.7a16 16 0 0 0-3.5-23.5z",
-  },
-  "caret-up": {
-    d: "M128 152a8 8 0 0 1-5.7-2.4l-80-80a8 8 0 0 1 11.3-11.3L128 133.7l74.3-75.4a8 8 0 0 1 11.3 11.3l-80 80a8 8 0 0 1-5.6 2.4z",
-  },
+/** kebab-case 图标名 → Phosphor 组件映射 */
+const ICONS: Record<string, Component> = {
+  "arrow-left": PhArrowLeft,
+  "arrow-right": PhArrowRight,
+  "arrows-clockwise": PhArrowsClockwise,
+  "calendar-blank": PhCalendarBlank,
+  "caret-down": PhCaretDown,
+  "caret-left": PhCaretLeft,
+  "caret-right": PhCaretRight,
+  "caret-up": PhCaretUp,
+  "chart-bar": PhChartBar,
+  clock: PhClock,
+  copy: PhCopy,
+  "device-mobile": PhDeviceMobile,
+  "dots-six-vertical": PhDotsSixVertical,
+  "dots-three": PhDotsThree,
+  envelope: PhEnvelope,
+  eye: PhEye,
+  "eye-slash": PhEyeSlash,
+  "faders-horizontal": PhFadersHorizontal,
+  info: PhInfo,
+  lock: PhLock,
+  "magnifying-glass": PhMagnifyingGlass,
+  "pencil-simple": PhPencilSimple,
+  phone: PhPhone,
+  plus: PhPlus,
+  "sign-out": PhSignOut,
+  "tag-simple": PhTagSimple,
+  trash: PhTrash,
+  user: PhUser,
+  x: PhX,
 };
 
-/** 获取图标定义 */
-const def = computed(() => PATHS[props.name] ?? PATHS["info"]);
+/** 当前使用的图标组件；未匹配时回退到 info */
+const iconComponent = computed(() => {
+  const matched = ICONS[props.name];
+  if (!matched && import.meta.dev) {
+    console.warn(`[BaseIcon] 未匹配的图标名: "${props.name}"`);
+  }
+  return matched ?? PhInfo;
+});
 </script>
 
 <template>
-  <svg
-    :width="size"
-    :height="size"
-    viewBox="0 0 256 256"
-    fill="currentColor"
-    xmlns="http://www.w3.org/2000/svg"
+  <component
+    :is="iconComponent"
+    :size="size"
+    :weight="weight"
     aria-hidden="true"
-  >
-    <path :d="def.d" />
-  </svg>
+    class="inline-block shrink-0"
+  />
 </template>

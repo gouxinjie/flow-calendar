@@ -29,19 +29,19 @@ const emit = defineEmits<{
 
 <template>
   <BottomSheet :open="open" :title="title" @close="emit('close')">
-    <p class="text-[14px] leading-7 text-[#60716E]">{{ description }}</p>
+    <p class="text-[14px] leading-7 text-[#5C6B66]">{{ description }}</p>
     <template #footer>
       <div class="flex gap-3">
         <button
           type="button"
-          class="flex h-[48px] flex-1 items-center justify-center rounded-[14px] border border-[#DCEAD2] text-[14px] font-medium text-[#60716E]"
+          class="flex h-[50px] flex-1 items-center justify-center rounded-full border border-[#E5F0DB] text-[14px] font-medium text-[#5C6B66] transition-colors active:bg-[#F6FBF3]"
           @click="emit('close')"
         >
           {{ cancelText }}
         </button>
         <button
           type="button"
-          class="flex h-[48px] flex-1 items-center justify-center rounded-[14px] bg-[#D85A5A] text-[14px] font-semibold text-white disabled:opacity-60"
+          class="flex h-[50px] flex-1 items-center justify-center rounded-full bg-[#D85A5A] text-[14px] font-semibold text-white transition-all active:scale-[0.98] disabled:opacity-60"
           :disabled="loading"
           @click="emit('confirm')"
         >

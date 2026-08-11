@@ -37,9 +37,9 @@ function handleChange() {
     :aria-label="props.ariaLabel"
     :disabled="props.disabled"
     :class="[
-      'relative h-7 w-12 shrink-0 rounded-full border transition-colors duration-200 ease-out outline-none focus-visible:ring-2 focus-visible:ring-[#B9EDE2] focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-60',
+      'relative h-7 w-12 shrink-0 rounded-full border transition-colors duration-200 ease-out outline-none focus-visible:ring-2 focus-visible:ring-[#CBE9C0] focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-60',
       props.checked
-        ? 'border-[#3D9428] bg-[#5EBF3F]'
+        ? 'border-[#2F8E2E] bg-[#55B936]'
         : 'border-[#D8DADF] bg-[#D8DADF]',
     ]"
     @click="handleChange"

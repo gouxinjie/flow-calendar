@@ -54,15 +54,15 @@ function isCurrentMonth(m: number): boolean {
   <BottomSheet :open="open" title="选择月份" @close="emit('close')">
     <div class="flex flex-col gap-4">
       <div>
-        <label class="mb-2 block text-[13px] font-medium text-[#6B7A7A]">年份</label>
+        <label class="mb-2 block text-[13px] font-medium text-[#5C6B66]">年份</label>
         <div class="flex flex-wrap gap-2">
           <button
             v-for="y in yearOptions"
             :key="y"
             type="button"
             :class="[
-              'rounded-[10px] px-4 py-2 text-[14px] font-medium transition-colors',
-              year === y ? 'bg-[#5EBF3F] text-white' : 'bg-[#F4F9F1] text-[#6B7A7A]',
+              'rounded-full px-4 py-2 text-[14px] font-medium transition-colors',
+              year === y ? 'bg-[#55B936] text-white' : 'bg-[#EEF7EA] text-[#5C6B66] active:bg-[#E5F0DB]',
             ]"
             @click="year = y"
           >
@@ -72,7 +72,7 @@ function isCurrentMonth(m: number): boolean {
       </div>
 
       <div>
-        <label class="mb-2 block text-[13px] font-medium text-[#6B7A7A]">月份</label>
+        <label class="mb-2 block text-[13px] font-medium text-[#5C6B66]">月份</label>
         <div class="grid grid-cols-4 gap-2">
           <button
             v-for="m in MONTHS"
@@ -80,10 +80,10 @@ function isCurrentMonth(m: number): boolean {
             type="button"
             :disabled="isFutureMonth(m)"
             :class="[
-              'rounded-[10px] py-3 text-[14px] font-medium transition-colors',
-              isFutureMonth(m) && 'cursor-not-allowed bg-[#F4F9F1] text-[#C2CCC0]',
-              !isFutureMonth(m) && isCurrentMonth(m) && 'bg-[#5EBF3F] text-white',
-              !isFutureMonth(m) && !isCurrentMonth(m) && 'bg-[#F4F9F1] text-[#6B7A7A] active:bg-[#E4EDDF]',
+              'rounded-full py-3 text-[14px] font-medium transition-colors',
+              isFutureMonth(m) && 'cursor-not-allowed bg-[#EEF7EA] text-[#AAB5B0]',
+              !isFutureMonth(m) && isCurrentMonth(m) && 'bg-[#55B936] text-white',
+              !isFutureMonth(m) && !isCurrentMonth(m) && 'bg-[#EEF7EA] text-[#5C6B66] active:bg-[#E5F0DB]',
             ]"
             @click="!isFutureMonth(m) && handleSelect(m)"
           >
@@ -95,7 +95,7 @@ function isCurrentMonth(m: number): boolean {
     <template #footer>
       <button
         type="button"
-        class="flex h-[48px] w-full items-center justify-center rounded-[14px] bg-[#5EBF3F] text-[14px] font-semibold text-white active:opacity-80"
+        class="flex h-[50px] w-full items-center justify-center rounded-full bg-[#55B936] text-[14px] font-semibold text-white transition-all active:scale-[0.98]"
         @click="handleGoToThisMonth"
       >
         回到本月

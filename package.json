@@ -4,7 +4,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "nuxt dev -p 3400 --host 0.0.0.0",
+    "dev": "nuxt dev -p 3400",
     "build": "nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -21,6 +21,7 @@
     "db:delete-users": "npx tsx prisma/delete-all-users.ts"
   },
   "dependencies": {
+    "@phosphor-icons/vue": "^2.2.1",
     "@prisma/client": "^5.22.0",
     "dayjs": "^1.11.21",
     "lunar-typescript": "^1.8.6",

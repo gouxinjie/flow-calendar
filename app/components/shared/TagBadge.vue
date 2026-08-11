@@ -21,10 +21,10 @@ withDefaults(
 <template>
   <span
     :class="[
-      'inline-flex items-center rounded-[10px] font-medium',
-      compact ? 'h-5 px-1.5 text-[10px]' : 'h-6 px-2 text-[11px]',
+      'inline-flex items-center rounded-full font-medium',
+      compact ? 'h-5 px-2 text-[10px]' : 'h-6 px-2.5 text-[11px]',
     ]"
-    :style="{ backgroundColor: `${color}18`, color }"
+    :style="{ backgroundColor: `${color}1a`, color }"
   >
     {{ label }}
   </span>

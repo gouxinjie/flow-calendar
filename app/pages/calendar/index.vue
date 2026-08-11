@@ -109,19 +109,21 @@ async function handleSaveRecord(data: RecordFormData) {
 
 <template>
   <div class="relative flex h-full min-h-0 flex-col overflow-hidden">
-    <header class="relative z-10 shrink-0 px-3 pb-2.5 pt-3.5">
+    <header class="relative z-10 shrink-0 px-5 pb-4 pt-5">
       <div class="flex items-start justify-between">
-        <div>
+        <div class="min-w-0">
           <button
             type="button"
-            class="inline-flex items-center gap-1 text-[24px] font-semibold tracking-[-0.04em] text-[#1F2A2A]"
+            class="group inline-flex items-center gap-1.5 text-[26px] font-semibold tracking-[-0.03em] text-[#1F2A2A]"
             aria-label="选择月份"
             @click="showMonthPicker = true"
           >
-            <span>{{ monthTitle }}</span>
-            <BaseIcon name="caret-down" :size="16" class="mt-1 text-[#637472]" />
+            <span class="truncate">{{ monthTitle }}</span>
+            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-[#F0F3EE] text-[#2F8E2E] transition-transform group-active:scale-[0.9]">
+              <BaseIcon name="caret-down" :size="13" />
+            </span>
           </button>
-          <p class="mt-1 text-[12px] text-[#7E8F8C]">
+          <p class="mt-1.5 text-[13px] text-[#82918B]">
             {{ dayjs(today).format("M月D日 dddd") }}
             <template v-if="lunarTodayLabel"> · {{ lunarTodayLabel }}</template>
           </p>
@@ -129,14 +131,14 @@ async function handleSaveRecord(data: RecordFormData) {
         <div class="flex items-center gap-2">
           <NuxtLink
             to="/review"
-            class="flex h-10 w-10 items-center justify-center rounded-full bg-white/86 text-[#435351] shadow-[0_12px_22px_rgba(31,42,42,0.06)]"
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#5C6B66] shadow-[0_1px_2px_rgba(47,94,34,0.04),0_6px_16px_rgba(47,94,34,0.08)] transition-transform active:scale-[0.92]"
             aria-label="前往回顾"
           >
             <BaseIcon name="magnifying-glass" :size="18" />
           </NuxtLink>
           <button
             type="button"
-            class="flex h-10 w-10 items-center justify-center rounded-full bg-white/86 text-[#435351] shadow-[0_12px_22px_rgba(31,42,42,0.06)]"
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#5C6B66] shadow-[0_1px_2px_rgba(47,94,34,0.04),0_6px_16px_rgba(47,94,34,0.08)] transition-transform active:scale-[0.92]"
             aria-label="打开月份选择器"
             @click="showMonthPicker = true"
           >
@@ -146,21 +148,21 @@ async function handleSaveRecord(data: RecordFormData) {
       </div>
     </header>
 
-    <div class="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-3 pb-[112px]">
+    <div class="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-5 pb-[120px]">
       <StateBanner v-if="feedback" tone="success" :message="feedback" />
       <StateBanner v-if="pageError" tone="error" :message="pageError" />
 
       <section
         v-if="showInlineEmptyTip"
-        class="surface-card flex items-center justify-between gap-3 px-4 py-3 !rounded-[10px]"
+        class="surface-card flex items-center justify-between gap-3 px-4 py-3"
       >
         <div class="min-w-0">
           <p class="text-[13px] font-semibold text-[#1F2A2A]">这个月还没有记录</p>
-          <p class="mt-0.5 text-[12px] text-[#6B7A7A]">点底部加号，先记下一条。</p>
+          <p class="mt-0.5 text-[12px] text-[#5C6B66]">点底部加号，先记下一条。</p>
         </div>
         <button
           type="button"
-          class="shrink-0 rounded-lg bg-[#5EBF3F] px-3.5 py-2 text-[12px] font-semibold text-white"
+          class="shrink-0 rounded-full bg-[#55B936] px-4 py-2 text-[12px] font-semibold text-white transition-transform active:scale-[0.96]"
           @click="showRecordEditor = true"
         >
           新增
