@@ -14,7 +14,7 @@ defineProps<{
 </script>
 
 <template>
-  <header class="relative z-10 flex items-center justify-between gap-4 px-5 pb-2 pt-4">
+  <header class="page-px relative z-10 flex items-center justify-between gap-4 pb-2 pt-4">
     <div class="flex items-center gap-2">
       <NuxtLink
         v-if="backHref"

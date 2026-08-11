@@ -109,7 +109,7 @@ async function handleSaveRecord(data: RecordFormData) {
 
 <template>
   <div class="relative flex h-full min-h-0 flex-col overflow-hidden">
-    <header class="relative z-10 shrink-0 px-5 pb-4 pt-5">
+    <header class="page-px relative z-10 shrink-0 pb-4 pt-5">
       <div class="flex items-start justify-between">
         <div class="min-w-0">
           <button
@@ -148,7 +148,7 @@ async function handleSaveRecord(data: RecordFormData) {
       </div>
     </header>
 
-    <div class="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-5 pb-[120px]">
+    <div class="page-px flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto pb-[120px]">
       <StateBanner v-if="feedback" tone="success" :message="feedback" />
       <StateBanner v-if="pageError" tone="error" :message="pageError" />
 
@@ -188,7 +188,6 @@ async function handleSaveRecord(data: RecordFormData) {
     </button>
 
     <MonthPickerSheet
-      :key="`${currentMonth}-${showMonthPicker ? 'open' : 'closed'}`"
       :open="showMonthPicker"
       :current-year="Number(currentMonth.split('-')[0])"
       :current-month="Number(currentMonth.split('-')[1])"
@@ -197,7 +196,6 @@ async function handleSaveRecord(data: RecordFormData) {
     />
 
     <RecordEditor
-      :key="`calendar-record-${showRecordEditor ? selectedDate : 'closed'}`"
       :open="showRecordEditor"
       :tags="tags"
       :default-date="selectedDate"

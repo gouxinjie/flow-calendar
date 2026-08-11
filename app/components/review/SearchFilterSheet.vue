@@ -26,6 +26,20 @@ const startDate = ref(props.initialFilters.startDate ?? "");
 const endDate = ref(props.initialFilters.endDate ?? "");
 const includeUncategorized = ref(props.initialFilters.includeUncategorized ?? true);
 
+// 每次打开弹层时重置为最新筛选条件（替代父组件动态 key 重挂载，避免 BottomSheet 重挂载动画异常）
+watch(
+  () => props.open,
+  (val) => {
+    if (val) {
+      keyword.value = props.initialFilters.keyword ?? "";
+      tagId.value = props.initialFilters.tagId;
+      startDate.value = props.initialFilters.startDate ?? "";
+      endDate.value = props.initialFilters.endDate ?? "";
+      includeUncategorized.value = props.initialFilters.includeUncategorized ?? true;
+    }
+  },
+);
+
 /** 应用筛选 */
 function handleApply() {
   emit("apply", {

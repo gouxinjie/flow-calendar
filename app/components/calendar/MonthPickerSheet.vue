@@ -21,6 +21,14 @@ const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
 
 const year = ref(props.currentYear);
 
+// 每次打开弹层时重置年份（替代父组件动态 key 重挂载，避免 BottomSheet 重挂载动画异常）
+watch(
+  () => props.open,
+  (val) => {
+    if (val) year.value = props.currentYear;
+  },
+);
+
 const currentDate = new Date();
 const thisYear = currentDate.getFullYear();
 const thisMonth = currentDate.getMonth() + 1;

@@ -55,12 +55,12 @@ async function handleLogout() {
 
 <template>
   <div class="flex h-full flex-col">
-    <header class="px-5 pb-4 pt-5">
+    <header class="page-px pb-4 pt-5">
       <h1 class="text-[26px] font-semibold tracking-[-0.03em] text-[#1F2A2A]">我的</h1>
       <p class="mt-1 text-[13px] text-[#82918B]">账号、标签和同步状态</p>
     </header>
 
-    <div class="flex-1 overflow-y-auto px-5 pb-6">
+    <div class="page-px flex-1 overflow-y-auto pb-6">
       <StateBanner v-if="feedback" tone="error" :message="feedback" class="mb-4" />
       <StateBanner v-if="pageError" tone="error" :message="pageError" class="mb-4" />
 

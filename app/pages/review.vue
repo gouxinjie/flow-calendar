@@ -171,7 +171,7 @@ function formatDelta(delta: number): string {
 
 <template>
   <div class="flex h-full flex-col">
-    <header class="flex items-center justify-between px-5 pb-3 pt-5">
+    <header class="page-px flex items-center justify-between pb-3 pt-5">
       <div>
         <h1 class="text-[26px] font-semibold tracking-[-0.03em] text-[#1F2A2A]">回顾</h1>
         <p class="mt-1 text-[13px] text-[#82918B]">回顾过去，遇见成长</p>
@@ -186,7 +186,7 @@ function formatDelta(delta: number): string {
       </button>
     </header>
 
-    <div class="flex-1 overflow-y-auto px-5 pb-5 [scrollbar-gutter:stable]">
+    <div class="page-px flex-1 overflow-y-auto pb-5 [scrollbar-gutter:stable]">
       <StateBanner v-if="notice" tone="error" :message="notice" class="mb-4" />
 
       <!-- 顶部三栏 Tabs -->
@@ -524,7 +524,6 @@ function formatDelta(delta: number): string {
     </div>
 
     <SearchFilterSheet
-      :key="`search-filter-${showFilters ? JSON.stringify(filters) : 'closed'}`"
       :open="showFilters"
       :tags="tags"
       :initial-filters="filters"

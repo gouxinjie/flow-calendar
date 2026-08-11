@@ -50,44 +50,60 @@ watch(
   },
 );
 
+/** 播放动画：open 为 true 时入场，否则出场 */
+function playAnimation(open: boolean) {
+  const panel = panelRef.value;
+  const shade = shadeRef.value;
+  if (!panel || !shade) return;
+
+  // 取消所有进行中的动画
+  panel.getAnimations().forEach((a) => a.cancel());
+  shade.getAnimations().forEach((a) => a.cancel());
+
+  if (open) {
+    // 入场：从下方滑入 + 淡入
+    panel.animate(
+      { transform: ["translateY(100%)", "translateY(0)"] },
+      { duration: DURATION, easing: "ease-out", fill: "forwards" },
+    );
+    shade.animate(
+      { opacity: [0, 1] },
+      { duration: DURATION, easing: "ease-out", fill: "forwards" },
+    );
+  } else {
+    // 出场：滑出 + 淡出，动画完成后卸载
+    const panelAnim = panel.animate(
+      { transform: ["translateY(0)", "translateY(100%)"] },
+      { duration: DURATION, easing: "ease-in", fill: "forwards" },
+    );
+    shade.animate(
+      { opacity: [1, 0] },
+      { duration: DURATION, easing: "ease-in", fill: "forwards" },
+    );
+    panelAnim.onfinish = () => {
+      mounted.value = false;
+    };
+  }
+}
+
 // 动画控制
+// 使用 flush: "post" 让回调在 DOM 更新之后执行，此时 panelRef/shadeRef 已绑定。
+// 若用默认 pre，则首次打开时面板刚因 mounted=true 而渲染、ref 尚未就绪，
+// 会导致入场动画被跳过，面板停留在 translateY(100%)（屏幕底部），位置异常。
+// 同时保留 nextTick 重试兜底，确保 ref 在任何调度顺序下都能就绪。
 watch(
   () => [props.open, mounted.value] as const,
-  ([open, isMounted]) => {
+  async ([open, isMounted]) => {
     if (!isMounted) return;
-    const panel = panelRef.value;
-    const shade = shadeRef.value;
-    if (!panel || !shade) return;
-
-    // 取消所有进行中的动画
-    panel.getAnimations().forEach((a) => a.cancel());
-    shade.getAnimations().forEach((a) => a.cancel());
-
-    if (open) {
-      // 入场：从下方滑入 + 淡入
-      panel.animate(
-        { transform: ["translateY(100%)", "translateY(0)"] },
-        { duration: DURATION, easing: "ease-out", fill: "forwards" },
-      );
-      shade.animate(
-        { opacity: [0, 1] },
-        { duration: DURATION, easing: "ease-out", fill: "forwards" },
-      );
-    } else {
-      // 出场：滑出 + 淡出，动画完成后卸载
-      const panelAnim = panel.animate(
-        { transform: ["translateY(0)", "translateY(100%)"] },
-        { duration: DURATION, easing: "ease-in", fill: "forwards" },
-      );
-      shade.animate(
-        { opacity: [1, 0] },
-        { duration: DURATION, easing: "ease-in", fill: "forwards" },
-      );
-      panelAnim.onfinish = () => {
-        mounted.value = false;
-      };
+    if (!panelRef.value || !shadeRef.value) {
+      await nextTick();
+      // await 期间 open 可能已被用户快速操作改变，直接返回，
+      // 由下一次 watch 触发基于最新状态播放动画，避免过期快照导致动画错位。
+      if (open !== props.open) return;
     }
+    playAnimation(open);
   },
+  { flush: "post" },
 );
 </script>
 
@@ -100,12 +116,13 @@ watch(
         style="opacity: 0"
         @click="emit('close')"
       />
-      <!-- 面板底部预留导航栏高度，避免遮挡底部导航 -->
+      <!-- 面板贴底显示，遮罩同时覆盖原底部导航栏区域，避免面板与屏幕底部之间留出大块遮罩空白 -->
       <div
         ref="panelRef"
         class="absolute left-0 right-0 z-10 max-h-[85vh] overflow-y-auto rounded-t-[24px] bg-[#FFFFFF]"
         style="
-          bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+          bottom: 0;
+          padding-bottom: env(safe-area-inset-bottom, 0px);
           box-shadow: 0 -12px 32px rgba(47, 94, 34, 0.12);
           transform: translateY(100%);
         "

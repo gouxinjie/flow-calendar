@@ -37,6 +37,9 @@
   --radius-md: 18px;
   --radius-lg: 24px;
 
+  /* 页面水平内边距 —— 主内容页统一 12px，避免页面间数值漂移 */
+  --page-px: 12px;
+
   /* 状态色 */
   --error: #d85a5a;
   --error-soft: #fff3f3;
@@ -184,6 +187,12 @@ main:hover::-webkit-scrollbar-thumb {
 
   .safe-pb {
     padding-bottom: calc(env(safe-area-inset-bottom) + 12px);
+  }
+
+  /* 页面水平内边距 —— 主内容页统一使用，替代硬编码 px-3 */
+  .page-px {
+    padding-left: var(--page-px);
+    padding-right: var(--page-px);
   }
 
   .text-truncate {

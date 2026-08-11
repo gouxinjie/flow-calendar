@@ -75,7 +75,7 @@ async function handleToggle(tag: ActivityTag) {
       </template>
     </ScreenHeader>
 
-    <div class="flex-1 overflow-y-auto px-5 pb-5 pt-1">
+    <div class="page-px flex-1 overflow-y-auto pb-5 pt-1">
       <StateBanner v-if="notice" :tone="notice.tone" :message="notice.message" class="mb-4" />
 
       <SectionCard v-if="loading" class="h-[220px] animate-pulse bg-white/70" />

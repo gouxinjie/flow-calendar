@@ -39,6 +39,26 @@ const startTime = ref(props.initialData?.startTime ?? "");
 const note = ref(props.initialData?.note ?? "");
 const localError = ref("");
 
+/**
+ * 重置表单为初始数据（默认清空，用于"新增"）。
+ * 契约：父组件需保证 mode 为 edit/copy 时传入 initialData，mode 为 create 时 initialData 为 undefined。
+ */
+function resetForm(data?: RecordFormData) {
+  title.value = data?.title ?? "";
+  tagId.value = data?.tagId || undefined;
+  startTime.value = data?.startTime ?? "";
+  note.value = data?.note ?? "";
+  localError.value = "";
+}
+
+// 每次打开弹层时重置表单（替代父组件动态 key 重挂载，避免 BottomSheet 重挂载动画异常）
+watch(
+  () => props.open,
+  (val) => {
+    if (val) resetForm(props.initialData);
+  },
+);
+
 const isEdit = computed(() => props.mode === "edit");
 const isCopy = computed(() => props.mode === "copy");
 const editorTitle = computed(() => (isEdit.value ? "编辑记录" : isCopy.value ? "复制记录" : "新增记录"));

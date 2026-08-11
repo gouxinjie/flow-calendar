@@ -207,7 +207,7 @@ async function handleDelete() {
 <template>
   <div class="flex h-full flex-col">
     <!-- 顶部：返回按钮 + 日期 + 节日 + 干支日 + 装饰植物 -->
-    <div class="relative shrink-0 px-4 pb-2 pt-3">
+    <div class="page-px relative shrink-0 pb-2 pt-3">
       <div class="flex items-center justify-between gap-3">
         <div class="flex min-w-0 items-center gap-2">
           <button
@@ -266,7 +266,7 @@ async function handleDelete() {
       </div>
     </div>
 
-    <div class="flex-1 overflow-y-auto px-5 pb-5 pt-3">
+    <div class="page-px flex-1 overflow-y-auto pb-5 pt-3">
       <div class="mb-3 flex items-center gap-2">
         <h2 class="text-[16px] font-semibold tracking-[-0.02em] text-[#1F2A2A]">当天记录</h2>
         <span class="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#EEF2EC] px-1.5 font-numeric text-[11px] font-semibold text-[#5C6B66]">
@@ -365,7 +365,7 @@ async function handleDelete() {
       </div>
     </div>
 
-    <div class="safe-pb shrink-0 px-5 pb-4">
+    <div class="page-px safe-pb shrink-0 pb-4">
       <button
         type="button"
         :disabled="isFull"
@@ -380,7 +380,6 @@ async function handleDelete() {
     </div>
 
     <RecordEditor
-      :key="`date-record-${showEditor ? `${editingRecord?.id ?? 'new'}-${draftRecord?.date ?? date}` : 'closed'}`"
       :open="showEditor"
       :initial-data="draftRecord"
       :tags="tags"
