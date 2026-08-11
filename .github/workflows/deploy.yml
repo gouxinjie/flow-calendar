@@ -15,7 +15,7 @@ jobs:
       - name: 安装 Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22" # Nuxt 3 + @nuxt/eslint 要求 Node 22
           cache: "npm"
 
       - name: 安装依赖
@@ -23,8 +23,10 @@ jobs:
 
       - name: 生成 Prisma Client
         run: npx prisma generate
+        env:
+          DATABASE_URL: "file:./dev.db"
 
-      - name: 构建项目
+      - name: 构建项目（Nuxt node-server 产物）
         run: npm run build
         env:
           DATABASE_URL: "file:./dev.db" # 构建时仅需通过类型检查，实际数据库在 ECS 上
@@ -32,17 +34,13 @@ jobs:
       - name: 打包部署产物
         run: |
           mkdir -p deploy-package
-          # 启用 dotglob，使 * 通配符匹配 .next 等点开头的目录
-          shopt -s dotglob
-          # standalone 自包含产物（含精简 node_modules + .next 构建元数据）
-          cp -r .next/standalone/* deploy-package/
-          shopt -u dotglob
-          # 静态资源（JS/CSS chunks，覆盖到 standalone 的 .next/static 中）
-          cp -r .next/static deploy-package/.next/
-          # public 目录（favicon、SVG 等静态文件）
-          cp -r public deploy-package/
+          # Nuxt 构建产物（含 node-server + 精简 node_modules + 静态资源），保留 .output 目录名
+          # 与 ecosystem.config.js 的 script: "./.output/server/index.mjs" 对齐
+          cp -r .output deploy-package/.output
           # Prisma schema（ECS 上需运行 prisma generate / db push）
-          cp -r prisma deploy-package/
+          cp -r prisma deploy-package/prisma
+          # package.json：让 ECS 上的 npx prisma/tsx 使用项目匹配版本执行迁移
+          cp package.json deploy-package/package.json
           # PM2 配置（部署到 app 目录内，相对路径即可）
           cp ecosystem.config.js deploy-package/
           # 移除开发数据库文件，避免覆盖生产数据
@@ -60,13 +58,14 @@ jobs:
           ARGS: "-avz --delete --exclude='prisma/prod.db' --exclude='.env'"
           SCRIPT_BEFORE: |
             mkdir -p ${{ secrets.ECS_DEPLOY_PATH }}
+
           SCRIPT_AFTER: |
             # 创建持久化数据目录（与 app 同级）
             DEPLOY_BASE=$(dirname ${{ secrets.ECS_DEPLOY_PATH }})
             mkdir -p $DEPLOY_BASE/data
             mkdir -p $DEPLOY_BASE/logs
 
-            # 写入生产环境变量
+            # 写入生产环境变量（Nuxt node-server 运行时不会自动加载 .env，需注入）
             cat > ${{ secrets.ECS_DEPLOY_PATH }}/.env << 'DOTENV'
             DATABASE_URL="file:/var/www/flow-calendar/data/prod.db"
             ALLOWED_ORIGINS="flow-calendar.gouxinjie.com"
@@ -82,6 +81,6 @@ jobs:
               npx tsx prisma/migrate-default-tags.ts
             fi || true
 
-            # PM2 热重载（首次则启动）
+            # PM2 热重载（首次则启动），ecosystem.config.js 会自动从 .env 注入 DATABASE_URL
             pm2 reload ecosystem.config.js || pm2 start ecosystem.config.js
             pm2 save

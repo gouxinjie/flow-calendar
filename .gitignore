@@ -13,7 +13,12 @@
 # testing
 /coverage
 
-# next.js
+# nuxt
+/.nuxt/
+/.output/
+/dist/
+
+# next.js（旧框架残留缓存）
 /.next/
 /out/
 
@@ -43,7 +48,6 @@ cookie.txt
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
 build.log
 
 # database

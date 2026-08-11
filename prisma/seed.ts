@@ -7,8 +7,8 @@
 import { PrismaClient } from "@prisma/client";
 import dayjs from "dayjs";
 
-import { hashPassword, isHashedPassword } from "../src/server/password";
-import { DEFAULT_TAGS } from "../src/server/default-tags";
+import { hashPassword, isHashedPassword } from "../server/utils/password";
+import { DEFAULT_TAGS } from "../server/utils/default-tags";
 
 const prisma = new PrismaClient();
 

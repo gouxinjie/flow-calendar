@@ -1,0 +1,11 @@
+refactor: 从 Next.js 迁移到 Nuxt 3 架构
+
+- 将 Next.js + React 应用整体迁移为 Nuxt 3 + Vue 3
+- 页面路由重写为 Vue SFC（app/pages/）
+- 组件层重写为 Vue 组件（app/components/）
+- API 迁移为 Nitro server handlers（server/api/）
+- 鉴权改为 Node 原生 req/res 实现，兼容夸克浏览器双通道
+- 修复 h3 版本冲突，新增 server/utils/http.ts 兼容层
+- 更新 PM2/Nginx/GitHub Actions 部署配置适配 Nuxt 产物
+- 更新 README、AGENTS.md、部署文档
+- 移除全部 React 遗留代码

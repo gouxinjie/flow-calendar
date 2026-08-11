@@ -1,0 +1,72 @@
+/**
+ * @description 月历相关状态（Zustand 底层 store）
+ * @author gouxinjie
+ * @created 2026-08-10
+ */
+import { create } from "zustand";
+import dayjs from "dayjs";
+
+interface CalendarState {
+  /** 当前查看的月份 YYYY-MM */
+  currentMonth: string;
+  /** 选中的日期 YYYY-MM-DD */
+  selectedDate: string;
+  /** 今天的日期 YYYY-MM-DD */
+  today: string;
+  /** 数据刷新计数器，变更后触发依赖页面重新拉取数据 */
+  refreshKey: number;
+
+  /** 设置当前月份 */
+  setCurrentMonth: (month: string) => void;
+  /** 设置选中日期 */
+  setSelectedDate: (date: string) => void;
+  /** 切换到上个月 */
+  goToPrevMonth: () => void;
+  /** 切换到下个月 */
+  goToNextMonth: () => void;
+  /** 回到今天 */
+  goToToday: () => void;
+  /** 触发数据刷新（自增 refreshKey） */
+  triggerRefresh: () => void;
+}
+
+export const useCalendarStore = create<CalendarState>((set, get) => {
+  const today = dayjs().format("YYYY-MM-DD");
+  const currentMonth = dayjs().format("YYYY-MM");
+
+  return {
+    currentMonth,
+    selectedDate: today,
+    today,
+    refreshKey: 0,
+
+    setCurrentMonth: (month) => set({ currentMonth: month }),
+    setSelectedDate: (date) => set({ selectedDate: date }),
+    triggerRefresh: () => set((state) => ({ refreshKey: state.refreshKey + 1 })),
+
+    goToPrevMonth: () => {
+      const prev = dayjs(`${get().currentMonth}-01`).subtract(1, "month");
+      set({
+        currentMonth: prev.format("YYYY-MM"),
+        selectedDate: prev.format("YYYY-MM-DD"),
+      });
+    },
+
+    goToNextMonth: () => {
+      const next = dayjs(`${get().currentMonth}-01`).add(1, "month");
+      const thisMonth = dayjs().format("YYYY-MM");
+      if (next.format("YYYY-MM") > thisMonth) return;
+      set({
+        currentMonth: next.format("YYYY-MM"),
+        selectedDate: next.format("YYYY-MM-DD"),
+      });
+    },
+
+    goToToday: () => {
+      set({
+        currentMonth: dayjs().format("YYYY-MM"),
+        selectedDate: dayjs().format("YYYY-MM-DD"),
+      });
+    },
+  };
+});

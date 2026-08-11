@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+/* ========== CSS 变量 / 设计 Token ========== */
+:root {
+  --brand: #5EBF3F;
+  --brand-deep: #3D9428;
+  --brand-soft: #E3F5DA;
+  --accent-blue: #5da9e9;
+  --accent-orange: #ff9f43;
+  --accent-purple: #8b8aef;
+  --accent-greyGreen: #9BAE97;
+  --bg-page: #F3FAF7;
+  --bg-card: #ffffff;
+  --text-primary: #1f2a2a;
+  --text-secondary: #6b7a7a;
+  --border-color: #DCEAD2;
+  --error: #e06060;
+  --success: #5EBF3F;
+}
+
+@theme inline {
+  --color-background: var(--bg-page);
+  --color-foreground: var(--text-primary);
+  --color-brand: var(--brand);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-soft: var(--brand-soft);
+}
+
+/* ========== 全局重置 ========== */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    touch-action: manipulation;
+  }
+
+  body {
+    background: #F3FAF7;
+    color: var(--text-primary);
+    font-family:
+      -apple-system,
+      BlinkMacSystemFont,
+      "PingFang SC",
+      "Noto Sans SC",
+      "Helvetica Neue",
+      "Microsoft YaHei",
+      sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a,
+  a:link,
+  a:visited,
+  a:hover,
+  a:active,
+  a:focus {
+    color: inherit;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button {
+    cursor: pointer;
+    font-family: inherit;
+  }
+}
+
+/* ========== 滚动条 ========== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(107, 122, 122, 0.18);
+  border-radius: 999px;
+}
+
+main::-webkit-scrollbar-track {
+  background: transparent;
+}
+main::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 999px;
+  transition: background 200ms ease;
+}
+main:hover::-webkit-scrollbar-thumb {
+  background: rgba(107, 122, 122, 0.18);
+}
+
+/* ========== 页面切换动效 ========== */
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-page-enter {
+  animation: pageEnter 200ms ease-out both;
+}
+
+/* ========== 通用工具类 ========== */
+@layer utilities {
+  .font-numeric {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  .surface-card {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(220, 234, 210, 0.9);
+    border-radius: 20px;
+    box-shadow:
+      0 18px 40px rgba(18, 46, 40, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  }
+
+  /* 悬浮主按钮 */
+  .glass-fab {
+    background: linear-gradient(180deg, #74D14A 0%, #5EBF3F 55%, #49A830 100%);
+    box-shadow:
+      0 8px 18px rgba(94, 191, 63, 0.32),
+      0 2px 6px rgba(14, 42, 10, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  .glass-fab:active {
+    transform: scale(0.96);
+    box-shadow:
+      0 4px 10px rgba(94, 191, 63, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+
+  .safe-pb {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 12px);
+  }
+
+  .text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}

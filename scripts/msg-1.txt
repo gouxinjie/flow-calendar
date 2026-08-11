@@ -1,0 +1,4 @@
+fix: 同步 package-lock.json 与 package.json，修复 CI npm ci 失败
+
+- 重新生成 package-lock.json，移除 React/Next 旧依赖
+- 与 Nuxt 3 依赖树对齐，使 npm ci 能在 CI 正常执行

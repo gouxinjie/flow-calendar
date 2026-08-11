@@ -17,12 +17,12 @@
 
 ## 技术栈
 
-- **Next.js 16** (App Router)
-- **React 19** / **TypeScript**
+- **Nuxt 3** (Nitro Server)
+- **Vue 3** (Composition API) / **TypeScript**
 - **Prisma** + **SQLite**（可平滑迁移至 PostgreSQL）
 - **Zustand** / **dayjs** / **lunar-typescript**
-- **Tailwind CSS 4** + **SCSS**
-- **Phosphor Icons** / **Radix UI**
+- **Tailwind CSS 4** + **CSS 变量**
+- **Phosphor Icons**（SVG 内联实现）
 
 ## 界面预览
 
@@ -62,11 +62,13 @@ npm run db:seed
 # 开发模式启动（端口 3400）
 npm run dev
 
-# 生产模式启动（夸克/Chrome 均可，无 HMR 干扰）
+# 生产模式构建并启动（夸克/Chrome 均可，无 HMR 干扰）
 npm run start
 ```
 
 启动后访问 `http://localhost:3400`。
+
+> 注意：Node.js 需使用 **22.x** 及以上版本（`@nuxt/eslint` 等工具链依赖 `Object.groupBy`）。建议在项目根目录使用 `.nvmrc`（内容为 `22`）配合 fnm/nvm 管理版本。
 
 ### 环境变量
 
@@ -84,7 +86,7 @@ cp .env.example .env
 
 ### 为什么提供生产模式启动？
 
-夸克浏览器对 WebSocket（HMR）连接不稳定，Next.js 开发模式的 HMR 客户端会不断断连重连导致页面刷新循环。在夸克中调试时请使用 `npm run start` 以生产模式运行。详情见 [docs/debug-quark-hmr-refresh-loop.md](docs/debug-quark-hmr-refresh-loop.md)。
+夸克浏览器对 WebSocket（HMR）连接不稳定，开发模式的 HMR 客户端会不断断连重连导致页面刷新循环。在夸克中调试时请使用 `npm run start` 以生产模式运行。详情见 [docs/debug-quark-hmr-refresh-loop.md](docs/debug-quark-hmr-refresh-loop.md)。
 
 ## 数据库说明
 
@@ -139,7 +141,7 @@ npx prisma db push --force-reset
 
 ## 部署指南
 
-项目支持通过 **GitHub Actions** 自动部署到阿里云 ECS，架构为：`Nginx → PM2 → Next.js Standalone (SQLite)`。
+项目支持通过 **GitHub Actions** 自动部署到阿里云 ECS，架构为：`Nginx → PM2 → Nuxt 3 (Nitro node-server) + SQLite`。
 
 ### 部署架构
 
@@ -169,7 +171,7 @@ mkdir -p /var/www/flow-calendar/{app,data,logs}
 
 推送代码到 `main` 分支即可触发自动部署：
 
-1. GitHub Actions 自动构建 Next.js 生产产物（standalone 模式）
+1. GitHub Actions 自动构建 Nuxt 3 生产产物（`.output/`）
 2. 通过 rsync 同步到 ECS 的 `/var/www/flow-calendar/app` 目录
 3. PM2 热重载服务（零停机）
 
@@ -180,7 +182,13 @@ mkdir -p /var/www/flow-calendar/{app,data,logs}
 npm run build
 
 # 同步到 ECS（需要配置 SSH 密钥）
-rsync -avz --delete --exclude='data/' --exclude='.env' .next/standalone/ user@ecs:/var/www/flow-calendar/app/
+rsync -avz --delete --exclude='data/' --exclude='.env' .output/ user@ecs:/var/www/flow-calendar/app/
+
+# ECS 上配置生产环境变量（关键！）
+# Nuxt node-server 生产运行时不会自动加载 .env，需在 .env 或 PM2 中注入
+# ecosystem.config.js 已自动从 .env 读取 DATABASE_URL 并注入
+# 生产环境请将 .env 中的 DATABASE_URL 改为绝对路径，例如：
+#   DATABASE_URL="file:/var/www/flow-calendar/app/prisma/dev.db"
 
 # ECS 上重启服务
 pm2 reload ecosystem.config.js
@@ -192,9 +200,9 @@ pm2 reload ecosystem.config.js
 
 | 命令 | 说明 |
 |------|------|
-| `npm run dev` | Next.js 开发模式（HMR 热更新，端口 3400） |
+| `npm run dev` | Nuxt 开发模式（HMR 热更新，端口 3400） |
 | `npm run start` | 构建并启动生产服务器（端口 3400，夸克可用） |
-| `npm run build` | 仅构建生产产物 |
+| `npm run build` | 仅构建生产产物（输出到 `.output/`） |
 | `npm run lint` | ESLint 检查 |
 | `npm run db:push` | 同步 Prisma schema 到 SQLite |
 | `npm run db:seed` | 填充种子数据（含演示账号） |
@@ -209,23 +217,20 @@ pm2 reload ecosystem.config.js
 ## 项目结构
 
 ```
-src/
-├── app/          # Next.js App Router 页面与 API
-│   ├── (main)/   # 底部导航主路由组（日历/回顾/我的）
-│   ├── login/    # 登录页
-│   ├── account/  # 账号与安全
-│   ├── tags/     # 标签管理
-│   └── api/      # Route Handlers
-├── components/
-│   ├── commons/  # 公共组件
-│   └── business/ # 业务组件
-├── features/     # 业务逻辑（按域拆分）
+app/              # Nuxt 3 应用
+├── app.vue       # 根组件
+├── layouts/      # 布局（main.vue 底部导航）
+├── pages/        # 页面路由（login、calendar、review、me、tags、account）
+├── components/   # Vue 组件（commons、shared、business）
+├── composables/  # Vue 组合式
 ├── stores/       # Zustand 状态管理
 ├── services/     # 客户端请求封装
-├── server/       # 服务端业务逻辑、鉴权
-├── lib/          # 工具函数、日期、常量
+├── utils/        # 纯逻辑工具（日期、标签、记录）
 ├── types/        # TypeScript 类型定义
-└── styles/       # 全局样式、SCSS 资源
+└── assets/css/   # 全局样式
+server/           # Nitro 服务端
+├── api/          # Route Handlers（auth、records、tags、review、account）
+└── utils/        # 服务端逻辑、鉴权、DB
 prisma/
 ├── schema.prisma # 数据模型定义
 └── seed.ts       # 种子数据脚本

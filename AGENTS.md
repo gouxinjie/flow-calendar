@@ -14,8 +14,8 @@
 
 本项目默认技术方案固定为：
 
-- `Next.js`
-- `React`
+- `Nuxt 3`
+- `Vue 3`（Composition API + `<script setup>`）
 - `TypeScript`
 - `Prisma`
 - `SQLite`
@@ -25,12 +25,13 @@
 
 ### 3.2 实现原则
 
-- 优先使用 `Next.js App Router`
-- 服务端能力优先使用 `Route Handlers` 或 `Server Actions`
+- 优先使用 `Nuxt 3` 文件路由与 Server API
+- 服务端能力优先使用 Nitro `server/api` Route Handlers
 - 数据库访问统一通过 `Prisma`
 - `SQLite` 为当前主数据源
 - `IndexedDB` 仅用于最近访问数据缓存，不是主数据源
 - 代码必须可平滑迁移到后续 `PostgreSQL`
+- **重要约束**：`server/` 下禁止直接 `import ... from "h3"` 使用 `readBody` / `getQuery` / `getRouterParam` 等运行时函数，应使用 `server/utils/http.ts` 提供的 Node 原生实现，避免与 Nitro 内嵌 h3 版本不一致导致兼容问题（见 `server/utils/http.ts` 注释）
 
 ## 6. 数据模型约束
 
@@ -79,37 +80,49 @@
 如仓库初始化或重构目录结构，优先采用以下组织方式：
 
 ```text
-src/
-├── app/                         # Next.js App Router
-│   ├── (main)/                  # 底部导航主路由组
-│   ├── login/                   # 登录页
-│   ├── account/                 # 账号页
-│   ├── tags/                    # 标签管理 / 新建 / 编辑
-│   └── api/                     # Route Handlers
-├── components/
-│   ├── commons/                 # 公共组件
-│   └── business/                # 业务组件
-├── features/                    # 按业务域拆分
+app/                            # Nuxt 3 应用
+├── app.vue                     # 根组件（html/body 结构）
+├── layouts/                    # 布局
+│   └── main.vue                # 底部导航主布局（含 AuthGuard）
+├── pages/                      # 页面路由
+│   ├── index.vue               # 根重定向 → /calendar
+│   ├── login.vue               # 登录页
 │   ├── calendar/
-│   ├── template/
-│   ├── stats/
-│   ├── tag/
-│   └── account/
-├── stores/                      # Zustand 状态
-├── services/                    # 客户端请求封装
-├── server/                      # 服务端业务、鉴权、数据访问
-├── lib/                         # 工具、日期、缓存、常量
-├── types/                       # TypeScript 类型
-└── styles/                      # 全局样式、主题变量、SCSS 资源
+│   │   ├── index.vue           # 月历首页
+│   │   └── [date].vue          # 日期详情
+│   ├── review.vue              # 回顾
+│   ├── me.vue                  # 我的
+│   ├── tags/
+│   │   ├── index.vue           # 标签管理
+│   │   ├── new.vue             # 新建标签
+│   │   └── [tagId].vue         # 编辑标签
+│   └── account.vue             # 账号与安全
+├── components/
+│   ├── commons/                # 公共组件（AuthGuard、ConfirmSheet、TimePicker 等）
+│   ├── shared/                 # 共享组件（AppCanvas、BottomNav、BottomSheet、ScreenHeader 等）
+│   └── business/               # 业务组件（calendar、record、review 等）
+├── stores/                     # Zustand 状态
+├── services/                   # 客户端请求封装
+├── composables/                # Vue 组合式（useCalendarStore 等）
+├── utils/                      # 纯逻辑工具（calendar、record、tag-color 等）
+├── types/                      # TypeScript 类型
+└── assets/css/                 # 全局样式、Tailwind v4
+
+server/                         # Nitro 服务端
+├── api/                        # Route Handlers（auth、records、tags、review、account）
+├── utils/                      # db、auth、password、request、response、http、default-tags
+└── error.ts                    # 全局错误处理（统一响应结构）
+
 prisma/
 └── schema.prisma
 ```
 
 补充要求：
 
-- 公共组件放在 `src/components/commons`
-- 复杂业务逻辑优先放在 `src/features` 或 `src/server`
+- 公共组件放在 `app/components/commons` 或 `app/components/shared`
+- 复杂业务逻辑优先放在 `app/utils` 或 `server/utils`
 - 统计、模板生成、重复规则等纯逻辑必须避免直接写在页面组件中
+- `server/api` 下禁止直接使用根 `h3` 包运行时函数，统一用 `server/utils/http.ts`
 
 ## 8. 编码规范
 
@@ -137,13 +150,13 @@ prisma/
 - 所有函数参数、返回值、服务端响应、数据库模型映射必须有明确类型
 - 涉及业务规则的枚举、联合类型、DTO 必须单独定义
 
-### 8.3 React / Next.js 约束
+### 8.3 Vue / Nuxt 约束
 
-- 使用函数组件 + Hooks
-- 禁止 class component
-- 优先使用 Server Component；涉及浏览器交互时再使用 Client Component
-- 页面负责组装，业务逻辑下沉到 `features` / `server` / `lib`
-- 列表渲染必须提供稳定 `key`
+- 组件统一使用 Vue 3 Composition API（`<script setup lang="ts">`）
+- 禁止 Options API 和 `this` 访问
+- 页面负责组装，业务逻辑下沉到 `composables` / `utils` / `server`
+- 列表渲染必须提供稳定 `:key`
+- 复杂交互优先使用 `<script setup>` 内 `defineProps` / `defineEmits`，避免直接 `import { defineProps } from "vue"`
 
 ### 8.4 路径与导入
 
