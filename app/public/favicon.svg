@@ -1,0 +1,21 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="limeBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5EBF3F"/>
+      <stop offset="1" stop-color="#3D9428"/>
+    </linearGradient>
+  </defs>
+  <!-- 圆角方形背景 -->
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#limeBg)"/>
+  <!-- 月历顶栏 -->
+  <rect x="16" y="16" width="32" height="6" rx="3" fill="#FFFFFF" fill-opacity="0.32"/>
+  <!-- 嫩芽叶片 -->
+  <path d="M36 24 C44 24 50 30 50 38 C42 38 36 32 36 24 Z" fill="#FFFFFF"/>
+  <path d="M28 24 C20 24 14 30 14 38 C22 38 28 32 28 24 Z" fill="#FFFFFF"/>
+  <!-- 嫩芽茎 -->
+  <path d="M32 32 L32 50" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+  <!-- 青柠点（日历刻度） -->
+  <circle cx="20" cy="46" r="2" fill="#E3F5DA"/>
+  <circle cx="32" cy="46" r="2" fill="#E3F5DA"/>
+  <circle cx="44" cy="46" r="2" fill="#E3F5DA"/>
+</svg>

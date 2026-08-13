@@ -30,24 +30,19 @@ function isActive(href: string): boolean {
         :key="item.href"
         :to="item.href"
         :class="[
-          'relative flex min-h-[58px] flex-col items-center justify-center gap-1 px-2 pb-1.5 text-[11px] transition-transform active:scale-[0.95]',
+          'relative flex min-h-[58px] flex-col items-center justify-center gap-1 px-2 pb-1.5 text-[11px] transition-all duration-200 active:scale-[0.95]',
           isActive(item.href) ? '!text-[#2F8E2E]' : '!text-[#AAB5B0]',
         ]"
         :aria-current="isActive(item.href) ? 'page' : undefined"
       >
-        <span
-          :class="[
-            'flex h-7 w-14 items-center justify-center rounded-full transition-colors duration-200',
-            isActive(item.href) ? 'bg-[#EAF6E4]' : 'bg-transparent',
-          ]"
-        >
+        <span class="flex h-7 w-14 items-center justify-center">
           <BaseIcon
             :name="item.icon"
             :size="20"
             :weight="isActive(item.href) ? 'fill' : 'regular'"
           />
         </span>
-        <span :class="['leading-none', isActive(item.href) && 'font-semibold']">
+        <span :class="['leading-none transition-all duration-200', isActive(item.href) && 'font-semibold']">
           {{ item.label }}
         </span>
       </NuxtLink>

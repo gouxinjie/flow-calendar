@@ -44,7 +44,7 @@ function recordPillClass(): string {
 
 <template>
   <div
-    class="flex flex-col rounded-[14px] border border-[#E5F0DB] bg-white px-2.5 pb-3 pt-2 shadow-[0_1px_2px_rgba(47,94,34,0.04),0_8px_24px_rgba(47,94,34,0.06)]"
+    class="flex flex-col rounded-[14px] border border-[#CBE0BE] bg-white px-2.5 pb-3 pt-2 shadow-[0_1px_3px_rgba(47,94,34,0.08),0_10px_28px_rgba(47,94,34,0.12)]"
   >
     <div class="mb-2 grid grid-cols-7 border-b border-[#EEF2EC] pb-2 text-center text-[11px] font-semibold">
       <span

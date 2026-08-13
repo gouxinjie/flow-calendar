@@ -63,6 +63,9 @@ export default defineNuxtConfig({
     head: {
       title: "Lime Calendar | 青柠日历",
       htmlAttrs: { lang: "zh-CN" },
+      link: [
+        { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      ],
       meta: [
         {
           name: "description",
