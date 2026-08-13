@@ -42,10 +42,10 @@ module.exports = {
   apps: [
     {
       name: "flow-calendar",
-      /** Nuxt 3 node-server 构建产物入口文件 */
-      script: "./.output/server/index.mjs",
-      /** 工作目录 */
-      cwd: "./",
+      /** Nuxt 3 node-server 构建产物入口文件（绝对路径，避免 PM2 cwd 相对解析歧义） */
+      script: "/var/www/flow-calendar/app/.output/server/index.mjs",
+      /** 工作目录（绝对路径，避免 Next.js 迁移 Nuxt 后 cwd 残留旧目录） */
+      cwd: "/var/www/flow-calendar/app",
       /** 环境变量（合并 .env 中的配置，如 DATABASE_URL） */
       env: {
         ...loadEnvFile(),

@@ -81,6 +81,8 @@ jobs:
               npx tsx prisma/migrate-default-tags.ts
             fi || true
 
-            # PM2 热重载（首次则启动），ecosystem.config.js 会自动从 .env 注入 DATABASE_URL
-            pm2 reload ecosystem.config.js || pm2 start ecosystem.config.js
+            # PM2 启动/重建进程元数据
+            # 说明：startOrReload 会在脚本路径或配置变更时自动 delete 旧进程再 start，
+            #       避免 Next.js → Nuxt 迁移后 pm2 reload 仍沿用旧 server.js 入口的问题。
+            pm2 startOrReload ecosystem.config.js --update-env
             pm2 save
