@@ -12,7 +12,7 @@
   <AuthGuard>
     <AppCanvas class="bg-[#FFFFFF]">
       <main class="min-h-0 flex-1 overflow-y-scroll overscroll-y-contain">
-        <NuxtPage />
+        <slot />
       </main>
       <BottomNav />
     </AppCanvas>

@@ -16,14 +16,12 @@ const REDIRECT_GUARD_KEY = "auth_redirect_ts";
 /** 重定向防抖间隔（毫秒），3 秒内同一页面不重复重定向 */
 const REDIRECT_COOLDOWN_MS = 3000;
 
-const authChecked = ref(false);
-const isAuthenticated = ref(false);
+/** 是否处于服务端渲染阶段 */
+const isServer = import.meta.server;
 
 onMounted(() => {
   const token = getSessionToken();
   if (token) {
-    isAuthenticated.value = true;
-    authChecked.value = true;
     return;
   }
 
@@ -31,7 +29,6 @@ onMounted(() => {
   try {
     const lastRedirect = sessionStorage.getItem(REDIRECT_GUARD_KEY);
     if (lastRedirect && Date.now() - Number(lastRedirect) < REDIRECT_COOLDOWN_MS) {
-      authChecked.value = true;
       return;
     }
     sessionStorage.setItem(REDIRECT_GUARD_KEY, String(Date.now()));
@@ -45,5 +42,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <slot v-if="authChecked && isAuthenticated" />
+  <!--
+    SSR 阶段渲染稳定占位，避免在服务端输出受保护页面内容（防内容闪现/泄露）；
+    客户端挂载后由 onMounted 鉴权并跳转。SSR/CSR 首屏 DOM 结构一致，规避 hydration mismatch。
+  -->
+  <div v-if="isServer" class="flex min-h-[100dvh] items-center justify-center">
+    <span class="text-[13px] text-[#82918B]">加载中...</span>
+  </div>
+  <slot v-else />
 </template>
