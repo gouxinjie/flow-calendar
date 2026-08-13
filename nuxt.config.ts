@@ -15,10 +15,7 @@ export default defineNuxtConfig({
   // Nitro 服务端目录保持在项目根 server/（不受 srcDir 影响）
   serverDir: "server/",
 
-  // 禁用 app manifest（payload 预加载），避免 srcDir 模式下 #app-manifest 虚拟模块缺失
-  appManifest: false,
-
-  devtools: { enabled: true },
+  devtools: { enabled: false },
 
   ssr: true,
 
